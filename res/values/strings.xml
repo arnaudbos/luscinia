@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Luscinia!</string>
+    <string name="app_name">Luscinia</string>
+    <string name="patient_title">Patient: </string>
+    <string name="ok">OK</string>
+    <string name="login">Login</string>
+    <string name="username">Username : </string>
+    <string name="password">Password : </string>
+    <string name="username_hint">i.e. tremy</string>
+    <string name="password_hint">i.e. sushi</string>
+    <string name="dialog_username_error_title">Username error</string>
+    <string name="dialog_username_error_message">Username is invalid. Can\'t be empty.</string>
+    <string name="dialog_password_error_title">Password error</string>
+    <string name="dialog_password_error_message">Password is invalid. Can\'t be empty.</string>
+    <string name="dialog_login_error_title">Login error</string>
+    <string name="dialog_login_error_message">Login or password invalid.</string>
+    
+    <string name="actionbar_activity_not_found">Failed to open intent...</string>
+</resources>
