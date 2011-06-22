@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import uk.ac.brookes.arnaudbos.luscinia.views.DashboardActivityActivity;
-import uk.ac.brookes.arnaudbos.luscinia.views.LusciniaActivityActivity;
+import uk.ac.brookes.arnaudbos.luscinia.views.DashboardActivity;
+import uk.ac.brookes.arnaudbos.luscinia.views.LusciniaActivity;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;

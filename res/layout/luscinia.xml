@@ -29,7 +29,9 @@
             	android:id="@+id/edit_login"
             	android:layout_height="wrap_content"
             	android:layout_width="300dip"
-            	android:hint="@string/username_hint">
+            	android:hint="@string/username_hint"
+            	android:singleLine="true"
+            	>
             </EditText>
         </LinearLayout>
         <LinearLayout
@@ -49,7 +51,9 @@
             	android:id="@+id/edit_password"
             	android:layout_height="wrap_content"
             	android:layout_width="300dip"
-            	android:hint="@string/password_hint">
+            	android:hint="@string/password_hint"
+            	android:singleLine="true"
+            	>
             </EditText>
         </LinearLayout>
     </LinearLayout>

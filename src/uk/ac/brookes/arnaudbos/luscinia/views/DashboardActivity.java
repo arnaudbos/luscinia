@@ -1,15 +1,22 @@
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.adapters.DashboardNotificationAdapter;
+import uk.ac.brookes.arnaudbos.luscinia.adapters.DashboardPatientAdapter;
+import uk.ac.brookes.arnaudbos.luscinia.data.Notification;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.DashboardListener;
-import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ExpandableListView;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
@@ -21,10 +28,13 @@ public class DashboardActivity extends RoboActivity
 	@Inject private DashboardListener listener;
 
 	@InjectExtra("login") private String login;
+	@InjectExtra("password") private String password;
 	
-	@InjectResource(R.string.app_name) private String appName;
-	
+	@InjectResource(R.string.dashboard_title) private String dashboardTitle;
+
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
+	@InjectView(R.id.gridView1) private GridView gridview;
+	@InjectView(R.id.expandableListView1) private ExpandableListView expandablelistview;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,11 +44,62 @@ public class DashboardActivity extends RoboActivity
         listener.setContext(this);
 
         prepareActionBar();
+        stubGetUser(login, password);
+        prepareExpandableListView();
+        prepareGridView();
 	}
 	
+	private void prepareExpandableListView()
+	{
+		List<String> groups = new ArrayList<String>();
+		groups.add("Notifications");
+		List<Notification> notifs = new ArrayList<Notification>();
+		notifs.add(new Notification("Name", "Message"));
+		List<List<Notification>> list = new ArrayList<List<Notification>> ();
+		list.add(notifs);
+		
+		this.expandablelistview.setAdapter(new DashboardNotificationAdapter(this, groups, list));
+        
+		this.expandablelistview.setOnGroupClickListener(listener);
+		this.expandablelistview.setOnChildClickListener(listener);
+	}
+
+	private void prepareGridView()
+	{
+        gridview.setAdapter(new DashboardPatientAdapter(this, null));
+        
+        LayoutParams params = gridview.getLayoutParams();
+        int count = gridview.getAdapter().getCount();
+        
+        final float scale = getResources().getDisplayMetrics().density;
+        int unit = (int) (160 * scale + 0.5f);
+        
+        if(count%4 == 0)
+        {
+        	params.height = count/4*unit;
+        	gridview.setLayoutParams(params);
+        }
+        else
+        {
+        	params.height = (count/4+1)*unit;
+        	gridview.setLayoutParams(params);
+        }
+
+        gridview.setOnItemClickListener(listener);
+	}
+
+	private void stubGetUser(String login, String password)
+	{
+		// TODO: Stub method. Implement it.
+		// Do some stuff to retrieve the user
+		String userFirstname = "Tiffany";
+		String userName = "REMY";
+		actionBar.setTitle(dashboardTitle+" "+userFirstname+" "+userName);
+	}
+
 	private void prepareActionBar()
 	{
-        actionBar.setTitle(appName);
+        actionBar.setTitle(dashboardTitle);
         actionBar.setHomeAction(new HomeAction());
         actionBar.addAction(new StubShareAction());
         actionBar.addAction(new StubSearchAction());
@@ -49,7 +110,7 @@ public class DashboardActivity extends RoboActivity
 		@Override
 		public void performAction(View view)
 		{
-			Toast.makeText(DashboardActivity.this, "HomeAction", Toast.LENGTH_SHORT).show();
+			//TODO: Display a toast to inform the user that he's already in the home screen.
 		}
 		
 		@Override
@@ -68,10 +129,6 @@ public class DashboardActivity extends RoboActivity
 		public void performAction(View view)
 		{
 			Toast.makeText(DashboardActivity.this, "ShareAction", Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(DashboardActivity.this, PatientActivity.class);
-			intent.putExtra("patient", "Arnaud BOS");
-			DashboardActivity.this.startActivity(intent);
-			DashboardActivity.this.finish();
 		}
 		
 		@Override
@@ -89,7 +146,6 @@ public class DashboardActivity extends RoboActivity
 		@Override
 		public void performAction(View view)
 		{
-			Log.i(view.getId()+"");
 			Toast.makeText(DashboardActivity.this, "otherAction", Toast.LENGTH_SHORT).show();
 		}
 		

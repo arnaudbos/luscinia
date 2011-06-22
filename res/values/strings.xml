@@ -2,6 +2,7 @@
 <resources>
     <string name="hello">Hello World, Luscinia!</string>
     <string name="app_name">Luscinia</string>
+    <string name="dashboard_title">Dashboard: </string>
     <string name="patient_title">Patient: </string>
     <string name="ok">OK</string>
     <string name="login">Login</string>
@@ -17,4 +18,10 @@
     <string name="dialog_login_error_message">Login or password invalid.</string>
     
     <string name="actionbar_activity_not_found">Failed to open intent...</string>
+    
+    <string name="working_since">In service since: </string>
+    
+    <string name="time">Time: </string>
+    
+    <string name="patients_title">Patients: </string>
 </resources>

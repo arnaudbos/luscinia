@@ -1,5 +1,6 @@
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
+import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.views.DashboardActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.LusciniaActivity;
 import android.content.Intent;
@@ -26,10 +27,10 @@ public class LusciniaListener implements OnClickListener
 		else
 		{
 			// TODO: call manager
-			boolean loginOk = stubCallLoginManagerMethod();
+			boolean loginOk = stubCallLoginManagerMethod(login, password);
 			if (loginOk)
 			{
-				launchLusciniaActivity(login);
+				launchDashboardActivity(login, password);
 			}
 			else
 			{
@@ -38,18 +39,29 @@ public class LusciniaListener implements OnClickListener
 		}
 	}
 	
-	private void launchLusciniaActivity(String login)
+	private void launchDashboardActivity(String login, String password)
 	{
 		Intent intent = new Intent(this.context, DashboardActivity.class);
         intent.putExtra("login", login);
+        intent.putExtra("password", password);
         this.context.startActivity(intent);
         this.context.finish();
 	}
 
-	private boolean stubCallLoginManagerMethod()
+	private boolean stubCallLoginManagerMethod(String login, String password)
 	{
 		// TODO: Stub method. Implement it.
-		return true;
+
+		try
+		{
+//			this.context.getCouchDBUtils().getDB(login, password);
+			return true;
+		}
+		catch (Exception e)
+		{
+			Log.e("CATCHED: Login action failed", e);
+			return false;
+		}
 	}
 
 	public void setContext(LusciniaActivity context)

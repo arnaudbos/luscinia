@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="150dp"
+  android:layout_height="150dp"
+  android:gravity="center">
+    <ImageView
+    	android:layout_height="150dp"
+    	android:layout_width="150dp"
+    	android:id="@+id/patient_picture"
+    	android:layout_alignParentTop="true"
+    	android:scaleType="centerCrop"
+    	>
+    </ImageView>
+    <LinearLayout
+    	android:orientation="vertical"
+    	android:gravity="center"
+    	android:layout_height="60dp"
+    	android:layout_width="150dp"
+    	android:layout_alignParentBottom="true"
+    	android:background="#80000000"
+    	>
+        <TextView
+        	android:layout_height="wrap_content"
+        	android:text="Name"
+        	android:layout_width="wrap_content"
+        	android:id="@+id/patient_name"
+        	android:textSize="14dp"
+        	android:textStyle="bold"
+        	android:scrollHorizontally="false"
+        	>
+        </TextView>
+    </LinearLayout>
+</RelativeLayout>

@@ -5,6 +5,7 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.LusciniaListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDBUtils;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -12,13 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 public class LusciniaActivity extends RoboActivity
 {
 	public static final int DIALOG_USERNAME_ERROR = 101;
 	public static final int DIALOG_PASSWORD_ERROR = 102;
 	public static final int DIALOG_LOGIN_ERROR = 103;
-
+	
+	@Inject private ICouchDBUtils couchDBUtils;
 	@Inject private LusciniaListener listener;
 
 	@InjectView(R.id.edit_login) private EditText editLogin;
@@ -83,4 +86,9 @@ public class LusciniaActivity extends RoboActivity
     {
     	return editPassword.getText().toString();
     }
+
+	public ICouchDBUtils getCouchDBUtils()
+	{
+		return couchDBUtils;
+	}
 }

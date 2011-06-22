@@ -1,14 +1,22 @@
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.adapters.PatientFolderAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.PatientListener;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
@@ -24,6 +32,7 @@ public class PatientActivity extends RoboActivity
 	@InjectResource(R.string.patient_title) private String patientTitle;
 	
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
+	@InjectView(R.id.folders_listview) private ListView foldersListView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,6 +43,13 @@ public class PatientActivity extends RoboActivity
 
         prepareActionBar();
         getPatientInfos(patient);
+        prepareFoldersListView();
+        
+//        Panel panel = (Panel) findViewById(R.id.bottomPanel);
+//        panel.setInterpolator(new ExpoInterpolator(Type.OUT));
+//        
+//        panel = (Panel) findViewById(R.id.leftPanel);
+//        panel.setInterpolator(new ExpoInterpolator(Type.OUT));
 	}
 
 	private void prepareActionBar()
@@ -42,6 +58,23 @@ public class PatientActivity extends RoboActivity
         actionBar.setHomeAction(new HomeAction());
         actionBar.addAction(new StubShareAction());
         actionBar.addAction(new StubSearchAction());
+	}
+
+	private void prepareFoldersListView()
+	{
+		Map<String, Object> temp_folder = new HashMap<String, Object>();
+		temp_folder.put("name", "Temp Folder");
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		list.add(temp_folder);
+		list.add(temp_folder);
+		list.add(temp_folder);
+		list.add(temp_folder);
+		list.add(temp_folder);
+		list.add(temp_folder);
+		list.add(temp_folder);
+        foldersListView.setAdapter(new PatientFolderAdapter(this, list));
+
+        foldersListView.setOnItemClickListener(listener);
 	}
 	
 	private void getPatientInfos(String patient2)
@@ -54,7 +87,8 @@ public class PatientActivity extends RoboActivity
 		@Override
 		public void performAction(View view)
 		{
-			Toast.makeText(PatientActivity.this, "HomeAction", Toast.LENGTH_SHORT).show();
+			startActivity(new Intent(PatientActivity.this, DashboardActivity.class));
+			PatientActivity.this.finish();
 		}
 		
 		@Override
