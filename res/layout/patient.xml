@@ -32,18 +32,50 @@
         	>
             <RelativeLayout
             	android:id="@+id/relativeLayout2"
-            	android:layout_width="fill_parent"
-            	android:layout_height="fill_parent"
-            	>
-                <ImageView android:id="@+id/imageView1" android:layout_alignParentTop="true" android:layout_width="150dip" android:layout_height="150dip" android:src="@drawable/sample_7" android:scaleType="centerCrop"></ImageView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/imageView1" android:id="@+id/textView1" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/imageView1"></TextView>
-                <TextView android:layout_height="wrap_content" android:id="@+id/textView3" android:layout_below="@+id/textView1" android:layout_width="wrap_content" android:text="TextView" android:layout_alignLeft="@+id/textView1"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/textView3" android:id="@+id/textView4" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/textView3" android:layout_alignBottom="@+id/textView3"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/textView4" android:id="@+id/textView6" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/textView4" android:layout_alignBottom="@+id/textView4" android:layout_marginLeft="30dip"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/textView6" android:id="@+id/textView8" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/textView6" android:layout_alignBottom="@+id/textView6"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/textView1" android:id="@+id/textView2" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/textView1" android:layout_alignBottom="@+id/textView1"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/textView2" android:id="@+id/textView5" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/textView2" android:layout_alignBottom="@+id/textView2" android:layout_marginLeft="30dip"></TextView>
-                <TextView android:layout_height="wrap_content" android:layout_toRightOf="@+id/textView5" android:id="@+id/textView7" android:layout_width="wrap_content" android:text="TextView" android:layout_alignTop="@+id/textView5" android:layout_alignBottom="@+id/textView5"></TextView>
+            	android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout
+                	android:layout_height="wrap_content"
+                	android:id="@+id/linearLayout1"
+                	android:layout_alignParentTop="true"
+                	android:layout_width="fill_parent"
+                	>
+                	<ImageView
+                		android:layout_width="150dip"
+                		android:layout_height="150dip"
+                		android:src="@drawable/sample_7"
+                		android:scaleType="centerCrop"
+                		android:id="@+id/patient_picture"
+                		>
+                	</ImageView>
+                	<TextView
+                		android:layout_height="wrap_content"
+                		android:text="TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextView TextView TextView TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextViewTextView TextViewTextView TextView TextViewTextView TextView TextView TextView"
+                		android:layout_width="fill_parent"
+                		android:scrollHorizontally="false"
+                		android:id="@+id/patient_first_infos"
+                		>
+                	</TextView>
+                </LinearLayout>
+				<TextView
+               		android:id="@+id/patient_rest_infos"
+               		android:text="TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextView TextView TextView TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextViewTextView TextViewTextView TextView TextViewTextView TextView TextView TextView"
+                	android:layout_width="fill_parent"
+                	android:layout_height="wrap_content"
+        			android:layout_below="@+id/linearLayout1"
+        			>
+                </TextView>
+		       	<GridView
+		       		android:id="@+id/attached_documents"
+		       		android:layout_width="fill_parent"
+				    android:numColumns="3"
+				    android:verticalSpacing="10dip"
+				    android:horizontalSpacing="10dip"
+				    android:gravity="center"
+				    android:smoothScrollbar="true"
+		       		android:layout_height="wrap_content"
+        			android:layout_below="@+id/patient_rest_infos"
+		       		>
+	      		</GridView>
             </RelativeLayout>
         </ScrollView>
         

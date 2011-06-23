@@ -10,11 +10,11 @@
     	android:icon="@drawable/icon"
     	android:label="@string/app_name"
     	android:name="LusciniaApplication"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
     	>
         <activity
         	android:name=".views.LusciniaActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,13 +24,11 @@
         <activity
         	android:name=".views.DashboardActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             >
         </activity>
         <activity
         	android:name=".views.PatientActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             >
         </activity>
     </application>

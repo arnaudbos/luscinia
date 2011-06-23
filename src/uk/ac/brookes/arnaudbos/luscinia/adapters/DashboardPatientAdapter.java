@@ -72,6 +72,7 @@ public class DashboardPatientAdapter extends BaseAdapter
 			holder.picture.setImageResource(mThumbIds[position]);
 			
 			holder.text = (TextView) convertView.findViewById(R.id.patient_name);
+			//TODO: holder.text.setText(patients.get(position).get("firstname") + " " + patients.get(position).get("lastname"));
 			holder.text.setText(""+position);
 		}
 		else

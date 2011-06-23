@@ -10,13 +10,18 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.adapters.PatientDocumentAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.adapters.PatientFolderAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.PatientListener;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
@@ -33,6 +38,10 @@ public class PatientActivity extends RoboActivity
 	
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
 	@InjectView(R.id.folders_listview) private ListView foldersListView;
+	@InjectView(R.id.patient_picture) private ImageView patientPictureView;
+	@InjectView(R.id.patient_first_infos) private TextView patientFirstInfosView;
+	@InjectView(R.id.patient_rest_infos) private TextView patientRestInfosView;
+	@InjectView(R.id.attached_documents) private GridView attachedDocumentsView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +52,8 @@ public class PatientActivity extends RoboActivity
 
         prepareActionBar();
         getPatientInfos(patient);
+        preparePatientInfos();
+        prepareAttachedDocumentsView();
         prepareFoldersListView();
         
 //        Panel panel = (Panel) findViewById(R.id.bottomPanel);
@@ -75,6 +86,34 @@ public class PatientActivity extends RoboActivity
         foldersListView.setAdapter(new PatientFolderAdapter(this, list));
 
         foldersListView.setOnItemClickListener(listener);
+	}
+	
+	private void preparePatientInfos()
+	{
+	}
+
+	private void prepareAttachedDocumentsView()
+	{
+        attachedDocumentsView.setAdapter(new PatientDocumentAdapter(this, null));
+        
+        LayoutParams params = attachedDocumentsView.getLayoutParams();
+        int count = attachedDocumentsView.getAdapter().getCount();
+        
+        final float scale = getResources().getDisplayMetrics().density;
+        int unit = (int) (160 * scale + 0.5f);
+        
+        if(count%3 == 0)
+        {
+        	params.height = count/3*unit;
+        	attachedDocumentsView.setLayoutParams(params);
+        }
+        else
+        {
+        	params.height = (count/3+1)*unit;
+        	attachedDocumentsView.setLayoutParams(params);
+        }
+
+        attachedDocumentsView.setOnItemClickListener(listener);
 	}
 	
 	private void getPatientInfos(String patient2)
