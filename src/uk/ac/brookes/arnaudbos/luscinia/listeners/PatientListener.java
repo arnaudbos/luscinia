@@ -1,6 +1,6 @@
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
-import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
+import uk.ac.brookes.arnaudbos.luscinia.views.FolderActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.PatientActivity;
 import android.content.Intent;
 import android.view.View;
@@ -40,7 +40,6 @@ public class PatientListener implements OnClickListener, OnItemClickListener
 			//outputStream.write(fileBytes);
 			//outputStream.flush();
 			//outputStream.close();
-			Log.i(context.getPackageName());
 		}
 		else if(parent instanceof ListView)
 		{
@@ -52,7 +51,7 @@ public class PatientListener implements OnClickListener, OnItemClickListener
 	
 	private void launchFolderActivity()
 	{
-		Intent intent = new Intent(this.context, PatientActivity.class);
+		Intent intent = new Intent(this.context, FolderActivity.class);
 		intent.putExtra("folder", "Dossier de soins");
         this.context.startActivity(intent);
 	}
