@@ -8,17 +8,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 public class DashboardPatientAdapter extends BaseAdapter
 {
 	private Context mContext;
-	private List<Map<String, Object>> patients;
+//	private List<Map<String, Object>> patients;
 
 	private Integer[] mThumbIds = {
 			R.drawable.sample_2, R.drawable.sample_3,
@@ -33,7 +31,7 @@ public class DashboardPatientAdapter extends BaseAdapter
 	public DashboardPatientAdapter(Context c, List<Map<String, Object>> patients)
 	{
 		this.mContext = c;
-		this.patients = patients;
+//		this.patients = patients;
 	}
 
 	public int getCount()

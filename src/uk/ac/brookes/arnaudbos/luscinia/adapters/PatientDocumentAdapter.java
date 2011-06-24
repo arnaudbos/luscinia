@@ -1,15 +1,9 @@
 package uk.ac.brookes.arnaudbos.luscinia.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
-import uk.ac.brookes.arnaudbos.luscinia.utils.Base64;
-import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +15,7 @@ import android.widget.TextView;
 public class PatientDocumentAdapter extends BaseAdapter
 {
 	private Context mContext;
-	private List<Object> documents;
+//	private List<Object> documents;
 
 	private Integer[] mThumbIds = {
 			R.drawable.no_folder_picture, R.drawable.no_folder_picture,

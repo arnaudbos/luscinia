@@ -55,12 +55,6 @@ public class PatientActivity extends RoboActivity
         preparePatientInfos();
         prepareAttachedDocumentsView();
         prepareFoldersListView();
-        
-//        Panel panel = (Panel) findViewById(R.id.bottomPanel);
-//        panel.setInterpolator(new ExpoInterpolator(Type.OUT));
-//        
-//        panel = (Panel) findViewById(R.id.leftPanel);
-//        panel.setInterpolator(new ExpoInterpolator(Type.OUT));
 	}
 
 	private void prepareActionBar()

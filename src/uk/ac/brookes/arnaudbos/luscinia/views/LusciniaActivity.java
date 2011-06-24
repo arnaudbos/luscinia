@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 public class LusciniaActivity extends RoboActivity
 {
