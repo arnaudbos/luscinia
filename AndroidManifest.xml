@@ -34,6 +34,17 @@
         <activity
         	android:name=".views.FolderActivity"
             android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden"
+            >
+        </activity>
+        <activity
+        	android:name=".views.MacrocibleActivity"
+            android:screenOrientation="landscape"
+            >
+        </activity>
+        <activity
+        	android:name=".views.TransActivity"
+            android:screenOrientation="landscape"
             >
         </activity>
     </application>

@@ -60,6 +60,8 @@ public class PatientFolderAdapter extends BaseAdapter
 			holder.text = (TextView) convertView.findViewById(R.id.folder_name);
 			holder.picture = (ImageView) convertView.findViewById(R.id.folder_picture);
 
+			//holder.text.setText((String) document.get("name"));
+			holder.text.setText(""+position);
 			if (folder.get("picture") != null)
 			{
 				int iconId = context.getResources().getIdentifier((String)folder.get("picture"), "drawable", context.getPackageName());

@@ -10,24 +10,12 @@
         android:id="@+id/actionbar"
         style="@style/ActionBar"
         />
-        
+
     <RelativeLayout
     	android:layout_width="fill_parent"
     	android:id="@+id/internal_content"
     	android:layout_height="fill_parent"
     	>
-        
-<!--         <ScrollView -->
-<!--         	android:layout_height="fill_parent" -->
-<!--         	android:id="@+id/scrollView1" -->
-<!--         	android:layout_width="fill_parent" -->
-<!--         	> -->
-<!--             <RelativeLayout -->
-<!--             	android:id="@+id/relativeLayout2" -->
-<!--             	android:layout_width="fill_parent" android:layout_height="wrap_content"> -->
-<!--             </RelativeLayout> -->
-<!--         </ScrollView> -->
-        
 		<org.miscwidgets.widget.Panel
 			android:layout_alignParentLeft="true"
 			android:gravity="center_vertical"
@@ -41,12 +29,12 @@
 		    panel:openedHandle="@drawable/left_switcher_expanded_background"
 		    panel:closedHandle="@drawable/left_switcher_collapsed_background"
 		    panel:weight="100%p"
-		>
+			>
 			<Button
 				android:id="@+id/panelHandle" 
 			    android:layout_width="24dip" 
 			    android:layout_height="40dip" 
-			/>
+				/>
 			<TextView
 		    	android:layout_weight="1" 
 				android:id="@+id/panelContent" 
@@ -59,7 +47,7 @@
 			    android:textColor="#eee"
 			    android:textStyle="bold"
 			    android:background="#999932"
-			/>
+				/>
 		</org.miscwidgets.widget.Panel>
 
 		<org.miscwidgets.widget.Panel
@@ -74,39 +62,28 @@
 		    panel:position="bottom"
 		    panel:openedHandle="@drawable/bottom_switcher_expanded_background"
 		    panel:closedHandle="@drawable/bottom_switcher_collapsed_background"
-		    panel:weight="25%p"
-		>
+		    panel:height="150"
+			>
 			<Button
 				android:id="@+id/panelHandle" 
 			    android:layout_width="40dip" 
 			    android:layout_height="24dip" 
-			/>
-			<LinearLayout
-				android:id="@+id/panelContent" 
-			    android:orientation="vertical"
-	    		android:layout_width="fill_parent"
-	    		android:layout_height="wrap_content"
-			>
-				<TextView
-				    android:layout_width="fill_parent" 
-				    android:layout_height="wrap_content" 
-				    android:gravity="center"
-				    android:text="Elastic\nInterpolator"
-				    android:textSize="16dip"
-				    android:padding="4dip"
-				    android:textColor="#eee"
-				    android:textStyle="bold"
-				    android:background="#993333"
 				/>
-				<CheckBox
-				    android:layout_width="fill_parent" 
-				    android:layout_height="60dip" 
-				    android:gravity="center"
-				    android:text="bottom check box"
-				    android:background="#688"
-				/>
-			</LinearLayout>
+			<HorizontalScrollView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/panelContent"
+				android:background="#FF0000"
+				>
+				<LinearLayout
+					android:id="@+id/tracks"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:layout_gravity="left"
+					>
+				</LinearLayout>
+			</HorizontalScrollView>
 		</org.miscwidgets.widget.Panel>
     </RelativeLayout>
-
 </LinearLayout>

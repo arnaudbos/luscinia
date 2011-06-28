@@ -1,12 +1,12 @@
 package org.miscwidgets.widget;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -74,6 +74,7 @@ public class Panel extends LinearLayout {
 	private int mContentWidth;
 	private int mOrientation;
 	private float mWeight;
+	private int height;
 	private PanelOnGestureListener mGestureListener;
 	private boolean mBringToFront;
 	
@@ -83,10 +84,15 @@ public class Panel extends LinearLayout {
 		mDuration = a.getInteger(R.styleable.Panel_animationDuration, 750);		// duration defaults to 750 ms
 		mPosition = a.getInteger(R.styleable.Panel_position, BOTTOM);			// position defaults to BOTTOM
 		mLinearFlying = a.getBoolean(R.styleable.Panel_linearFlying, false);	// linearFlying defaults to false
-		mWeight = a.getFraction(R.styleable.Panel_weight, 0, 1, 0.0f);			// weight defaults to 0.0
-		if (mWeight < 0 || mWeight > 1) {
-			mWeight = 0.0f;
-			Log.w(TAG, a.getPositionDescription() + ": weight must be > 0 and <= 1");
+		height = a.getInteger(R.styleable.Panel_height, -1);
+		Log.i(height+"");
+		if(height==-1)
+		{
+			mWeight = a.getFraction(R.styleable.Panel_weight, 0, 1, 0.0f);			// weight defaults to 0.0
+			if (mWeight < 0 || mWeight > 1) {
+				mWeight = 0.0f;
+				Log.w(a.getPositionDescription() + ": weight must be > 0 and <= 1");
+			}
 		}
 		mOpenedHandle = a.getDrawable(R.styleable.Panel_openedHandle);
 		mClosedHandle = a.getDrawable(R.styleable.Panel_closedHandle);
@@ -226,7 +232,7 @@ public class Panel extends LinearLayout {
 		}
 		mContent.setClickable(true);
 		mContent.setVisibility(GONE);
-		if (mWeight > 0) {
+		if (mWeight > 0 || height > 0) {
 			ViewGroup.LayoutParams params = mContent.getLayoutParams();
 			if (mOrientation == VERTICAL) {
 				params.height = ViewGroup.LayoutParams.FILL_PARENT;
@@ -248,13 +254,21 @@ public class Panel extends LinearLayout {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		if (mWeight > 0 && mContent.getVisibility() == VISIBLE) {
+		if ((mWeight > 0 || height > 0) && mContent.getVisibility() == VISIBLE) {
 			View parent = (View) getParent();
 			if (parent != null) {
 				if (mOrientation == VERTICAL) {
-					heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (parent.getHeight() * mWeight), MeasureSpec.EXACTLY);
+					if(height!=-1) {
+						heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (height * getResources().getDisplayMetrics().density + 0.5f), MeasureSpec.EXACTLY);
+					} else {
+						heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (parent.getHeight() * mWeight), MeasureSpec.EXACTLY);
+					}
 				} else {
-					widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (parent.getWidth() * mWeight), MeasureSpec.EXACTLY);
+					if(height!=-1) {
+						widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (height * getResources().getDisplayMetrics().density + 0.5f), MeasureSpec.EXACTLY);
+					} else {
+						widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (parent.getWidth() * mWeight), MeasureSpec.EXACTLY);
+					}
 				}
 			}
 		}

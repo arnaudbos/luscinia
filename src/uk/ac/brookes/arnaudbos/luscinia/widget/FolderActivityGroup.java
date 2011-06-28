@@ -4,21 +4,20 @@ import java.util.ArrayList;
 
 import org.miscwidgets.widget.Panel;
 
+import roboguice.activity.RoboActivityGroup;
 import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import roboguice.activity.RoboActivityGroup;
 
 public class FolderActivityGroup extends RoboActivityGroup
 {
 	private ArrayList<String> activityIdsList;
-	private RelativeLayout targetLayout;
+	private ViewGroup targetLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -57,6 +56,10 @@ public class FolderActivityGroup extends RoboActivityGroup
 		Window window = getLocalActivityManager().startActivity(Id,intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		if (window != null)
 		{
+			if(activityIdsList.contains(Id))
+			{
+				activityIdsList.remove(Id);
+			}
 			activityIdsList.add(Id);
 			if (!(targetLayout.getChildAt(0) instanceof Panel))
 			{
@@ -96,7 +99,6 @@ public class FolderActivityGroup extends RoboActivityGroup
 	final public void onBackPressed ()
 	{
 		int length = activityIdsList.size();
-		Toast.makeText(this, "onBackPressed, length="+length, Toast.LENGTH_SHORT).show();
 		if ( length > 1)
 		{
 			Activity current = getLocalActivityManager().getActivity(activityIdsList.get(length-1));

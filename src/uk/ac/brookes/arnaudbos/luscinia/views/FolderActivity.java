@@ -1,5 +1,8 @@
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.miscwidgets.widget.EasingType.Type;
 import org.miscwidgets.widget.ExpoInterpolator;
 import org.miscwidgets.widget.Panel;
@@ -8,10 +11,17 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.utils.TemplateActivityMapper;
+import uk.ac.brookes.arnaudbos.luscinia.widget.DocumentView;
 import uk.ac.brookes.arnaudbos.luscinia.widget.FolderActivityGroup;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -26,6 +36,7 @@ public class FolderActivity extends FolderActivityGroup
 
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
 	@InjectView(R.id.internal_content) private RelativeLayout internalContentLayout;
+	@InjectView(R.id.tracks) private LinearLayout documentsTrack;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -36,19 +47,41 @@ public class FolderActivity extends FolderActivityGroup
         prepareActionBar();
         getFolderInfos(folder);
         prepareFolderInfos();
+        prepareDocumentsTrack();
         
         Panel panel = (Panel) findViewById(R.id.bottomPanel);
         panel.setInterpolator(new ExpoInterpolator(Type.OUT));
         
         panel = (Panel) findViewById(R.id.leftPanel);
         panel.setInterpolator(new ExpoInterpolator(Type.OUT));
-
+        
 		this.setTargetLayout(internalContentLayout);
-//		Intent intent = new Intent(this, DashboardActivity.class);
-//		intent.putExtra("login", "login");
-//		intent.putExtra("password", "password");
-//        startChildActivity("DashboardActivity", intent);
+        startChildActivity("MacrocibleActivity", new Intent(this, MacrocibleActivity.class));
 	}
+
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+   		MenuItem item = menu.add("Folder Menu 1");
+	   	
+	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
+		{
+			@Override
+			public boolean onMenuItemClick(MenuItem item)
+			{
+				Toast.makeText(FolderActivity.this, "Folder Menu 1", Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
+
+	   	return getLocalActivityManager().getCurrentActivity().onCreateOptionsMenu(menu);
+    }
+	
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+        menu.clear();
+        return onCreateOptionsMenu(menu);
+    }
 
 	private void prepareActionBar()
 	{
@@ -60,6 +93,48 @@ public class FolderActivity extends FolderActivityGroup
 
 	private void prepareFolderInfos()
 	{
+	}
+	
+    private void prepareDocumentsTrack()
+    {
+    	//TODO
+    	List<String> documents = new ArrayList<String>();
+    	documents.add("template-trans");
+    	documents.add("template-macrocible");
+    	for(final String template : documents)
+    	{
+	    	DocumentView doc = new DocumentView(this, getResources().getDrawable(R.drawable.no_folder_picture), template, null);
+	    	OnClickListener listener;
+    		switch (TemplateActivityMapper.toActivity(template))
+    		{
+				case TRANS:
+					listener = new OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+					        startChildActivity(template, new Intent(FolderActivity.this, TransActivity.class));
+						}
+					};
+					doc.setOnClickListener(listener);
+					break;
+				case MACROCIBLE:
+					listener = new OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+					        startChildActivity(template, new Intent(FolderActivity.this, MacrocibleActivity.class));
+						}
+					};
+					doc.setOnClickListener(listener);
+					break;
+				case GENERIC:
+				default:
+					break;
+			}
+    		documentsTrack.addView(doc);
+    	}
 	}
 
 	private void getFolderInfos(String patient2)
