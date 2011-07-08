@@ -2,6 +2,7 @@ package uk.ac.brookes.arnaudbos.luscinia.adapters;
 
 import java.util.List;
 
+import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.Notification;
 import android.content.Context;
 import android.view.Gravity;
@@ -50,6 +51,8 @@ public class DashboardNotificationAdapter extends BaseExpandableListAdapter
 		textView.setPadding((int)(36 * scale + 0.5f), 0, 0, 0);
 		textView.setLayoutParams(lp);
 		textView.setHeight(48);
+		textView.setTextColor(0xFF302702);
+		textView.setTextSize(16);
 		return textView;
 	}
 
@@ -57,6 +60,7 @@ public class DashboardNotificationAdapter extends BaseExpandableListAdapter
 	{
 		TextView textView = getGenericView();
 		textView.setText(getChild(groupPosition, childPosition).getName());
+
 		return textView;
 	}
 
@@ -79,6 +83,7 @@ public class DashboardNotificationAdapter extends BaseExpandableListAdapter
 	{
 		TextView textView = getGenericView();
 		textView.setText(getGroup(groupPosition).toString());
+
 		return textView;
 	}
 

@@ -79,7 +79,7 @@ public class PatientDocumentAdapter extends BaseAdapter
 			
 			holder.text = (TextView) convertView.findViewById(R.id.document_name);
 			//TODO: holder.text.setText(patients.get(position).get("firstname") + " " + patients.get(position).get("lastname"));
-			holder.text.setText(""+position);
+			holder.text.setText("Document "+position);
 		}
 		else
 		{

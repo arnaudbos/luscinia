@@ -19,13 +19,13 @@ public class DashboardPatientAdapter extends BaseAdapter
 //	private List<Map<String, Object>> patients;
 
 	private Integer[] mThumbIds = {
-			R.drawable.sample_2, R.drawable.sample_3,
-			R.drawable.sample_4, R.drawable.sample_5,
-			R.drawable.sample_6, R.drawable.sample_7,
-			R.drawable.sample_0, R.drawable.sample_1,
-			R.drawable.sample_2, R.drawable.sample_3,
-			R.drawable.sample_4, R.drawable.sample_5,
-			R.drawable.sample_6, R.drawable.sample_7
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
+			R.drawable.no_contact_picture, R.drawable.no_contact_picture
 	};
 
 	public DashboardPatientAdapter(Context c, List<Map<String, Object>> patients)
@@ -71,7 +71,7 @@ public class DashboardPatientAdapter extends BaseAdapter
 			
 			holder.text = (TextView) convertView.findViewById(R.id.patient_name);
 			//TODO: holder.text.setText(patients.get(position).get("firstname") + " " + patients.get(position).get("lastname"));
-			holder.text.setText(""+position);
+			holder.text.setText("Monsieur "+position);
 		}
 		else
 		{

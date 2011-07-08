@@ -20,7 +20,7 @@ public class TransActivity extends RoboActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-   		MenuItem item = menu.add("Trans Menu 1");
+   		MenuItem item = menu.add("Transmission Menu");
 	   	
 	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		{

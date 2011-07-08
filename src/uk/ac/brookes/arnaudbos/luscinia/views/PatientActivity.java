@@ -120,7 +120,10 @@ public class PatientActivity extends RoboActivity
 		@Override
 		public void performAction(View view)
 		{
-			startActivity(new Intent(PatientActivity.this, DashboardActivity.class));
+			Intent intent = new Intent(PatientActivity.this, DashboardActivity.class);
+			intent.putExtra("login", "osef");
+			intent.putExtra("password", "osef");
+			startActivity(intent);
 			PatientActivity.this.finish();
 		}
 		

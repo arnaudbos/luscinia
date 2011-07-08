@@ -54,7 +54,8 @@ public class DashboardActivity extends RoboActivity
 		List<String> groups = new ArrayList<String>();
 		groups.add("Notifications");
 		List<Notification> notifs = new ArrayList<Notification>();
-		notifs.add(new Notification("Name", "Message"));
+		notifs.add(new Notification("Demande de prescription", "Message"));
+		notifs.add(new Notification("Accord patient", "Message"));
 		List<List<Notification>> list = new ArrayList<List<Notification>> ();
 		list.add(notifs);
 		

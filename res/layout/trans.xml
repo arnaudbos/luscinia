@@ -14,75 +14,78 @@
 		<TableRow>
 			<TextView
 				android:text="Date"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
 				android:text="Cible"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
 				android:text="Données"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
 				android:text="Actions"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
 				android:text="Résultats"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 		</TableRow>
 		<TableRow>
 			<TextView
 				android:text="27/06/2011"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
+				android:text="Fatigue"
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
+				android:text="Je ne sais pas quoi mettre ici."
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
+				android:text="Donner vitamines quotidiennes."
+				style="@style/brown_textview"
 				android:padding="3dip" />
 			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
-				android:padding="3dip" />
-		</TableRow>
-		<TableRow>
-			<TextView
-				android:text="27/06/2011"
-				android:padding="3dip" />
-			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
-				android:padding="3dip" />
-			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
-				android:padding="3dip" />
-			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
-				android:padding="3dip" />
-			<TextView
-				android:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
+				android:text="Meilleure forme, patient prêt pour opération."
+				style="@style/brown_textview"
 				android:padding="3dip" />
 		</TableRow>
 		<TableRow>
 			<EditText
-				android:text="Blah"
+				android:text="..."
+    			style="@style/login_edittext"
+        		android:background="@drawable/edittext_blue"
 				android:padding="3dip" />
 			<EditText
-				android:text="Blah"
+				android:text="..."
+    			style="@style/login_edittext"
+        		android:background="@drawable/edittext_blue"
 				android:padding="3dip" />
 			<EditText
-				android:text="Blah"
+				android:text="..."
+    			style="@style/login_edittext"
+        		android:background="@drawable/edittext_blue"
 				android:padding="3dip" />
 			<EditText
-				android:text="Blah"
+				android:text="..."
+    			style="@style/login_edittext"
+        		android:background="@drawable/edittext_blue"
 				android:padding="3dip" />
 			<EditText
-				android:text="Blah"
+				android:text="..."
+    			style="@style/login_edittext"
+        		android:background="@drawable/edittext_blue"
 				android:padding="3dip" />
 		</TableRow>
 		<TableRow>
 			<Button
-				android:text="Button"
-				android:id="@+id/button1"
+				android:text="Enregistrer"
+				android:id="@+id/button_validate"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_span="5"/>

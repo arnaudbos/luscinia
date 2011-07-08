@@ -25,6 +25,7 @@
         	android:id="@+id/folder_name"
         	android:textSize="14dp"
         	android:textStyle="bold"
+        	android:textColor="@color/background"
         	android:scrollHorizontally="false"
         	>
         </TextView>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:panel="http://schemas.android.com/apk/res/uk.ac.brookes.arnaudbos.luscinia"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/background"
     >
 
     <com.markupartist.android.widget.ActionBar
@@ -20,19 +20,34 @@
         	android:layout_alignParentRight="true"
         	android:text="TextView"
         	android:layout_height="wrap_content"
-        	android:gravity="center" android:id="@+id/folders_title" android:layout_width="150dip">
+        	android:gravity="center"
+        	android:id="@+id/folders_title"
+        	android:layout_width="150dip"
+        	style="@style/brown_textview">
         </TextView>
         
-        <ScrollView
+        <LinearLayout
+        	android:layout_alignTop="@+id/folders_title"
         	android:layout_toLeftOf="@+id/folders_title"
         	android:layout_height="fill_parent"
+        	android:id="@+id/border_right"
+        	android:layout_width="1dip"
+        	android:background="@color/brown"
+        	>
+        </LinearLayout>
+        
+        <ScrollView
+        	android:layout_alignTop="@+id/border_right"
+        	android:layout_toLeftOf="@+id/border_right"
+        	android:layout_height="fill_parent"
         	android:id="@+id/scrollView1"
-        	android:layout_alignTop="@+id/folders_title"
         	android:layout_width="fill_parent"
         	>
             <RelativeLayout
             	android:id="@+id/relativeLayout2"
-            	android:layout_width="fill_parent" android:layout_height="wrap_content">
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	>
                 <LinearLayout
                 	android:layout_height="wrap_content"
                 	android:id="@+id/linearLayout1"
@@ -42,38 +57,41 @@
                 	<ImageView
                 		android:layout_width="150dip"
                 		android:layout_height="150dip"
-                		android:src="@drawable/sample_7"
+                		android:src="@drawable/no_contact_picture"
                 		android:scaleType="centerCrop"
                 		android:id="@+id/patient_picture"
                 		>
                 	</ImageView>
                 	<TextView
                 		android:layout_height="wrap_content"
-                		android:text="TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextView TextView TextView TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextViewTextView TextViewTextView TextView TextViewTextView TextView TextView TextView"
+                		android:text="Age: 20\nPoids: 75kg\nTaille: 1m72"
                 		android:layout_width="fill_parent"
                 		android:scrollHorizontally="false"
                 		android:id="@+id/patient_first_infos"
+        				style="@style/brown_textview"
                 		>
                 	</TextView>
                 </LinearLayout>
 				<TextView
                		android:id="@+id/patient_rest_infos"
-               		android:text="TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextView TextView TextView TextViewTextViewTextViewTextViewTextView TextViewTextViewTextView TextViewTextViewTextViewTextView TextViewTextView TextView TextViewTextView TextView TextView TextView"
+               		android:text="Hospitalisé pour une fracture du cubitus droit sur ordre du médecin traitant car fracture inquiétante voir risque de cancer des os et de la tête de delco des clignotants et de l'essuie glasse."
                 	android:layout_width="fill_parent"
                 	android:layout_height="wrap_content"
         			android:layout_below="@+id/linearLayout1"
+        			style="@style/brown_textview"
         			>
                 </TextView>
 		       	<GridView
 		       		android:id="@+id/attached_documents"
 		       		android:layout_width="fill_parent"
 				    android:numColumns="3"
-				    android:verticalSpacing="10dip"
+				    android:verticalSpacing="0dip"
 				    android:horizontalSpacing="10dip"
 				    android:gravity="center"
 				    android:smoothScrollbar="true"
 		       		android:layout_height="wrap_content"
         			android:layout_below="@+id/patient_rest_infos"
+        			android:listSelector="@drawable/list_selector"
 		       		>
 	      		</GridView>
             </RelativeLayout>
@@ -86,6 +104,7 @@
         	android:layout_height="fill_parent"
         	android:id="@+id/folders_listview"
         	android:scrollbarAlwaysDrawVerticalTrack="true"
+        	android:listSelector="@drawable/list_selector"
         	>
         </ListView>
     </RelativeLayout>

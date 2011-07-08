@@ -20,7 +20,7 @@ public class MacrocibleActivity extends RoboActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-   		MenuItem item = menu.add("Macrocible Menu 1");
+   		MenuItem item = menu.add("Macrocible Menu");
 	   	
 	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		{
@@ -28,7 +28,6 @@ public class MacrocibleActivity extends RoboActivity
 			public boolean onMenuItemClick(MenuItem item)
 			{
 				// Do something.
-				Toast.makeText(MacrocibleActivity.this, "Macrocible Menu 1", Toast.LENGTH_SHORT).show();
 				return true;
 			}
 		});

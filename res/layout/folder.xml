@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/background"
     >
 
     <com.markupartist.android.widget.ActionBar
@@ -35,19 +36,81 @@
 			    android:layout_width="24dip" 
 			    android:layout_height="40dip" 
 				/>
-			<TextView
-		    	android:layout_weight="1" 
+			<LinearLayout
+		    	android:layout_weight="1"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+				android:orientation="horizontal"
 				android:id="@+id/panelContent" 
-			    android:layout_width="wrap_content" 
-			    android:layout_height="fill_parent" 
-			    android:gravity="center"
-			    android:padding="4dip"
-			    android:text="This is\nmy left Panel"
-			    android:textSize="16dip"
-			    android:textColor="#eee"
-			    android:textStyle="bold"
-			    android:background="#999932"
-				/>
+				>
+		        <ScrollView
+				    android:padding="4dip"
+				    android:background="@drawable/background"
+		        	android:layout_alignTop="@+id/border_right"
+		        	android:layout_toLeftOf="@+id/border_right"
+		        	android:layout_height="fill_parent"
+					android:layout_weight="1"
+		        	android:layout_width="fill_parent"
+		        	>
+		            <RelativeLayout
+		            	android:layout_width="fill_parent"
+		            	android:layout_height="wrap_content"
+		            	>
+		                <LinearLayout
+		                	android:layout_height="wrap_content"
+		                	android:id="@+id/linearLayout1"
+		                	android:layout_alignParentTop="true"
+		                	android:layout_width="fill_parent"
+		                	>
+		                	<ImageView
+		                		android:layout_width="150dip"
+		                		android:layout_height="150dip"
+		                		android:src="@drawable/no_contact_picture"
+		                		android:scaleType="centerCrop"
+		                		android:id="@+id/patient_picture"
+		                		>
+		                	</ImageView>
+		                	<TextView
+		                		android:layout_height="wrap_content"
+		                		android:text="Age: 20\nPoids: 75kg\nTaille: 1m72"
+		                		android:layout_width="fill_parent"
+		                		android:scrollHorizontally="false"
+		                		android:id="@+id/patient_first_infos"
+		        				style="@style/brown_textview"
+		                		>
+		                	</TextView>
+		                </LinearLayout>
+						<TextView
+		               		android:id="@+id/patient_rest_infos"
+		               		android:text="Hospitalisé pour une fracture du cubitus droit sur ordre du médecin traitant car fracture inquiétante voir risque de cancer des os et de la tête de delco des clignotants et de l'essuie glasse."
+		                	android:layout_width="fill_parent"
+		                	android:layout_height="wrap_content"
+		        			android:layout_below="@+id/linearLayout1"
+		        			style="@style/brown_textview"
+		        			>
+		                </TextView>
+				       	<GridView
+				       		android:id="@+id/attached_documents"
+				       		android:layout_width="fill_parent"
+						    android:numColumns="3"
+						    android:verticalSpacing="0dip"
+						    android:horizontalSpacing="10dip"
+						    android:gravity="center"
+						    android:smoothScrollbar="true"
+				       		android:layout_height="wrap_content"
+		        			android:layout_below="@+id/patient_rest_infos"
+		        			android:listSelector="@drawable/list_selector"
+				       		>
+			      		</GridView>
+		            </RelativeLayout>
+		        </ScrollView>
+				<LinearLayout
+					android:layout_width="1dip"
+					android:layout_height="fill_parent"
+					android:background="@color/brown"
+					>
+				</LinearLayout>
+			</LinearLayout>
 		</org.miscwidgets.widget.Panel>
 
 		<org.miscwidgets.widget.Panel
@@ -62,28 +125,40 @@
 		    panel:position="bottom"
 		    panel:openedHandle="@drawable/bottom_switcher_expanded_background"
 		    panel:closedHandle="@drawable/bottom_switcher_collapsed_background"
-		    panel:height="150"
+		    panel:height="154"
 			>
 			<Button
 				android:id="@+id/panelHandle" 
 			    android:layout_width="40dip" 
 			    android:layout_height="24dip" 
 				/>
-			<HorizontalScrollView
+			<LinearLayout
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
+				android:orientation="vertical"
 				android:id="@+id/panelContent"
-				android:background="#FF0000"
 				>
 				<LinearLayout
-					android:id="@+id/tracks"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					android:layout_gravity="left"
+					android:layout_width="fill_parent"
+					android:layout_height="1dip"
+					android:background="@color/brown"
 					>
 				</LinearLayout>
-			</HorizontalScrollView>
+				<HorizontalScrollView
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/background"
+					>
+					<LinearLayout
+						android:id="@+id/tracks"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal"
+						android:layout_gravity="left"
+						>
+					</LinearLayout>
+				</HorizontalScrollView>
+			</LinearLayout>
 		</org.miscwidgets.widget.Panel>
     </RelativeLayout>
 </LinearLayout>

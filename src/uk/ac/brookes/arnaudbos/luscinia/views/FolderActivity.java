@@ -43,6 +43,7 @@ public class FolderActivity extends FolderActivityGroup
 	{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.folder);
+		this.setTargetLayout(internalContentLayout);
 
         prepareActionBar();
         getFolderInfos(folder);
@@ -55,21 +56,18 @@ public class FolderActivity extends FolderActivityGroup
         panel = (Panel) findViewById(R.id.leftPanel);
         panel.setInterpolator(new ExpoInterpolator(Type.OUT));
         
-		this.setTargetLayout(internalContentLayout);
-        startChildActivity("MacrocibleActivity", new Intent(this, MacrocibleActivity.class));
 	}
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-   		MenuItem item = menu.add("Folder Menu 1");
+   		MenuItem item = menu.add("Dossier Médical Menu");
 	   	
 	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		{
 			@Override
 			public boolean onMenuItemClick(MenuItem item)
 			{
-				Toast.makeText(FolderActivity.this, "Folder Menu 1", Toast.LENGTH_SHORT).show();
 				return true;
 			}
 		});
@@ -117,6 +115,7 @@ public class FolderActivity extends FolderActivityGroup
 						}
 					};
 					doc.setOnClickListener(listener);
+					doc.setText("Transmission ciblée");
 					break;
 				case MACROCIBLE:
 					listener = new OnClickListener()
@@ -128,6 +127,7 @@ public class FolderActivity extends FolderActivityGroup
 						}
 					};
 					doc.setOnClickListener(listener);
+					doc.setText("Fiche Macrocible");
 					break;
 				case GENERIC:
 				default:
@@ -135,6 +135,8 @@ public class FolderActivity extends FolderActivityGroup
 			}
     		documentsTrack.addView(doc);
     	}
+
+    	startChildActivity("template-trans", new Intent(FolderActivity.this, TransActivity.class));
 	}
 
 	private void getFolderInfos(String patient2)
@@ -147,7 +149,10 @@ public class FolderActivity extends FolderActivityGroup
 		@Override
 		public void performAction(View view)
 		{
-			startActivity(new Intent(FolderActivity.this, DashboardActivity.class));
+			Intent intent = new Intent(FolderActivity.this, DashboardActivity.class);
+			intent.putExtra("login", "osef");
+			intent.putExtra("password", "osef");
+			startActivity(intent);
 			FolderActivity.this.finish();
 		}
 		
