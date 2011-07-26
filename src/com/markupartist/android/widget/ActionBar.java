@@ -112,6 +112,10 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
     public void setTitle(CharSequence title) {
         mTitleView.setText(title);
     }
+    
+    public String getTitle() {
+    	return mTitleView.getText().toString();
+    }
 
     public void setTitle(int resid) {
         mTitleView.setText(resid);

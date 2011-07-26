@@ -39,7 +39,7 @@ public class LusciniaTest
 	@Test
 	public void shouldHaveApplicationName() throws Exception
 	{
-        assertThat(appName, equalTo("LusciniaActivity"));
+        assertThat(appName, equalTo("Luscinia"));
     }
 	
 	@Test

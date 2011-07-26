@@ -37,7 +37,7 @@ public class DashboardActivity extends RoboActivity
 	@InjectView(R.id.expandableListView1) private ExpandableListView expandablelistview;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
@@ -59,7 +59,8 @@ public class DashboardActivity extends RoboActivity
 		List<List<Notification>> list = new ArrayList<List<Notification>> ();
 		list.add(notifs);
 		
-		this.expandablelistview.setAdapter(new DashboardNotificationAdapter(this, groups, list));
+		DashboardNotificationAdapter adapter = new DashboardNotificationAdapter(this, groups, list);
+		this.expandablelistview.setAdapter(adapter);
         
 		this.expandablelistview.setOnGroupClickListener(listener);
 		this.expandablelistview.setOnChildClickListener(listener);
@@ -67,10 +68,11 @@ public class DashboardActivity extends RoboActivity
 
 	private void prepareGridView()
 	{
-        gridview.setAdapter(new DashboardPatientAdapter(this, null));
+		DashboardPatientAdapter adapter = new DashboardPatientAdapter(this, null);
+        gridview.setAdapter(adapter);
         
         LayoutParams params = gridview.getLayoutParams();
-        int count = gridview.getAdapter().getCount();
+        int count = adapter.getCount();
         
         final float scale = getResources().getDisplayMetrics().density;
         int unit = (int) (160 * scale + 0.5f);
@@ -101,24 +103,8 @@ public class DashboardActivity extends RoboActivity
 	private void prepareActionBar()
 	{
         actionBar.setTitle(dashboardTitle);
-        actionBar.setHomeAction(new HomeAction());
         actionBar.addAction(new StubShareAction());
         actionBar.addAction(new StubSearchAction());
-	}
-
-	private class HomeAction implements Action
-    {
-		@Override
-		public void performAction(View view)
-		{
-			//TODO: Display a toast to inform the user that he's already in the home screen.
-		}
-		
-		@Override
-		public int getDrawable()
-		{
-			return R.drawable.ic_title_home_default;
-		}
 	}
 
 	/**

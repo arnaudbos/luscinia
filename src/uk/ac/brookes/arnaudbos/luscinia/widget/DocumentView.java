@@ -46,6 +46,11 @@ public class DocumentView extends RelativeLayout
 		documentText.setText(text);
 	}
 	
+	public String getText()
+	{
+		return documentText.getText().toString();
+	}
+	
 	@Override
 	public void setOnClickListener(OnClickListener l)
 	{

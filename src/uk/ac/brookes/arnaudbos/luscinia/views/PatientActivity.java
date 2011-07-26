@@ -44,7 +44,7 @@ public class PatientActivity extends RoboActivity
 	@InjectView(R.id.attached_documents) private GridView attachedDocumentsView;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.patient);
@@ -77,7 +77,9 @@ public class PatientActivity extends RoboActivity
 		list.add(temp_folder);
 		list.add(temp_folder);
 		list.add(temp_folder);
-        foldersListView.setAdapter(new PatientFolderAdapter(this, list));
+		
+		PatientFolderAdapter adapter = new PatientFolderAdapter(this, list);
+        foldersListView.setAdapter(adapter);
 
         foldersListView.setOnItemClickListener(listener);
 	}
@@ -88,10 +90,11 @@ public class PatientActivity extends RoboActivity
 
 	private void prepareAttachedDocumentsView()
 	{
-        attachedDocumentsView.setAdapter(new PatientDocumentAdapter(this, null));
+		PatientDocumentAdapter adapter = new PatientDocumentAdapter(this, null);
+        attachedDocumentsView.setAdapter(adapter);
         
         LayoutParams params = attachedDocumentsView.getLayoutParams();
-        int count = attachedDocumentsView.getAdapter().getCount();
+        int count = adapter.getCount();
         
         final float scale = getResources().getDisplayMetrics().density;
         int unit = (int) (160 * scale + 0.5f);

@@ -32,14 +32,14 @@ public class FolderActivity extends FolderActivityGroup
 {
 	@InjectExtra("folder") private String folder;
 
-	@InjectResource(R.string.patient_title) private String patientTitle;
-
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
 	@InjectView(R.id.internal_content) private RelativeLayout internalContentLayout;
 	@InjectView(R.id.tracks) private LinearLayout documentsTrack;
+	@InjectView(R.id.bottomPanel) Panel bottomPanel;
+	@InjectView(R.id.bottomPanel) Panel leftPanel;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.folder);
@@ -50,11 +50,8 @@ public class FolderActivity extends FolderActivityGroup
         prepareFolderInfos();
         prepareDocumentsTrack();
         
-        Panel panel = (Panel) findViewById(R.id.bottomPanel);
-        panel.setInterpolator(new ExpoInterpolator(Type.OUT));
-        
-        panel = (Panel) findViewById(R.id.leftPanel);
-        panel.setInterpolator(new ExpoInterpolator(Type.OUT));
+        bottomPanel.setInterpolator(new ExpoInterpolator(Type.OUT));
+        leftPanel.setInterpolator(new ExpoInterpolator(Type.OUT));
         
 	}
 
@@ -83,7 +80,7 @@ public class FolderActivity extends FolderActivityGroup
 
 	private void prepareActionBar()
 	{
-        actionBar.setTitle(patientTitle+" "+folder);
+        actionBar.setTitle(folder);
         actionBar.setHomeAction(new HomeAction());
         actionBar.addAction(new StubShareAction());
         actionBar.addAction(new StubSearchAction());
@@ -111,6 +108,7 @@ public class FolderActivity extends FolderActivityGroup
 						@Override
 						public void onClick(View v)
 						{
+					        actionBar.setTitle(folder+" - Transmission ciblée");
 					        startChildActivity(template, new Intent(FolderActivity.this, TransActivity.class));
 						}
 					};
@@ -123,6 +121,7 @@ public class FolderActivity extends FolderActivityGroup
 						@Override
 						public void onClick(View v)
 						{
+					        actionBar.setTitle(folder+" - Fiche Macrocible");
 					        startChildActivity(template, new Intent(FolderActivity.this, MacrocibleActivity.class));
 						}
 					};

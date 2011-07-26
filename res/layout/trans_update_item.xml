@@ -8,18 +8,11 @@
 		android:id="@+id/table_view"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:stretchColumns="1,2,3,4"
+		android:stretchColumns="0,1,2,3"
 		>
 		<TableRow
 			android:id="@+id/titles_row"
 			>
-			<TextView
-				android:id="@+id/date_view"
-				android:text="@string/date"
-				android:gravity="center"
-				android:padding="3dip"
-				android:textStyle="bold"
-				style="@style/brown_textview" />
 			<TextView
 				android:text="@string/focus"
 				android:gravity="center"
@@ -52,7 +45,6 @@
 				android:layout_width="0dp"
 				android:padding="3dip"
         		android:background="@drawable/edittext_blue"
-				android:layout_span="2"
     			style="@style/login_edittext" />
 			<EditText
 				android:id="@+id/data_edit"
@@ -75,14 +67,6 @@
 				android:padding="3dip"
         		android:background="@drawable/edittext_blue"
     			style="@style/login_edittext" />
-		</TableRow>
-		<TableRow>
-			<Button
-				android:text="@string/save"
-				android:id="@+id/button_validate"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_span="5"/>
 		</TableRow>
 	</TableLayout>
 </ScrollView>
