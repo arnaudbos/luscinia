@@ -2,7 +2,7 @@ package uk.ac.brookes.arnaudbos.luscinia.utils;
 
 public enum TemplateActivityMapper
 {
-	GENERIC, TRANS, MACROCIBLE;
+	GENERIC, TRANS, MACROCIBLE, NURSING_DIAGRAM;
 	
 	public static TemplateActivityMapper toActivity(String templateName)
 	{

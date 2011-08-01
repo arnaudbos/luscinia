@@ -1,12 +1,15 @@
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.views.TransActivity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,12 +22,11 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TransListener implements OnClickListener, OnLongClickListener, android.content.DialogInterface.OnClickListener
 {
 	private TransActivity context;
-	private String date, focus, data, actions, results;
+	private String focus, data, actions, results;
 	private TableLayout tableView;
 	private TableRow row;
 	
@@ -55,7 +57,7 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 			newRow.setOnLongClickListener(this);
 
 			TextView dateView = (TextView) newRow.findViewById(R.id.date_view);
-			SimpleDateFormat s = new SimpleDateFormat("dd/mm/yyyy\nHH:mm:ss");
+			SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy\nHH:mm:ss");
 			Date date = new Date();
 			dateView.setText(s.format(date));
 			TextView focusView = (TextView) newRow.findViewById(R.id.focus_view);
@@ -74,8 +76,11 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 	
 			// Reset the content of the EditTexts
 			context.resetEditTexts();
-			InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
+			if(context.getCurrentFocus()!=null)
+			{
+				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
+			}
 		}
 	}
 
@@ -83,9 +88,28 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 	public boolean onLongClick(View view)
 	{
 		row = (TableRow) view;
-		context.setSelectedRow(row);
-
-		context.showDialog(TransActivity.DIALOG_ROW_LONGCLICK);
+		TextView dateView = (TextView) row.findViewById(R.id.date_view);
+		SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy\nHH:mm:ss");
+		Date date;
+		Date now = new Date();
+		try
+		{
+			date = s.parse(dateView.getText().toString());
+			if(now.getTime() - date.getTime() > 900000)
+			{
+				context.showDialog(TransActivity.DIALOG_TIME_ELAPSED);
+			}
+			else
+			{
+				context.setSelectedRow(row);
+				context.showDialog(TransActivity.DIALOG_ROW_LONGCLICK);
+			}
+		}
+		catch (ParseException e)
+		{
+			Log.e("Error while parsing date textview to Date", e);
+			e.printStackTrace();
+		}
 
 		return true;
 	}
@@ -93,17 +117,13 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 	@Override
 	public void onClick(DialogInterface dialog, int which)
 	{
-		Log.i(""+which);
 		switch(which)
 		{
 			case 0:
 				context.showDialog(TransActivity.DIALOG_UPDATE_ROW);
 				break;
-			case 1:
-				//TODO: Delete the Record
-				tableView.removeView(row);
-				break;
 			case Dialog.BUTTON_POSITIVE:
+				//TODO: Update the Record
 				TableLayout dialogTableView = context.getDialogTableView();
 	        	((TextView)row.findViewById(R.id.focus_view)).setText(((EditText)dialogTableView.findViewById(R.id.focus_edit)).getText().toString());
 	        	((TextView)row.findViewById(R.id.data_view)).setText(((EditText)dialogTableView.findViewById(R.id.data_edit)).getText().toString());

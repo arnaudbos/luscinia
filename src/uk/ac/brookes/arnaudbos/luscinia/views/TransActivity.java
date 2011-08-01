@@ -27,7 +27,8 @@ public class TransActivity extends RoboActivity
 {
 	public static final int DIALOG_EMPTY_FIELD = 101;
 	public static final int DIALOG_ROW_LONGCLICK = 102;
-	public static final int DIALOG_UPDATE_ROW = 103;
+	public static final int DIALOG_TIME_ELAPSED = 103;
+	public static final int DIALOG_UPDATE_ROW = 104;
 
 	@Inject private TransListener listener;
 
@@ -40,6 +41,8 @@ public class TransActivity extends RoboActivity
 
 	@InjectResource(R.string.dialog_empty_field_error_title) private String dialogEmptyFieldErrorTitle;
 	@InjectResource(R.string.dialog_empty_field_error_message) private String dialogEmptyFieldErrorMessage;
+	@InjectResource(R.string.dialog_time_elapsed_error_title) private String dialogTimeElapsedErrorTitle;
+	@InjectResource(R.string.dialog_time_elapsed_error_message) private String dialogTimeElapsedErrorMessage;
 	@InjectResource(R.string.ok) private String ok;
 	@InjectResource(R.string.save) private String save;
 	@InjectResource(R.string.update) private String update;
@@ -73,6 +76,12 @@ public class TransActivity extends RoboActivity
 	        case DIALOG_ROW_LONGCLICK:
 	            return new AlertDialog.Builder(this)
 	                .setItems(R.array.trans_longclick, listener)
+	                .create();
+	        case DIALOG_TIME_ELAPSED:
+	            return new AlertDialog.Builder(this)
+	                .setTitle(dialogTimeElapsedErrorTitle)
+	                .setMessage(dialogTimeElapsedErrorMessage)
+	                .setNegativeButton(ok, null)
 	                .create();
 	        case DIALOG_UPDATE_ROW:
 	        	ScrollView scroll = (ScrollView)LayoutInflater.from(this).inflate(R.layout.trans_update_item, null);

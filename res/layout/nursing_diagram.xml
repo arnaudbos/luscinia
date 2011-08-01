@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	>
+	<TextView
+		android:id="@+id/cares_title"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:scrollHorizontally="false"
+		android:layout_width="200dip"
+		android:layout_height="wrap_content"
+		android:text="Cares"
+		android:gravity="center"
+		android:padding="3dip"
+		android:textStyle="bold"
+		style="@style/brown_textview" />
+
+	<uk.ac.brookes.arnaudbos.luscinia.widget.LusciniaScrollView
+		android:id="@+id/cares_list"
+		android:layout_below="@+id/cares_title"
+		android:layout_alignLeft="@+id/cares_title"
+		android:layout_alignRight="@+id/cares_title"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"
+		>
+		<LinearLayout
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent"
+			android:orientation="vertical"
+			>
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+			<TextView
+				android:text="Some care"
+				android:gravity="center"
+				android:padding="3dip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/brown_textview" />
+		</LinearLayout>
+	</uk.ac.brookes.arnaudbos.luscinia.widget.LusciniaScrollView>
+	
+	<HorizontalScrollView
+		android:layout_toRightOf="@+id/cares_title"
+		android:layout_alignTop="@+id/cares_title"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"
+		>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			>
+			<TableLayout
+				android:id="@+id/titles_table"
+				android:layout_width="fill_parent" android:layout_height="wrap_content">
+<!-- 			android:stretchColumns="1,2,3,4" -->
+				<TableRow
+					android:id="@+id/titles_row"
+					>
+					<TextView
+						android:text="Someday"
+						android:layout_width="100dip"
+						android:gravity="center"
+						android:padding="3dip"
+						android:textStyle="bold"
+						style="@style/brown_textview"/>
+					<TextView
+						android:text="Someday"
+						android:layout_width="100dip"
+						android:gravity="center"
+						android:padding="3dip"
+						android:textStyle="bold"
+						style="@style/brown_textview" />
+					<TextView
+						android:text="Someday"
+						android:layout_width="100dip"
+						android:gravity="center"
+						android:padding="3dip"
+						android:textStyle="bold"
+						style="@style/brown_textview" />
+					<TextView
+						android:text="Someday"
+						android:layout_width="100dip"
+						android:gravity="center"
+						android:padding="3dip"
+						android:textStyle="bold"
+						style="@style/brown_textview" />
+					<TextView
+						android:text="Someday"
+						android:layout_width="100dip"
+						android:gravity="center"
+						android:padding="3dip"
+						android:textStyle="bold"
+						style="@style/brown_textview" />
+				</TableRow>
+			</TableLayout>
+			<ScrollView
+				android:id="@+id/records_scrollview"
+				android:layout_height="fill_parent"
+				android:layout_width="wrap_content"
+				>
+				<TableLayout
+					android:id="@+id/records_tableview"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					>
+	<!-- 			android:stretchColumns="1,2,3,4" -->
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+					<TableRow>
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+						<TextView
+							android:text="Record"
+							android:layout_width="100dip"
+							android:gravity="center"
+							android:padding="3dip"
+							style="@style/brown_textview" />
+					</TableRow>
+				</TableLayout>
+			</ScrollView>
+		</LinearLayout>
+	</HorizontalScrollView>
+</RelativeLayout>

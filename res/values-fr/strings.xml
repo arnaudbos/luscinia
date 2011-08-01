@@ -34,11 +34,25 @@
     <string name="save">Enregistrer</string>
 	<string name="dialog_empty_field_error_title">Erreur de validation des champs</string>
 	<string name="dialog_empty_field_error_message">Au moins un champs doit être rempli.</string>
+	<string name="dialog_time_elapsed_error_title">Erreur d\'édition</string>
+	<string name="dialog_time_elapsed_error_message">Le délai maximum pour modifier cet enregistrement a été dépassé.</string>
     <string name="update">Modifier</string>
-    <string name="delete">Supprimer</string>
     <string-array name="trans_longclick">
         <item>@string/update</item>
-        <item>@string/delete</item>
     </string-array>
     <string name="cancel">Annuler</string>
+
+    <string name="initial_evaluation">Evaluation initiale (Inclusion)</string>
+    <string name="remote_evaluation">Evaluation à distance</string>
+    <string name="liaison">Liaison</string>
+    <string name="mtved_m">M</string>
+    <string name="mtved_m_hint">Maladie actuelle, état de santé</string>
+    <string name="mtved_t">T</string>
+    <string name="mtved_t_hint">Traitement et soins actuels (n\'indiquer que les familles thérapeutiques, ne pas détailler les spécialités)</string>
+    <string name="mtved_v">V</string>
+    <string name="mtved_v_hint">Vécu de la maladie, de l\'état de santé, habitudes de vie</string>
+    <string name="mtved_e">E</string>
+    <string name="mtved_e_hint">Environnement humain et matériel</string>
+    <string name="mtved_d">D</string>
+    <string name="mtved_d_hint">Dépendance, Devenir (projet de soins)</string>
 </resources>

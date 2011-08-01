@@ -34,11 +34,25 @@
     <string name="save">Save</string>
 	<string name="dialog_empty_field_error_title">Field validation error</string>
 	<string name="dialog_empty_field_error_message">One field at least must be filled.</string>
+	<string name="dialog_time_elapsed_error_title">Record update error</string>
+	<string name="dialog_time_elapsed_error_message">The limit time to edit a record has elapsed.</string>
     <string name="update">Update</string>
-    <string name="delete">Delete</string>
     <string-array name="trans_longclick">
         <item>@string/update</item>
-        <item>@string/delete</item>
     </string-array>
     <string name="cancel">Cancel</string>
+
+    <string name="initial_evaluation">Initial Evaluation (Inclusion)</string>
+    <string name="remote_evaluation">Remote Evaluation</string>
+    <string name="liaison">Liaison</string>
+    <string name="mtved_m">D</string>
+    <string name="mtved_m_hint">Current disease</string>
+    <string name="mtved_t">T</string>
+    <string name="mtved_t_hint">Treatment and current cares</string>
+    <string name="mtved_v">F</string>
+    <string name="mtved_v_hint">Feeling</string>
+    <string name="mtved_e">E</string>
+    <string name="mtved_e_hint">Environment, human, material</string>
+    <string name="mtved_d">D</string>
+    <string name="mtved_d_hint">Dependency (cares project)</string>
 </resources>

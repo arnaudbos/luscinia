@@ -47,6 +47,11 @@
             android:screenOrientation="landscape"
             >
         </activity>
+        <activity
+        	android:name=".views.NursingDiagramActivity"
+            android:screenOrientation="landscape"
+            >
+        </activity>
     </application>
     
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>

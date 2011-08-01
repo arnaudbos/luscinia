@@ -9,39 +9,50 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		>
+		<TextView
+			android:id="@+id/date_text_view"
+			android:gravity="center"
+			android:visibility="gone"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/brown_textview"
+			>
+		</TextView>
 		<LinearLayout
-			android:id="@+id/linearLayout1"
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			>
 			<CheckBox
-				android:id="@+id/checkBox1"
-				android:text="Evaluation Initiale (Inclusion)"
+				android:id="@+id/initial_evaluation_checkBox"
+				android:text="@string/initial_evaluation"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:layout_weight="1"
 				android:textColor="@color/brown"
 				android:textSize="16dip"
+				android:enabled="false"
 				>
 			</CheckBox>
 			<CheckBox
-				android:id="@+id/checkBox2"
-				android:text="Evaluation à distance"
+				android:id="@+id/remote_evaluation_checkBox"
+				android:text="@string/remote_evaluation"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:layout_weight="1"
 				android:textColor="@color/brown"
 				android:textSize="16dip"
+				android:enabled="false"
 				>
 			</CheckBox>
 			<CheckBox
-				android:id="@+id/checkBox3"
-				android:text="Liaison"
+				android:id="@+id/liaison_checkBox"
+				android:text="@string/liaison"
 				android:layout_height="wrap_content"
 				android:layout_width="fill_parent"
 				android:layout_weight="1"
 				android:textColor="@color/brown"
 				android:textSize="16dip"
+				android:enabled="false"
 				>
 			</CheckBox>
 		</LinearLayout>
@@ -51,17 +62,17 @@
 			>
 			<TextView
 				android:id="@+id/mTextView"
-				android:text="M"
+				android:text="@string/mtved_m"
 				android:layout_alignParentTop="true"
 				android:scrollHorizontally="false"
-				android:layout_width="100dip"
+				android:layout_width="50dip"
 				android:gravity="center"
 				android:layout_height="fill_parent"
 				style="@style/brown_textview"
 				>
 			</TextView>
 			<EditText
-				android:hint="Maladie actuelle, état de santé"
+				android:hint="@string/mtved_m_hint"
 				android:id="@+id/mEditText"
 				android:layout_toRightOf="@+id/mTextView"
 				android:layout_width="fill_parent"
@@ -70,6 +81,7 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
+				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -79,17 +91,17 @@
 			>
 			<TextView
 				android:id="@+id/tTextView"
-				android:text="T"
+				android:text="@string/mtved_t"
 				android:layout_alignParentTop="true"
 				android:scrollHorizontally="false"
-				android:layout_width="100dip"
+				android:layout_width="50dip"
 				android:gravity="center"
 				android:layout_height="fill_parent"
 				style="@style/brown_textview"
 				>
 			</TextView>
 			<EditText
-				android:hint="Traitement et soins actuels (n’indiquer que les familles thérapeutiques, ne pas détailler les spécialités)"
+				android:hint="@string/mtved_t_hint"
 				android:id="@+id/tEditText"
 				android:layout_toRightOf="@+id/tTextView"
 				android:layout_width="fill_parent"
@@ -98,6 +110,7 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
+				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -107,17 +120,17 @@
 			>
 			<TextView
 				android:id="@+id/vTextView"
-				android:text="V"
+				android:text="@string/mtved_v"
 				android:layout_alignParentTop="true"
 				android:scrollHorizontally="false"
-				android:layout_width="100dip"
+				android:layout_width="50dip"
 				android:gravity="center"
 				android:layout_height="fill_parent"
 				style="@style/brown_textview"
 				>
 			</TextView>
 			<EditText
-				android:hint="Vécu de la maladie, de l’état de santé, habitudes de vie"
+				android:hint="@string/mtved_v_hint"
 				android:id="@+id/vEditText"
 				android:layout_toRightOf="@+id/vTextView"
 				android:layout_width="fill_parent"
@@ -126,6 +139,7 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
+				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -135,17 +149,17 @@
 			>
 			<TextView
 				android:id="@+id/eTextView"
-				android:text="E"
+				android:text="@string/mtved_e"
 				android:layout_alignParentTop="true"
 				android:scrollHorizontally="false"
-				android:layout_width="100dip"
+				android:layout_width="50dip"
 				android:gravity="center"
 				android:layout_height="fill_parent"
 				style="@style/brown_textview"
 				>
 			</TextView>
 			<EditText
-				android:hint="Environnement humain et matériel"
+				android:hint="@string/mtved_e_hint"
 				android:id="@+id/eEditText"
 				android:layout_toRightOf="@+id/eTextView"
 				android:layout_width="fill_parent"
@@ -154,6 +168,7 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
+				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -163,17 +178,17 @@
 			>
 			<TextView
 				android:id="@+id/dTextView"
-				android:text="D"
+				android:text="@string/mtved_d"
 				android:layout_alignParentTop="true"
 				android:scrollHorizontally="false"
-				android:layout_width="100dip"
+				android:layout_width="50dip"
 				android:gravity="center"
 				android:layout_height="fill_parent"
 				style="@style/brown_textview"
 				>
 			</TextView>
 			<EditText
-				android:hint="Dépendance, Devenir (projet de soins)"
+				android:hint="@string/mtved_d_hint"
 				android:id="@+id/dEditText"
 				android:layout_toRightOf="@+id/dTextView"
 				android:layout_width="fill_parent"
@@ -182,12 +197,20 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
+				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
 		<Button
-			android:text="Enregistrer"
+			android:visibility="gone"
+			android:text="@string/save"
 			android:id="@+id/button_validate"
+			android:layout_height="wrap_content"
+			android:layout_span="5"
+			android:layout_width="fill_parent"/>
+		<Button
+			android:text="@string/update"
+			android:id="@+id/button_update"
 			android:layout_height="wrap_content"
 			android:layout_span="5"
 			android:layout_width="fill_parent"/>

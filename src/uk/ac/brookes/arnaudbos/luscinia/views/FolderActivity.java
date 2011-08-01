@@ -96,6 +96,7 @@ public class FolderActivity extends FolderActivityGroup
     	List<String> documents = new ArrayList<String>();
     	documents.add("template-trans");
     	documents.add("template-macrocible");
+    	documents.add("template-nursing_diagram");
     	for(final String template : documents)
     	{
 	    	DocumentView doc = new DocumentView(this, getResources().getDrawable(R.drawable.no_folder_picture), template, null);
@@ -110,6 +111,7 @@ public class FolderActivity extends FolderActivityGroup
 						{
 					        actionBar.setTitle(folder+" - Transmission ciblée");
 					        startChildActivity(template, new Intent(FolderActivity.this, TransActivity.class));
+					        bottomPanel.getHandle().performClick();
 						}
 					};
 					doc.setOnClickListener(listener);
@@ -123,10 +125,25 @@ public class FolderActivity extends FolderActivityGroup
 						{
 					        actionBar.setTitle(folder+" - Fiche Macrocible");
 					        startChildActivity(template, new Intent(FolderActivity.this, MacrocibleActivity.class));
+					        bottomPanel.getHandle().performClick();
 						}
 					};
 					doc.setOnClickListener(listener);
 					doc.setText("Fiche Macrocible");
+					break;
+				case NURSING_DIAGRAM:
+					listener = new OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+					        actionBar.setTitle(folder+" - Diagramme de soins");
+					        startChildActivity(template, new Intent(FolderActivity.this, NursingDiagramActivity.class));
+					        bottomPanel.getHandle().performClick();
+						}
+					};
+					doc.setOnClickListener(listener);
+					doc.setText("Diagramme de soins");
 					break;
 				case GENERIC:
 				default:

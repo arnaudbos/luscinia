@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.views.TransActivity;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.google.inject.Inject;
+import com.xtremelabs.robolectric.shadows.ShadowAlertDialog;
 
 @RunWith(InjectedTestRunner.class)
 public class TransTest
@@ -29,6 +31,7 @@ public class TransTest
 	@InjectView(R.id.actions_edit) private EditText actionsEdit;
 	@InjectView(R.id.results_edit) private EditText resultsEdit;
 	@InjectView(R.id.button_validate) private Button validateButton;
+	@InjectResource(R.string.dialog_empty_field_error_title) private String dialogEmptyFieldErrorTitle; 
 
 	@Before
 	public void setUp() throws Exception
@@ -48,6 +51,15 @@ public class TransTest
         assertThat(resultsEdit, notNullValue());
         assertThat(validateButton, notNullValue());
     }
+	
+//	@Test
+//	public void pressingValidateButtonWithEmptyFieldsShouldOpenErrorDialog() throws Exception
+//	{
+//		assertThat(validateButton.performClick(), equalTo(true));
+//
+//		ShadowAlertDialog shadowDialog = ShadowAlertDialog.getLatestAlertDialog();
+//		assertThat(shadowDialog.getTitle(), equalTo(dialogEmptyFieldErrorTitle));
+//    }
 	
 	@Test
 	public void pressingValidateButtonShouldAddTableRow() throws Exception
