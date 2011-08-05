@@ -53,4 +53,12 @@
         <item name="android:textColor">@color/brown</item>
         <item name="android:textSize">16dip</item>
     </style>
+
+	<style name="bluelined_textview">
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textSize">16dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">30dip</item>
+        <item name="android:background">@color/blue</item>
+    </style>
 </resources>

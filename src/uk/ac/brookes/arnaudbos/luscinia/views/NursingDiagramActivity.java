@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -22,10 +24,10 @@ public class NursingDiagramActivity extends RoboActivity
 
 	@InjectView(R.id.cares_title) private TextView caresTitleView;
 	@InjectView(R.id.cares_list) private LusciniaScrollView caresListScrollView;
-	@InjectView(R.id.titles_table) private TableLayout titlesTableView;
-	@InjectView(R.id.titles_row) private TableRow titlesTableRow;
+	@InjectView(R.id.titles_row) private LinearLayout titlesRow;
 	@InjectView(R.id.records_scrollview) private ScrollView recordsScrollView;
-	@InjectView(R.id.records_tableview) private TableLayout recordsTableView; 
+	@InjectView(R.id.records_tableview) private TableLayout recordsTableView;
+	@InjectView(R.id.button_add_row) private ImageButton addRowButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -33,9 +35,11 @@ public class NursingDiagramActivity extends RoboActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.nursing_diagram);
 		listener.setContext(this);
-		
-		recordsScrollView.setOnTouchListener(listener);
+
 		caresListScrollView.setScrollViewListener(listener);
+		recordsScrollView.setOnTouchListener(listener);
+		recordsScrollView.setVerticalScrollBarEnabled(false);
+		addRowButton.setOnClickListener(listener);
 	}
 	
     @Override
@@ -57,9 +61,30 @@ public class NursingDiagramActivity extends RoboActivity
     }
 
 	/**
+	 * @return the caresListScrollView
+	 */
+	public LusciniaScrollView getCaresListScrollView() {
+		return caresListScrollView;
+	}
+
+	/**
+	 * @return the titlesRow
+	 */
+	public LinearLayout getTitlesRow() {
+		return titlesRow;
+	}
+
+	/**
 	 * @return the recordsScrollView
 	 */
 	public ScrollView getRecordsScrollView() {
 		return recordsScrollView;
+	}
+
+	/**
+	 * @return the recordsTableView
+	 */
+	public TableLayout getRecordsTableView() {
+		return recordsTableView;
 	}
 }

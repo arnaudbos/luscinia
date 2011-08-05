@@ -149,7 +149,7 @@ public class FolderActivity extends FolderActivityGroup
 				default:
 					break;
 			}
-    		documentsTrack.addView(doc);
+    		documentsTrack.addView(doc, documentsTrack.getChildCount()-1);
     	}
 
     	startChildActivity("template-trans", new Intent(FolderActivity.this, TransActivity.class));

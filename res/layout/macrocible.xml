@@ -205,14 +205,14 @@
 			android:visibility="gone"
 			android:text="@string/save"
 			android:id="@+id/button_validate"
-			android:layout_height="wrap_content"
-			android:layout_span="5"
-			android:layout_width="fill_parent"/>
+			android:layout_height="40dip"
+			android:layout_width="fill_parent"
+			android:background="@drawable/imagebutton"/>
 		<Button
 			android:text="@string/update"
 			android:id="@+id/button_update"
-			android:layout_height="wrap_content"
-			android:layout_span="5"
-			android:layout_width="fill_parent"/>
+			android:layout_height="40dip"
+			android:layout_width="fill_parent"
+			android:background="@drawable/imagebutton"/>
 	</LinearLayout>
 </ScrollView>

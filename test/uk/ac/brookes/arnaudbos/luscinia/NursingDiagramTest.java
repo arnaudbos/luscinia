@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.views.NursingDiagramActivity;
 import uk.ac.brookes.arnaudbos.luscinia.widget.LusciniaScrollView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -24,8 +25,7 @@ public class NursingDiagramTest
 
 	@InjectView(R.id.cares_title) private TextView caresTitleView;
 	@InjectView(R.id.cares_list) private LusciniaScrollView caresListScrollView;
-	@InjectView(R.id.titles_table) private TableLayout titlesTableView;
-	@InjectView(R.id.titles_row) private TableRow titlesTableRow;
+	@InjectView(R.id.titles_row) private LinearLayout titlesRow;
 	@InjectView(R.id.records_scrollview) private ScrollView recordsScrollView;
 	@InjectView(R.id.records_tableview) private TableLayout recordsTableView; 
 
@@ -41,8 +41,7 @@ public class NursingDiagramTest
 	{
 		assertThat(caresTitleView, notNullValue());
 		assertThat(caresListScrollView, notNullValue());
-		assertThat(titlesTableView, notNullValue());
-		assertThat(titlesTableRow, notNullValue());
+		assertThat(titlesRow, notNullValue());
 		assertThat(recordsScrollView, notNullValue());
 		assertThat(recordsTableView, notNullValue());
     }

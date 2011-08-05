@@ -154,8 +154,14 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:orientation="horizontal"
-						android:layout_gravity="left"
+						android:layout_gravity="left|center_vertical"
 						>
+						<ImageButton
+							android:src="@drawable/plus"
+							android:id="@+id/button_add"
+							android:layout_height="125dp"
+							android:layout_width="125dp"
+							android:background="@drawable/imagebutton"/>
 					</LinearLayout>
 				</HorizontalScrollView>
 			</LinearLayout>

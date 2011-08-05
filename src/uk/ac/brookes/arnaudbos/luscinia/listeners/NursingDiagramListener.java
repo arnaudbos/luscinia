@@ -1,12 +1,21 @@
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
+import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.views.NursingDiagramActivity;
 import uk.ac.brookes.arnaudbos.luscinia.widget.LusciniaScrollView;
 import uk.ac.brookes.arnaudbos.luscinia.widget.ScrollViewListener;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 public class NursingDiagramListener implements OnClickListener, OnTouchListener, ScrollViewListener
 {
@@ -15,6 +24,45 @@ public class NursingDiagramListener implements OnClickListener, OnTouchListener,
 	@Override
 	public void onClick(View view)
 	{
+		TableLayout recordsTableView;
+		switch(view.getId())
+		{
+			case R.id.button_add_row:
+				LinearLayout newRow = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_row, null);
+				((TextView)newRow.findViewById(R.id.title)).setText("New line");
+
+				ScrollView caresList = context.getCaresListScrollView();
+				LinearLayout osef = (LinearLayout) caresList.getChildAt(0);
+				int childCount = osef.getChildCount();
+				osef.addView(newRow, childCount-1);
+
+				recordsTableView = context.getRecordsTableView();
+				childCount = recordsTableView.getChildCount();
+
+				TableRow newTableRow = new TableRow(context);
+				RelativeLayout monday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(monday);
+
+				RelativeLayout tuesday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(tuesday);
+
+				RelativeLayout wednesday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(wednesday);
+
+				RelativeLayout thursday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(thursday);
+
+				RelativeLayout friday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(friday);
+
+				RelativeLayout saturday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(saturday);
+
+				RelativeLayout sunday = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.nursing_diagram_item, null);
+				newTableRow.addView(sunday);
+				recordsTableView.addView(newTableRow, childCount-1);
+				break;
+		}
 	}
 	
     public boolean onTouch(View v, MotionEvent event)
