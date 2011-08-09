@@ -1,8 +1,10 @@
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
+import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.views.DashboardActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.LusciniaActivity;
+import android.app.Application;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +29,7 @@ public class LusciniaListener implements OnClickListener
 		else
 		{
 			// TODO: call manager
-			boolean loginOk = stubCallLoginManagerMethod(login, password);
+			boolean loginOk = connect(login, password);
 			if (loginOk)
 			{
 				launchDashboardActivity(login, password);
@@ -42,19 +44,15 @@ public class LusciniaListener implements OnClickListener
 	private void launchDashboardActivity(String login, String password)
 	{
 		Intent intent = new Intent(this.context, DashboardActivity.class);
-        intent.putExtra("login", login);
-        intent.putExtra("password", password);
         this.context.startActivity(intent);
         this.context.finish();
 	}
 
-	private boolean stubCallLoginManagerMethod(String login, String password)
+	private boolean connect(String login, String password)
 	{
-		// TODO: Stub method. Implement it.
-
 		try
 		{
-//			this.context.getCouchDBUtils().getDB(login, password);
+			LusciniaApplication.setDB(this.context.getCouchDBUtils().getDB(login, password));
 			return true;
 		}
 		catch (Exception e)

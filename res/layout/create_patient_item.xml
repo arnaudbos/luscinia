@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	>
+	<com.markupartist.android.widget.ScrollingTextView
+		android:id="@+id/key"
+		android:layout_alignParentTop="true"
+		android:layout_width="100dip"
+		android:gravity="center_vertical"
+		android:layout_height="fill_parent"
+		style="@style/brown_textview"
+		android:lines="1"
+		android:scrollHorizontally="true"
+		android:ellipsize="marquee"
+		android:marqueeRepeatLimit="marquee_forever"
+		/>
+	<EditText
+		android:id="@+id/value"
+		android:layout_width="fill_parent"
+		android:gravity="center_vertical"
+		style="@style/login_edittext"
+		android:layout_weight="1"
+		android:singleLine="true"
+		android:background="@drawable/edittext_blue"
+		android:layout_height="30dip">
+	</EditText>
+	<ImageButton
+		android:id="@+id/remove"
+		android:src="@drawable/delete"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:background="@drawable/imagebutton"
+		android:layout_marginTop="2dp"/>
+</LinearLayout>

@@ -55,4 +55,18 @@
     <string name="mtved_e_hint">Environnement humain et matériel</string>
     <string name="mtved_d">D</string>
     <string name="mtved_d_hint">Dépendance, Devenir (projet de soins)</string>
+
+    <string name="add_patient">Ajouter un patient</string>
+    <string name="new_patient">Nouveau patient</string>
+    <string name="firstname">Prénom</string>
+    <string name="lastname">Nom</string>
+    <string name="dob">Date de naissance</string>
+    <string name="insee">N° INSEE</string>
+    <string name="telephone">Téléphone</string>
+    <string name="weight">Poids</string>
+    <string name="size">Taille</string>
+    <string name="new_value">Nouvelle valeur</string>
+    <string name="quit">Quitter</string>
+    <string name="return_message">Sauvegarder avant de quitter ?</string>
+    <string name="discard">Quitter</string>
 </resources>

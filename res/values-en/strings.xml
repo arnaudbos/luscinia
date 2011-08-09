@@ -55,4 +55,18 @@
     <string name="mtved_e_hint">Environment, human, material</string>
     <string name="mtved_d">D</string>
     <string name="mtved_d_hint">Dependency (cares project)</string>
+
+    <string name="add_patient">Add patient</string>
+    <string name="new_patient">New patient</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="dob">Date of birth</string>
+    <string name="insee">INSEE Number</string>
+    <string name="telephone">Telephone</string>
+    <string name="weight">Weight</string>
+    <string name="size">Size</string>
+    <string name="new_value">New value</string>
+    <string name="quit">Quit</string>
+    <string name="return_message">Save before quitting?</string>
+    <string name="discard">Discard</string>
 </resources>

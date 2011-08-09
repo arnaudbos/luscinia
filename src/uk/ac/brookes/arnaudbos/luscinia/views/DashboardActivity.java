@@ -12,7 +12,11 @@ import uk.ac.brookes.arnaudbos.luscinia.adapters.DashboardNotificationAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.adapters.DashboardPatientAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.data.Notification;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.DashboardListener;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
@@ -26,9 +30,6 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class DashboardActivity extends RoboActivity
 {
 	@Inject private DashboardListener listener;
-
-	@InjectExtra("login") private String login;
-	@InjectExtra("password") private String password;
 	
 	@InjectResource(R.string.dashboard_title) private String dashboardTitle;
 
@@ -44,7 +45,7 @@ public class DashboardActivity extends RoboActivity
         listener.setContext(this);
 
         prepareActionBar();
-        stubGetUser(login, password);
+        //stubGetUser(login, password);
         prepareExpandableListView();
         prepareGridView();
 	}
@@ -105,6 +106,30 @@ public class DashboardActivity extends RoboActivity
         actionBar.setTitle(dashboardTitle);
         actionBar.addAction(new StubShareAction());
         actionBar.addAction(new StubSearchAction());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.dashboard, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		Intent i = null;
+		switch(item.getItemId())
+		{
+			case R.id.add:
+				i = new Intent(this, CreatePatientActivity.class);
+				startActivity(i);
+				return true;
+	
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**
