@@ -16,6 +16,7 @@
     <string name="dialog_password_error_message">Le mot de passe est invalide: Obligatoire.</string>
     <string name="dialog_login_error_title">Erreur de connexion</string>
     <string name="dialog_login_error_message">Nom d\'utilisateur ou mot de passe invalide.</string>
+    <string name="connect_loading">Connexion en cours...</string>
     
     <string name="actionbar_activity_not_found">Echec du lancement...</string>
     
@@ -23,8 +24,15 @@
     <string name="time">Heure: </string>
     <string name="patients_title">Patients: </string>
     <string name="notifications">Notifications</string>
+	<string name="patients_loading">Chargement de la liste des patients...</string>
+	<string name="load_error_title">Erreur de chargement</string>
+	<string name="load_error_message">Une erreur est survenue lors du chargement du contenu.</string>
 
     <string name="folders">Dossiers</string>
+    <string name="add_folder">Nouveau dossier</string>
+    <string name="add_document">Nouveau document</string>
+	<string name="patient_loading">Chargement du patient...</string>
+    <string name="refresh">Rafraîchir</string>
 
     <string name="date">Date</string>
     <string name="focus">Cible</string>
@@ -57,6 +65,7 @@
     <string name="mtved_d_hint">Dépendance, Devenir (projet de soins)</string>
 
     <string name="add_patient">Ajouter un patient</string>
+    <string name="edit_patient">Modifier patient</string>
     <string name="new_patient">Nouveau patient</string>
     <string name="firstname">Prénom</string>
     <string name="lastname">Nom</string>
@@ -69,4 +78,30 @@
     <string name="quit">Quitter</string>
     <string name="return_message">Sauvegarder avant de quitter ?</string>
     <string name="discard">Quitter</string>
+    <string name="save_loading">Sauvegarde en cours...</string>
+    <string name="save_error_title">Erreur de sauvegarde</string>
+    <string name="save_error_message">Une erreur s\'est produite durant la sauvegarde du nouveau patient.</string>
+    <string name="patient_saved">Patient sauvegardé.</string>
+
+    <string name="administrative_folder">Dossier administratif</string>
+    <string name="nursing_cares_folder">Dossier de soins infirmiers</string>
+    <string name="medical_folder">Dossier médical</string>
+    <string-array name="patient_add_folder_dialog">
+        <item>@string/administrative_folder</item>
+        <item>@string/nursing_cares_folder</item>
+        <item>@string/medical_folder</item>
+    </string-array>
+
+    <string name="create_folder_error_title">Erreur de création</string>
+    <string name="create_folder_error_message">Une erreur s\'est produite durant la création du nouveau dossier.</string>
+    <string name="create_loading">Création en cours...</string>
+	<string name="folder_loading">Chargement du dossier...</string>
+	<string name="delete">Supprimer</string>
+	<string name="delete_folder_message">Voulez-vous vraiment supprimer ce dossier?</string>
+	<string name="deleting">Suppression...</string>
+	<string name="delete_folder_error_title">Erreur de suppression</string>
+	<string name="delete_folder_error_message">Une erreur s\'est produite lors de la suppression ou le délai maximum pour supprimer ce dossier a été dépassé.</string>
+	<string name="delete_patient_message">Voulez-vous vraiment supprimer ce patient?</string>
+	<string name="delete_patient_error_title">Erreur de suppression</string>
+	<string name="delete_patient_error_message">Une erreur s\'est produite lors de la suppression ou le délai maximum pour supprimer ce patient a été dépassé.</string>
 </resources>

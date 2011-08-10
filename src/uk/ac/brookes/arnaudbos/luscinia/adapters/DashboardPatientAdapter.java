@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,34 +17,22 @@ import android.widget.TextView;
 public class DashboardPatientAdapter extends BaseAdapter
 {
 	private Context mContext;
-//	private List<Map<String, Object>> patients;
+	private List<Patient> patients;
 
-	private Integer[] mThumbIds = {
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture,
-			R.drawable.no_contact_picture, R.drawable.no_contact_picture
-	};
-
-	public DashboardPatientAdapter(Context c, List<Map<String, Object>> patients)
+	public DashboardPatientAdapter(Context c, List<Patient> patients)
 	{
 		this.mContext = c;
-//		this.patients = patients;
+		this.patients = patients;
 	}
 
 	public int getCount()
 	{
-		//return patients.size();
-		return mThumbIds.length;
+		return patients.size();
 	}
 
 	public Object getItem(int position)
 	{
-		//return patients.get(position);
-		return mThumbIds[position];
+		return patients.get(position);
 	}
 
 	public long getItemId(int position)
@@ -64,14 +53,14 @@ public class DashboardPatientAdapter extends BaseAdapter
 		if (convertView == null)
 		{
 			holder = new ViewHolder();
+			Patient current = patients.get(position);
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.dashboard_patient_item, null);
 			holder.picture = (ImageView) convertView.findViewById(R.id.patient_picture);
 			//TODO: holder.picture.setImageDrawable(Drawable.createFromStream((InputStream)patients.get(position).get("picture"), "src"));
-			holder.picture.setImageResource(mThumbIds[position]);
+			holder.picture.setImageResource(R.drawable.no_contact_picture);
 			
 			holder.text = (TextView) convertView.findViewById(R.id.patient_name);
-			//TODO: holder.text.setText(patients.get(position).get("firstname") + " " + patients.get(position).get("lastname"));
-			holder.text.setText("Monsieur "+position);
+			holder.text.setText(current.getFirstname() + " " + current.getLastname());
 		}
 		else
 		{

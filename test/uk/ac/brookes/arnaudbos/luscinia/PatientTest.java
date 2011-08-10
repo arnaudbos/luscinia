@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import roboguice.inject.InjectView;
 
 import uk.ac.brookes.arnaudbos.luscinia.views.DashboardActivity;
-import uk.ac.brookes.arnaudbos.luscinia.views.FolderActivity;
+import uk.ac.brookes.arnaudbos.luscinia.views.NursingFolderActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.PatientActivity;
 import android.content.Intent;
 import android.view.View;
@@ -77,6 +77,6 @@ public class PatientTest
         ShadowActivity shadowActivity = shadowOf(patientActivity);
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertThat(shadowIntent.getComponent().getClassName(), equalTo(FolderActivity.class.getName()));
+        assertThat(shadowIntent.getComponent().getClassName(), equalTo(NursingFolderActivity.class.getName()));
     }
 }

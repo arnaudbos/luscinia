@@ -1,9 +1,15 @@
 package uk.ac.brookes.arnaudbos.luscinia.adapters;
 
-import java.util.Map;
+import java.util.List;
+
+import org.ektorp.AttachmentInputStream;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ImageThreadLoader;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ImageThreadLoader.ImageLoadedListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,38 +17,27 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 public class PatientDocumentAdapter extends BaseAdapter
 {
+	private ViewHolder holder;
+	private ImageThreadLoader imageLoader = new ImageThreadLoader();
 	private Context mContext;
-//	private List<Object> documents;
+	private List<AttachmentInputStream> attachments;
 
-	private Integer[] mThumbIds = {
-			R.drawable.no_folder_picture, R.drawable.no_folder_picture,
-			R.drawable.no_folder_picture, R.drawable.no_folder_picture,
-			R.drawable.no_folder_picture
-	};
-
-	public PatientDocumentAdapter(Context c, Map<String, Object> documents)
+	public PatientDocumentAdapter(Context c, List<AttachmentInputStream> attachments)
 	{
 		this.mContext = c;
-//		this.documents = new ArrayList<Object>();
-//		for (Map.Entry<String, Object> entry : documents.entrySet())
-//		{
-//			this.documents.add(entry.getValue());
-//		}
+		this.attachments = attachments;
 	}
 
 	public int getCount()
 	{
-		//return documents.size();
-		return mThumbIds.length;
+		return attachments.size();
 	}
 
-	public Object getItem(int position)
+	public AttachmentInputStream getItem(int position)
 	{
-		//return documents.get(position);
-		return mThumbIds[position];
+		return attachments.get(position);
 	}
 
 	public long getItemId(int position)
@@ -58,28 +53,53 @@ public class PatientDocumentAdapter extends BaseAdapter
 	// create a new ImageView for each item referenced by the Adapter
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		ViewHolder holder;
-		
 		if (convertView == null)
 		{
 			holder = new ViewHolder();
-			//Object document = this.documents.get(position);
+			AttachmentInputStream attachment = this.attachments.get(position);
+			String contentType = attachment.getContentType();
 			
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.patient_document_item, null);
 			holder.picture = (ImageView) convertView.findViewById(R.id.document_picture);
-			/*TODO: 
-			 * if (document.getContentType().startWith("image/"))
-			 * {
-			 * 		byte[] decodedString = Base64.decode(document.getDataBase64());
-			 * 		Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-			 * 		holder.picture.setImageBitmap(decodedByte);
-			 * }
-			 */
-			holder.picture.setImageResource(mThumbIds[position]);
-			
+			if (contentType.startsWith("image/"))
+			{
+				Bitmap cachedImage = null;
+				try
+				{
+					cachedImage = imageLoader.loadImage(attachment.getId(), attachment, new ImageLoadedListener()
+					{
+						public void imageLoaded(Bitmap imageBitmap)
+						{
+							holder.picture.setImageBitmap(imageBitmap);
+							notifyDataSetChanged();
+						}
+					});
+				}
+				catch (Exception e)
+				{
+					Log.e("Error while loading image.", e);
+					holder.picture.setImageResource(R.drawable.no_folder_picture);
+				}
+				if( cachedImage != null )
+				{
+					holder.picture.setImageBitmap(cachedImage);
+				}
+				else
+				{
+					holder.picture.setImageResource(R.drawable.no_folder_picture);
+				}
+			}
+			else if (contentType.equals("application/pdf"))
+			{
+				holder.picture.setImageResource(R.drawable.pdf);
+			}
+			else
+			{
+				holder.picture.setImageResource(R.drawable.no_folder_picture);
+			}
 			holder.text = (TextView) convertView.findViewById(R.id.document_name);
-			//TODO: holder.text.setText(patients.get(position).get("firstname") + " " + patients.get(position).get("lastname"));
-			holder.text.setText("Document "+position);
+			holder.text.setText(attachment.getId());
+			convertView.setTag(holder);
 		}
 		else
 		{

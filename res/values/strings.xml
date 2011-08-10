@@ -16,6 +16,7 @@
     <string name="dialog_password_error_message">Password is invalid. Can\'t be empty.</string>
     <string name="dialog_login_error_title">Login error</string>
     <string name="dialog_login_error_message">Login or password invalid.</string>
+    <string name="connect_loading">Connecting...</string>
     
     <string name="actionbar_activity_not_found">Failed to open intent...</string>
     
@@ -23,8 +24,15 @@
     <string name="time">Time: </string>
     <string name="patients_title">Patients: </string>
     <string name="notifications">Notifications</string>
+	<string name="patients_loading">Loading patients list...</string>
+	<string name="load_error_title">Loading error</string>
+	<string name="load_error_message">An error occurred while loading the content.</string>
 
     <string name="folders">Folders</string>
+    <string name="add_folder">Add folder</string>
+    <string name="add_document">Add document</string>
+	<string name="patient_loading">Loading patient...</string>
+    <string name="refresh">Refresh</string>
 
     <string name="date">Date</string>
     <string name="focus">Focus</string>
@@ -57,6 +65,7 @@
     <string name="mtved_d_hint">Dependency (cares project)</string>
 
     <string name="add_patient">Add patient</string>
+    <string name="edit_patient">Edit patient</string>
     <string name="new_patient">New patient</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>
@@ -69,4 +78,30 @@
     <string name="quit">Quit</string>
     <string name="return_message">Save before quitting?</string>
     <string name="discard">Discard</string>
+    <string name="save_loading">Saving...</string>
+    <string name="save_error_title">Error on save</string>
+    <string name="save_error_message">An error has occurred while saving the new patient.</string>
+    <string name="patient_saved">Patient saved successfully.</string>
+
+    <string name="administrative_folder">Administrative folder</string>
+    <string name="nursing_cares_folder">Nursing cares folder</string>
+    <string name="medical_folder">Medical folder</string>
+    <string-array name="patient_add_folder_dialog">
+        <item>@string/administrative_folder</item>
+        <item>@string/nursing_cares_folder</item>
+        <item>@string/medical_folder</item>
+    </string-array>
+
+    <string name="create_folder_error_title">Error on create</string>
+    <string name="create_folder_error_message">An error has occurred while creating the new folder.</string>
+    <string name="create_loading">Creating...</string>
+	<string name="folder_loading">Loading folder...</string>
+	<string name="delete">Delete</string>
+	<string name="delete_folder_message">Are you sure?</string>
+	<string name="deleting">Deleting...</string>
+	<string name="delete_folder_error_title">Error on delete</string>
+	<string name="delete_folder_error_message">An error has occurred while deleting or the limit time to delete this folder has elapsed.</string>
+	<string name="delete_patient_message">Are you sure?</string>
+	<string name="delete_patient_error_title">Error on delete</string>
+	<string name="delete_patient_error_message">An error has occurred while deleting or the limit time to delete this patient has elapsed.</string>
 </resources>

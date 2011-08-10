@@ -22,9 +22,9 @@
 		android:gravity="center_vertical"
 		style="@style/login_edittext"
 		android:layout_weight="1"
-		android:singleLine="true"
 		android:background="@drawable/edittext_blue"
-		android:layout_height="30dip">
+		android:minHeight="30dip"
+		android:layout_height="wrap_content">
 	</EditText>
 	<ImageButton
 		android:id="@+id/remove"

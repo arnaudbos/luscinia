@@ -15,7 +15,7 @@ import org.miscwidgets.widget.Panel;
 import roboguice.inject.InjectView;
 
 import uk.ac.brookes.arnaudbos.luscinia.views.DashboardActivity;
-import uk.ac.brookes.arnaudbos.luscinia.views.FolderActivity;
+import uk.ac.brookes.arnaudbos.luscinia.views.NursingFolderActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.PatientActivity;
 import uk.ac.brookes.arnaudbos.luscinia.widget.DocumentView;
 import android.content.Intent;
@@ -38,7 +38,7 @@ import com.xtremelabs.robolectric.shadows.ShadowIntent;
 @RunWith(InjectedTestRunner.class)
 public class FolderTest
 {
-	@Inject private FolderActivity folderActivity;
+	@Inject private NursingFolderActivity nursingFolderActivity;
 	@InjectView(R.id.actionbar) ActionBar actionBar;
 	@InjectView(R.id.internal_content) private RelativeLayout internalContentLayout;
 	@InjectView(R.id.tracks) private LinearLayout documentsTrack;
@@ -48,11 +48,11 @@ public class FolderTest
 	@Before
 	public void setUp() throws Exception
 	{
-		folderActivity = new FolderActivity();
-		folderActivity.setIntent(new Intent(Robolectric.application, FolderActivity.class).putExtra("folder", "Dossier de soins"));
+		nursingFolderActivity = new NursingFolderActivity();
+		nursingFolderActivity.setIntent(new Intent(Robolectric.application, NursingFolderActivity.class).putExtra("folder", "Dossier de soins"));
 		try
 		{
-			folderActivity.onCreate(null);
+			nursingFolderActivity.onCreate(null);
 		}
 		catch (NullPointerException e)
 		{
@@ -100,7 +100,7 @@ public class FolderTest
 	{
 		actionBar.getHomeButton().performClick();
 
-        ShadowActivity shadowActivity = shadowOf(folderActivity);
+        ShadowActivity shadowActivity = shadowOf(nursingFolderActivity);
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
         assertThat(shadowIntent.getComponent().getClassName(), equalTo(DashboardActivity.class.getName()));

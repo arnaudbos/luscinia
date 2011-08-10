@@ -126,7 +126,6 @@
 					/>
 				<EditText
 					android:id="@+id/insee"
-					android:inputType="number"
 					android:layout_width="fill_parent"
 					android:gravity="center_vertical"
 	    			style="@style/login_edittext"

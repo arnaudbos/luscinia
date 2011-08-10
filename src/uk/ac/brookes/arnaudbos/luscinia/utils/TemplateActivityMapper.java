@@ -12,7 +12,7 @@ public enum TemplateActivityMapper
 		}
 		else
 		{
-			return valueOf(templateName.substring(templateName.indexOf("-")+1).toUpperCase());
+			return valueOf(templateName);
 		}
 	}
 }

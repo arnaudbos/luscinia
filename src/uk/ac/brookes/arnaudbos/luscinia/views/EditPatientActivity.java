@@ -2,8 +2,10 @@ package uk.ac.brookes.arnaudbos.luscinia.views;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
@@ -33,16 +35,14 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.markupartist.android.widget.ScrollingTextView;
 
-public class CreatePatientActivity extends RoboActivity
+public class EditPatientActivity extends RoboActivity
 {
-	public static final int DIALOG_NEW_ITEM = 101;
-	public static final int DIALOG_SAVE = 102;
-	public static final int DIALOG_SAVE_ERROR = 103;
-
     final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
 
 	@Inject private CreatePatientListener listener;
+
+	@InjectExtra("patient") private Patient patient;
 
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
 	@InjectView(R.id.linearLayout) private LinearLayout linearLayout;
@@ -55,7 +55,7 @@ public class CreatePatientActivity extends RoboActivity
 	@InjectView(R.id.size) private EditText sizeView;
 	@InjectView(R.id.add) private ImageButton addButton;
 	
-	@InjectResource(R.string.new_patient) private String title;
+	@InjectResource(R.string.edit_patient) private String title;
 	@InjectResource(R.string.ok) private String ok;
 	@InjectResource(R.string.cancel) private String cancel;
 	@InjectResource(R.string.new_value) private String newValueTitle;
@@ -73,7 +73,8 @@ public class CreatePatientActivity extends RoboActivity
 		public void run()
 		{
 			mProgressDialog.dismiss();
-			Toast.makeText(CreatePatientActivity.this, patientSaved, Toast.LENGTH_SHORT).show();
+			Toast.makeText(EditPatientActivity.this, patientSaved, Toast.LENGTH_SHORT).show();
+			setResult(RESULT_OK, getIntent().putExtra("patient", patient));
 			finish();
 		}
 	};
@@ -83,10 +84,10 @@ public class CreatePatientActivity extends RoboActivity
 		public void run()
 		{
 			mProgressDialog.dismiss();
-			showDialog(DIALOG_SAVE_ERROR);
+			showDialog(CreatePatientActivity.DIALOG_SAVE_ERROR);
 		}
 	};
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -95,9 +96,10 @@ public class CreatePatientActivity extends RoboActivity
         listener.setContext(this);
 
         prepareActionBar();
+        loadPatient();
         addButton.setOnClickListener(listener);
 	}
-	
+
 	private void prepareActionBar()
 	{
 		actionBar.setTitle(title);
@@ -105,12 +107,80 @@ public class CreatePatientActivity extends RoboActivity
         actionBar.addAction(new StubSearchAction());
 	}
 
+	private void loadPatient()
+	{
+		String firstname = patient.getFirstname();
+		String lastname = patient.getLastname();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String dob = dateFormat.format(patient.getDateOfBirth());
+		String insee = patient.getInsee();
+		String telephone = patient.getTelephone();
+		String weight = Double.toString(patient.getWeight());
+		String size = Double.toString(patient.getSize());
+
+		if(firstname!=null)
+		{
+			firstnameView.setText(firstname);
+		}
+		if(lastname!=null)
+		{
+			lastnameView.setText(lastname);
+		}
+		if(dob!=null)
+		{
+			dobView.setText(dob);
+		}
+		if(insee!=null)
+		{
+			inseeView.setText(insee);
+		}
+		if(telephone!=null)
+		{
+			telephoneView.setText(telephone);
+		}
+		if(weight!=null)
+		{
+			weightView.setText(weight);
+		}
+		if(size!=null)
+		{
+			sizeView.setText(size);
+		}
+
+		for (Map.Entry<String, Object> entry : patient.getProperties().entrySet())
+		{
+			final LinearLayout newChild = (LinearLayout) LayoutInflater.from(EditPatientActivity.this).inflate(R.layout.create_patient_item, null);
+			String key = entry.getKey();
+			if(key.contains("#"))
+			{
+				((ScrollingTextView)newChild.findViewById(R.id.key)).setText(key.substring(0, key.lastIndexOf("#")));
+			}
+			else
+			{
+				((ScrollingTextView)newChild.findViewById(R.id.key)).setText(key);
+			}
+			((EditText)newChild.findViewById(R.id.value)).setText(""+entry.getValue());
+			newChild.setTag(key);
+			
+			((ImageButton)newChild.findViewById(R.id.remove)).setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					linearLayout.removeView(newChild);
+					patient.getProperties().remove(newChild.getTag());
+				}
+			});
+			linearLayout.addView(newChild, linearLayout.getChildCount()-1);
+		}
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
 		switch(id)
 		{
-			case DIALOG_NEW_ITEM:
+			case CreatePatientActivity.DIALOG_NEW_ITEM:
 				final EditText prompt = new EditText(this);
 				return new AlertDialog.Builder(this)
 					.setTitle(newValueTitle)
@@ -120,7 +190,7 @@ public class CreatePatientActivity extends RoboActivity
 						@Override
 						public void onClick(DialogInterface dialog, int which) 
 						{
-							final LinearLayout newChild = (LinearLayout) LayoutInflater.from(CreatePatientActivity.this).inflate(R.layout.create_patient_item, null);
+							final LinearLayout newChild = (LinearLayout) LayoutInflater.from(EditPatientActivity.this).inflate(R.layout.create_patient_item, null);
 							String key = prompt.getText().toString();
 							((ScrollingTextView)newChild.findViewById(R.id.key)).setText(key);
 							newChild.setTag(key);
@@ -139,7 +209,7 @@ public class CreatePatientActivity extends RoboActivity
 					})
 					.setNegativeButton(cancel, null)
 					.create();
-			case DIALOG_SAVE:
+			case CreatePatientActivity.DIALOG_SAVE:
 				return new AlertDialog.Builder(this)
 					.setTitle(quit)
 					.setMessage(returnMessage)
@@ -147,7 +217,7 @@ public class CreatePatientActivity extends RoboActivity
 					.setNeutralButton(discard, listener)
 					.setNegativeButton(cancel, null)
 					.create();
-			case DIALOG_SAVE_ERROR:
+			case CreatePatientActivity.DIALOG_SAVE_ERROR:
 				return new AlertDialog.Builder(this)
 					.setTitle(saveErrorTitle)
 					.setMessage(saveErrorMessage)
@@ -181,7 +251,7 @@ public class CreatePatientActivity extends RoboActivity
 	@Override
 	public void onBackPressed()
 	{
-		showDialog(DIALOG_SAVE);
+		showDialog(CreatePatientActivity.DIALOG_SAVE);
 	}
 
 	/**
@@ -192,7 +262,7 @@ public class CreatePatientActivity extends RoboActivity
 		@Override
 		public void performAction(View view)
 		{
-			Toast.makeText(CreatePatientActivity.this, "ShareAction", Toast.LENGTH_SHORT).show();
+			Toast.makeText(EditPatientActivity.this, "ShareAction", Toast.LENGTH_SHORT).show();
 		}
 		
 		@Override
@@ -210,7 +280,7 @@ public class CreatePatientActivity extends RoboActivity
 		@Override
 		public void performAction(View view)
 		{
-			Toast.makeText(CreatePatientActivity.this, "otherAction", Toast.LENGTH_SHORT).show();
+			Toast.makeText(EditPatientActivity.this, "otherAction", Toast.LENGTH_SHORT).show();
 		}
 		
 		@Override
@@ -236,7 +306,9 @@ public class CreatePatientActivity extends RoboActivity
 			{
 				try
 				{
-					LusciniaApplication.getDB().create(getPatient());
+					Patient p = getPatient();
+					LusciniaApplication.getDB().update(p);
+					patient = p;
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)
@@ -250,7 +322,7 @@ public class CreatePatientActivity extends RoboActivity
 	
 	public Patient getPatient() throws ParseException
 	{
-		Patient patient = new Patient();
+		Patient patient = new Patient(this.patient.getId(), this.patient.getRevision(), this.patient.getDateOfCreation());
 		patient.setDocType(Patient.PATIENT_TYPE);
 		String firstname = firstnameView.getText().toString();
 		String lastname = lastnameView.getText().toString();

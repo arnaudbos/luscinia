@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,10 @@ import android.widget.TextView;
 public class PatientFolderAdapter extends BaseAdapter
 {
 	private LayoutInflater mInflater;
-	private List<Map<String, Object>> folders;
+	private List<Folder> folders;
 	private Context context;
 
-	public PatientFolderAdapter(Context c, List<Map<String, Object>> folders)
+	public PatientFolderAdapter(Context c, List<Folder> folders)
 	{
 		mInflater = LayoutInflater.from(c);
 		this.context = c;
@@ -30,7 +31,7 @@ public class PatientFolderAdapter extends BaseAdapter
 		return folders.size();
 	}
 
-	public Map<String, Object> getItem(int position)
+	public Folder getItem(int position)
 	{
 		return folders.get(position);
 	}
@@ -50,7 +51,7 @@ public class PatientFolderAdapter extends BaseAdapter
 	{
 		ViewHolder holder;
 
-		Map<String, Object> folder = folders.get(position);
+		Folder folder = folders.get(position);
 
 		if (convertView == null)
 		{
@@ -60,23 +61,21 @@ public class PatientFolderAdapter extends BaseAdapter
 			holder.text = (TextView) convertView.findViewById(R.id.folder_name);
 			holder.picture = (ImageView) convertView.findViewById(R.id.folder_picture);
 
-			//holder.text.setText((String) document.get("name"));
-			holder.text.setText("Dossier "+position);
-			if (folder.get("picture") != null)
+			holder.text.setText(folder.getTitle());
+			switch (folder.getType())
 			{
-				int iconId = context.getResources().getIdentifier((String)folder.get("picture"), "drawable", context.getPackageName());
-				if (iconId != 0)
-				{
-					holder.picture.setImageResource(iconId);
-				}
-				else
-				{
+				case Folder.ADMINISTRATIVE_FOLDER_TYPE:
 					holder.picture.setImageResource(R.drawable.no_folder_picture);
-				}
-			}
-			else
-			{
-				holder.picture.setImageResource(R.drawable.no_folder_picture);
+					break;
+				case Folder.NURSING_FOLDER_TYPE:
+					holder.picture.setImageResource(R.drawable.no_folder_picture);
+					break;
+				case Folder.MEDICAL_FOLDER_TYPE:
+					holder.picture.setImageResource(R.drawable.no_folder_picture);
+					break;
+				default:
+					holder.picture.setImageResource(R.drawable.no_folder_picture);
+					break;
 			}
 			convertView.setTag(holder);
 		}

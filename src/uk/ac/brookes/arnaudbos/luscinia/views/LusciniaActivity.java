@@ -3,12 +3,17 @@ package uk.ac.brookes.arnaudbos.luscinia.views;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
+import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.LusciniaListener;
 import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDBUtils;
+import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,6 +24,9 @@ public class LusciniaActivity extends RoboActivity
 	public static final int DIALOG_USERNAME_ERROR = 101;
 	public static final int DIALOG_PASSWORD_ERROR = 102;
 	public static final int DIALOG_LOGIN_ERROR = 103;
+
+    final Handler uiThreadCallback = new Handler();
+    private ProgressDialog mProgressDialog;
 	
 	@Inject private ICouchDBUtils couchDBUtils;
 	@Inject private LusciniaListener listener;
@@ -34,6 +42,24 @@ public class LusciniaActivity extends RoboActivity
 	@InjectResource(R.string.dialog_password_error_message) private String dialogPasswordErrorMessage;
 	@InjectResource(R.string.dialog_login_error_title) private String dialogLoginErrorTitle;
 	@InjectResource(R.string.dialog_login_error_message) private String dialogLoginErrorMessage;
+	@InjectResource(R.string.connect_loading) private String connectLoading;
+
+	final Runnable threadCallBackSuceeded = new Runnable()
+	{
+		public void run()
+		{
+			launchDashboardActivity();
+		}
+	};
+
+	final Runnable threadCallBackFailed = new Runnable()
+	{
+		public void run()
+		{
+			mProgressDialog.dismiss();
+			showDialog(LusciniaActivity.DIALOG_LOGIN_ERROR);
+		}
+	};
 
     /** Called when the activity is first created. */
     @Override
@@ -75,19 +101,53 @@ public class LusciniaActivity extends RoboActivity
         }
         return null;
     }
-    
-    public String getEditLogin ()
-    {
-    	return editLogin.getText().toString();
-    }
-    
-    public String getEditPassword ()
-    {
-    	return editPassword.getText().toString();
-    }
+
+	public void connect()
+	{
+		String login = editLogin.getText().toString();
+		String password = editPassword.getText().toString();
+		if (login == null || login.equals(""))
+		{
+			showDialog(LusciniaActivity.DIALOG_USERNAME_ERROR);
+		}
+		else if (password == null || password.equals(""))
+		{
+			showDialog(LusciniaActivity.DIALOG_PASSWORD_ERROR);
+		}
+		else
+		{
+	    	mProgressDialog = ProgressDialog.show(this, "", connectLoading, true);
+			new Thread()
+			{
+				@Override public void run()
+				{
+					try
+					{
+						Log.i("Try to connect");
+						LusciniaApplication.setDB(getCouchDBUtils().getDB(editLogin.getText().toString(), editPassword.getText().toString()));
+
+						Log.i("Connection ok return to UI");
+						uiThreadCallback.post(threadCallBackSuceeded);
+					}
+					catch (Exception e)
+					{
+						Log.e("CATCHED: Login action failed", e);
+						uiThreadCallback.post(threadCallBackFailed);
+					}
+				}
+			}.start();
+		}
+	}
 
 	public ICouchDBUtils getCouchDBUtils()
 	{
 		return couchDBUtils;
+	}
+	
+	private void launchDashboardActivity()
+	{
+		Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
 	}
 }

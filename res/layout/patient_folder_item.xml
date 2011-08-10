@@ -9,6 +9,7 @@
     	android:layout_width="150dp"
     	android:id="@+id/folder_picture"
     	android:layout_alignParentTop="true"
+    	android:scaleType="centerCrop"
     	>
     </ImageView>
     <LinearLayout
@@ -20,6 +21,7 @@
     	android:background="#80000000"
     	>
         <TextView
+        	android:gravity="center"
         	android:layout_height="wrap_content"
         	android:layout_width="wrap_content"
         	android:id="@+id/folder_name"

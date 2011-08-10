@@ -64,7 +64,6 @@
                 	</ImageView>
                 	<TextView
                 		android:layout_height="wrap_content"
-                		android:text="Age: 20\nPoids: 75kg\nTaille: 1m72"
                 		android:layout_width="fill_parent"
                 		android:scrollHorizontally="false"
                 		android:id="@+id/patient_first_infos"
@@ -74,7 +73,6 @@
                 </LinearLayout>
 				<TextView
                		android:id="@+id/patient_rest_infos"
-               		android:text="Hospitalisé pour une fracture du cubitus droit sur ordre du médecin traitant car fracture inquiétante voir risque de cancer des os et de la tête de delco des clignotants et de l'essuie glasse."
                 	android:layout_width="fill_parent"
                 	android:layout_height="wrap_content"
         			android:layout_below="@+id/linearLayout1"
