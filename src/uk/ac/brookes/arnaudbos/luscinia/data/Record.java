@@ -9,8 +9,14 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
 
+/**
+ * Luscinia record object
+ * @author arnaudbos
+ */
 public class Record extends CouchDbDocument
 {
+	private static final long serialVersionUID = 2444171397300135852L;
+
 	public static final String RECORD_TYPE = "http://www.sneakernet.fr/luscinia/record";
 	public static final String VIEW_ALL_RECORDS = "_all_records";
 
@@ -33,35 +39,53 @@ public class Record extends CouchDbDocument
 		setDocType(RECORD_TYPE);
 	}
 
+	/**
+	 * @return the document type
+	 */
 	@JsonProperty("docType")
 	public String getDocType()
 	{
 		return docType;
 	}
-	
+
+	/**
+	 * @param docType The document type to set
+	 */
 	@JsonProperty("docType")
 	private void setDocType(String docType)
 	{
 		this.docType = docType;
 	}
 
+	/**
+	 * @return the document Id
+	 */
 	@JsonProperty("document_id")
 	public String getDocumentId()
 	{
 		return documentId;
 	}
-	
+
+	/**
+	 * @param documentId The document Id to set
+	 */
 	@JsonProperty("document_id")
 	public void setDocumentId(String documentId)
 	{
 		this.documentId = documentId;
 	}
 
+	/**
+	 * @return the date
+	 */
 	public Date getDate()
 	{
 		return date;
 	}
 
+	/**
+	 * @param date The date to set
+	 */
 	private void setDate(Date date)
 	{
 		this.date = date;
@@ -96,8 +120,11 @@ public class Record extends CouchDbDocument
 		}
     }
 
+	/**
+	 * @return the unknown fields
+	 */
     @JsonAnyGetter
-    public Map<String, Object> getProperties()
+    public Map<String, Object> getUnknownFields()
     {
     	return unknownFields;
     }

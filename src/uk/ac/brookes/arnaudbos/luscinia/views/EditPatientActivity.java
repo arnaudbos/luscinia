@@ -145,7 +145,7 @@ public class EditPatientActivity extends RoboActivity
 		}
 
 		// For each unknown field add a new patient item and fill it
-		for (Map.Entry<String, Object> entry : patient.getProperties().entrySet())
+		for (Map.Entry<String, Object> entry : patient.getUnknownFields().entrySet())
 		{
 			// Inflate a new patient item
 			final LinearLayout newChild = (LinearLayout) LayoutInflater.from(EditPatientActivity.this).inflate(R.layout.create_patient_item, null);
@@ -173,7 +173,7 @@ public class EditPatientActivity extends RoboActivity
 					Log.d("Patient item's remove button onClick");
 					// Remove this patient item (the view and the unknown field from the Patient)
 					linearLayout.removeView(newChild);
-					patient.getProperties().remove(newChild.getTag());
+					patient.getUnknownFields().remove(newChild.getTag());
 				}
 			});
 			// Add the new patient item into the activity's view

@@ -9,8 +9,14 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
 
+/**
+ * Luscinia folder object
+ * @author arnaudbos
+ */
 public class Folder extends CouchDbDocument
 {
+	private static final long serialVersionUID = 3939755790234817352L;
+
 	public static final String FOLDER_TYPE = "http://www.sneakernet.fr/luscinia/folder";
 	public static final String VIEW_ALL_FOLDERS = "_all_folders";
 	public static final int ADMINISTRATIVE_FOLDER_TYPE = 0;
@@ -38,55 +44,85 @@ public class Folder extends CouchDbDocument
 		setDocType(FOLDER_TYPE);
 	}
 
+	/**
+	 * @return the document type
+	 */
 	@JsonProperty("docType")
 	public String getDocType()
 	{
 		return docType;
 	}
-	
+
+	/**
+	 * @param docType The document type to set
+	 */
 	@JsonProperty("docType")
 	private void setDocType(String docType)
 	{
 		this.docType = docType;
 	}
 
+	/**
+	 * @return the patient Id
+	 */
 	@JsonProperty("patient_id")
 	public String getPatientId()
 	{
 		return patientId;
 	}
-	
+
+	/**
+	 * @param patientId The patient Id to set
+	 */
 	@JsonProperty("patient_id")
 	public void setPatientId(String patientId)
 	{
 		this.patientId = patientId;
 	}
 
+	/**
+	 * @return the title
+	 */
 	public String getTitle()
 	{
 		return title;
 	}
 
+	/**
+	 * @param title The title to set
+	 */
 	public void setTitle(String title)
 	{
 		this.title = title;
 	}
 
+	/**
+	 * @return the type
+	 */
 	public int getType()
 	{
 		return type;
 	}
 
+	/**
+	 * @param type The type to set
+	 */
 	public void setType(int type)
 	{
 		this.type = type;
 	}
 
+	/**
+	 * @return the date
+	 */
 	public Date getDate()
 	{
 		return date;
 	}
 
+	/**
+	 * @param date The date to set
+	 */
 	private void setDate(Date date)
 	{
 		this.date = date;
@@ -121,8 +157,11 @@ public class Folder extends CouchDbDocument
 		}
     }
 
+	/**
+	 * @return the unknown fields
+	 */
     @JsonAnyGetter
-    public Map<String, Object> getProperties()
+    public Map<String, Object> getUnknownFields()
     {
     	return unknownFields;
     }

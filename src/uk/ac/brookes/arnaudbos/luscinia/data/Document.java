@@ -9,8 +9,14 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
 
+/**
+ * Luscinia document object
+ * @author arnaudbos
+ */
 public class Document extends CouchDbDocument
 {
+	private static final long serialVersionUID = 3185003212567128889L;
+
 	public static final String DOCUMENT_TYPE = "http://www.sneakernet.fr/luscinia/document";
 	public static final String VIEW_ALL_DOCUMENTS = "_all_documents";
 
@@ -35,55 +41,85 @@ public class Document extends CouchDbDocument
 		setDocType(DOCUMENT_TYPE);
 	}
 
+	/**
+	 * @return the document type
+	 */
 	@JsonProperty("docType")
 	public String getDocType()
 	{
 		return docType;
 	}
-	
+
+	/**
+	 * @param docType The document type to set
+	 */
 	@JsonProperty("docType")
 	private void setDocType(String docType)
 	{
 		this.docType = docType;
 	}
 
+	/**
+	 * @return the folder Id
+	 */
 	@JsonProperty("folder_id")
 	public String getFolderId()
 	{
 		return folderId;
 	}
-	
+
+	/**
+	 * @param folderId The folder Id to set
+	 */
 	@JsonProperty("folder_id")
 	public void setFolderId(String folderId)
 	{
 		this.folderId = folderId;
 	}
 
+	/**
+	 * @return the title
+	 */
 	public String getTitle()
 	{
 		return title;
 	}
 
+	/**
+	 * @param title The title to set
+	 */
 	public void setTitle(String title)
 	{
 		this.title = title;
 	}
 
+	/**
+	 * @return the type
+	 */
 	public String getType()
 	{
 		return type;
 	}
 
+	/**
+	 * @param type The type to set
+	 */
 	public void setType(String type)
 	{
 		this.type = type;
 	}
 
+	/**
+	 * @return the date
+	 */
 	public Date getDate()
 	{
 		return date;
 	}
 
+	/**
+	 * @param date The date to set
+	 */
 	private void setDate(Date date)
 	{
 		this.date = date;
@@ -118,8 +154,11 @@ public class Document extends CouchDbDocument
 		}
     }
 
+	/**
+	 * @return the unknown fields
+	 */
     @JsonAnyGetter
-    public Map<String, Object> getProperties()
+    public Map<String, Object> getUnknownFields()
     {
     	return unknownFields;
     }

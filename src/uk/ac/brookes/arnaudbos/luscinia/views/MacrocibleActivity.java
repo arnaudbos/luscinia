@@ -1,28 +1,28 @@
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
-import com.google.inject.Inject;
-
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.MacrocibleListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.inject.Inject;
+
+/**
+ * Activity displaying MACROCIBLE document
+ * @author arnaudbos
+ */
 public class MacrocibleActivity extends RoboActivity
 {
 	public static final int DIALOG_EMPTY_FIELD = 101;
@@ -51,6 +51,7 @@ public class MacrocibleActivity extends RoboActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		Log.d("MacrocibleActivity.onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.macrocible);
 		listener.setContext(this);
@@ -70,9 +71,11 @@ public class MacrocibleActivity extends RoboActivity
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
+		Log.d("MacrocibleActivity.onCreateDialog");
         switch (id)
         {
 	        case DIALOG_EMPTY_FIELD:
+				Log.d("Display DIALOG_EMPTY_FIELD Alert");
 	            return new AlertDialog.Builder(this)
 //	                .setIcon(R.drawable.)
 	                .setTitle(dialogEmptyFieldErrorTitle)
@@ -80,6 +83,7 @@ public class MacrocibleActivity extends RoboActivity
 	                .setNegativeButton(ok, null)
 	                .create();
 	        case DIALOG_TIME_ELAPSED:
+				Log.d("Display DIALOG_TIME_ELAPSED Alert");
 	            return new AlertDialog.Builder(this)
 	                .setTitle(dialogTimeElapsedErrorTitle)
 	                .setMessage(dialogTimeElapsedErrorMessage)
@@ -92,23 +96,29 @@ public class MacrocibleActivity extends RoboActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-   		MenuItem item = menu.add("Macrocible Menu");
-	   	
-	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
-		{
-			@Override
-			public boolean onMenuItemClick(MenuItem item)
-			{
-				// Do something.
-				return true;
-			}
-		});
+		Log.d("MacrocibleActivity.onCreateOptionsMenu");
+//   	MenuItem item = menu.add("Macrocible Menu");
+//	   	
+//	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
+//		{
+//			@Override
+//			public boolean onMenuItemClick(MenuItem item)
+//			{
+//				// Do something.
+//				return true;
+//			}
+//		});
 
 	   	return true;
     }
     
+    /**
+     * Enable all the fields to accept user input, hide updateButton and show validateButton
+     */
     public void setFieldsEnabled()
     {
+		Log.d("PatientTransActivity.setFieldsEnabled");
+		// Enable all the fields
 		initialEvaluationCheckBox.setEnabled(true);
 		remoteEvaluationCheckBox.setEnabled(true);
 		liaisonCheckBox.setEnabled(true);
@@ -117,12 +127,18 @@ public class MacrocibleActivity extends RoboActivity
 		vEditText.setEnabled(true);
 		eEditText.setEnabled(true);
 		dEditText.setEnabled(true);
+		// Inverse buttons visibilities
 		validateButton.setVisibility(View.VISIBLE);
 		updateButton.setVisibility(View.GONE);
     }
-    
+
+    /**
+     * Disable all the fields, show updateButton and hide validateButton
+     */
     public void setFieldsDisabled()
     {
+		Log.d("PatientTransActivity.setFieldsDisabled");
+		// Disable all the fields
 		initialEvaluationCheckBox.setEnabled(false);
 		remoteEvaluationCheckBox.setEnabled(false);
 		liaisonCheckBox.setEnabled(false);
@@ -131,6 +147,7 @@ public class MacrocibleActivity extends RoboActivity
 		vEditText.setEnabled(false);
 		eEditText.setEnabled(false);
 		dEditText.setEnabled(false);
+		// Inverse buttons visibilities
 		validateButton.setVisibility(View.GONE);
 		updateButton.setVisibility(View.VISIBLE);
     }

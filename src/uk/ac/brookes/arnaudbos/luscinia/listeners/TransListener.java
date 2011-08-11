@@ -1,24 +1,16 @@
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.TransRecord;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.views.TransActivity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -68,12 +60,16 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 		Log.d("TransListener.onLongClick");
 		TableRow selectedRow = (TableRow) view;
 		Date now = new Date();
+		// Calculate the difference between now and the date of creation of the record and pass only if delay < 15 minutes
 		if(now.getTime() - ((TransRecord)selectedRow.getTag()).getDate().getTime() > 900000)
 		{
+			// Display DIALOG_TIME_ELAPSED Alert
 			context.showDialog(TransActivity.DIALOG_TIME_ELAPSED);
 		}
+		// Else
 		else
 		{
+			// Pass the selected row to the context and display the DIALOG_UPDATE_ROW Alert
 			context.setSelectedRow(selectedRow);
 			context.showDialog(TransActivity.DIALOG_UPDATE_ROW);
 		}
@@ -84,9 +80,11 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 	@Override
 	public void onClick(DialogInterface dialog, int which)
 	{
+		Log.d("TransListener.DialogInterface.onClick");
 		switch(which)
 		{
 			case Dialog.BUTTON_POSITIVE:
+				Log.d("BUTTON_POSITIVE pressed");
 				//TODO: Update the Record
 				TransRecord selectedRecord = (TransRecord)context.getSelectedRow().getTag();
 
@@ -101,6 +99,10 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 		}
 	}
 
+	/**
+	 * Set the listener's context
+	 * @param context The context to set
+	 */
 	public void setContext(TransActivity context)
 	{
 		this.context = context;

@@ -1,8 +1,6 @@
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 import roboguice.activity.RoboActivity;
@@ -11,15 +9,11 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
-import uk.ac.brookes.arnaudbos.luscinia.adapters.PatientFolderAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.data.Document;
-import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
-import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import uk.ac.brookes.arnaudbos.luscinia.data.Record;
 import uk.ac.brookes.arnaudbos.luscinia.data.TransRecord;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.TransListener;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
-import uk.ac.brookes.arnaudbos.luscinia.utils.TemplateActivityMapper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -31,7 +25,6 @@ import android.view.Menu;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -97,46 +90,46 @@ public class TransActivity extends RoboActivity
 		Log.d("PatientTransActivity.onCreateDialog");
 		switch (id)
 		{
-		case DIALOG_EMPTY_FIELD:
-			Log.d("Display DIALOG_EMPTY_FIELD Alert");
-			return new AlertDialog.Builder(this)
-			.setTitle(dialogEmptyFieldErrorTitle)
-			.setMessage(dialogEmptyFieldErrorMessage)
-			.setNegativeButton(ok, null)
-			.create();
-		case DIALOG_TIME_ELAPSED:
-			Log.d("Display DIALOG_TIME_ELAPSED Alert");
-			return new AlertDialog.Builder(this)
-			.setTitle(dialogTimeElapsedErrorTitle)
-			.setMessage(dialogTimeElapsedErrorMessage)
-			.setNegativeButton(ok, null)
-			.create();
-		case DIALOG_UPDATE_ROW:
-			Log.d("Display DIALOG_UPDATE_ROW Alert");
-			// Inflate a new trans item and fill it with the content from the selected row's record
-			TransRecord record = (TransRecord) selectedRow.getTag();
-
-			ScrollView scroll = (ScrollView)LayoutInflater.from(this).inflate(R.layout.trans_update_item, null);
-			dialogTableView = (TableLayout)scroll.findViewById(R.id.table_view);
-			((EditText)dialogTableView.findViewById(R.id.focus_edit)).setText(record.getFocus());
-			((EditText)dialogTableView.findViewById(R.id.data_edit)).setText(record.getData());
-			((EditText)dialogTableView.findViewById(R.id.actions_edit)).setText(record.getActions());
-			((EditText)dialogTableView.findViewById(R.id.results_edit)).setText(record.getResults());
-
-			// Display the dialog with the trans item view
-			return new AlertDialog.Builder(this)
-				.setTitle(update)
-				.setView(scroll)
-				.setPositiveButton(save, listener)
-				.setNegativeButton(cancel, listener)
+			case DIALOG_EMPTY_FIELD:
+				Log.d("Display DIALOG_EMPTY_FIELD Alert");
+				return new AlertDialog.Builder(this)
+				.setTitle(dialogEmptyFieldErrorTitle)
+				.setMessage(dialogEmptyFieldErrorMessage)
+				.setNegativeButton(ok, null)
 				.create();
-		case DIALOG_CREATE_RECORD_ERROR:
-			Log.d("Display DIALOG_CREATE_RECORD_ERROR Alert");
-			return new AlertDialog.Builder(this)
-				.setTitle(createErrorTitle)
-				.setMessage(createRecordErrorMessage)
-				.setPositiveButton(ok, null)
+			case DIALOG_TIME_ELAPSED:
+				Log.d("Display DIALOG_TIME_ELAPSED Alert");
+				return new AlertDialog.Builder(this)
+				.setTitle(dialogTimeElapsedErrorTitle)
+				.setMessage(dialogTimeElapsedErrorMessage)
+				.setNegativeButton(ok, null)
 				.create();
+			case DIALOG_UPDATE_ROW:
+				Log.d("Display DIALOG_UPDATE_ROW Alert");
+				// Inflate a new trans item and fill it with the content from the selected row's record
+				TransRecord record = (TransRecord) selectedRow.getTag();
+	
+				ScrollView scroll = (ScrollView)LayoutInflater.from(this).inflate(R.layout.trans_update_item, null);
+				dialogTableView = (TableLayout)scroll.findViewById(R.id.table_view);
+				((EditText)dialogTableView.findViewById(R.id.focus_edit)).setText(record.getFocus());
+				((EditText)dialogTableView.findViewById(R.id.data_edit)).setText(record.getData());
+				((EditText)dialogTableView.findViewById(R.id.actions_edit)).setText(record.getActions());
+				((EditText)dialogTableView.findViewById(R.id.results_edit)).setText(record.getResults());
+	
+				// Display the dialog with the trans item view
+				return new AlertDialog.Builder(this)
+					.setTitle(update)
+					.setView(scroll)
+					.setPositiveButton(save, listener)
+					.setNegativeButton(cancel, listener)
+					.create();
+			case DIALOG_CREATE_RECORD_ERROR:
+				Log.d("Display DIALOG_CREATE_RECORD_ERROR Alert");
+				return new AlertDialog.Builder(this)
+					.setTitle(createErrorTitle)
+					.setMessage(createRecordErrorMessage)
+					.setPositiveButton(ok, null)
+					.create();
 		}
 		return null;
 	}
@@ -144,7 +137,7 @@ public class TransActivity extends RoboActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		Log.d("PatientTransActivity.onCreateOptionsMenu");
+		Log.d("TransActivity.onCreateOptionsMenu");
 		//   	MenuItem item = menu.add("Transmission Menu");
 		//	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		//		{

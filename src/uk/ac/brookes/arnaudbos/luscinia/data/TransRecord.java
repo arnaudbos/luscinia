@@ -2,8 +2,14 @@ package uk.ac.brookes.arnaudbos.luscinia.data;
 
 import java.util.Date;
 
+/**
+ * Luscinia transmission record object
+ * @author arnaudbos
+ */
 public class TransRecord extends Record
 {
+	private static final long serialVersionUID = 6808550110741432945L;
+
 	private String focus;
 	private String data;
 	private String actions;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.miscwidgets.widget.Panel;
 
 import roboguice.activity.RoboActivityGroup;
+import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
@@ -14,69 +15,104 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+/**
+ * Implementation of an ActivityGroup representing a folder that will contain documents as child activities.
+ * Folders activities implementations should inherit from this object in order to provide navigation history facilities between child documents activities.
+ * @author arnaudbos
+ */
 public class FolderActivityGroup extends RoboActivityGroup
 {
-	private ArrayList<String> activityIdsList;
-	private ViewGroup targetLayout;
+	private ArrayList<String> history;
+	private ViewGroup childActivityPlaceHolder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		Log.d("FolderActivityGroup.onCreate");
 		super.onCreate(savedInstanceState);
-		if (activityIdsList == null)
+		// Create a new list of child activities Ids
+		if (history == null)
 		{
-			activityIdsList = new ArrayList<String> ();
+			history = new ArrayList<String> ();
 		}
 	}
 
 	@Override
 	public void finishFromChild(Activity child)
 	{
+		Log.d("FolderActivityGroup.finishFromChild");
+		// Get the localActivityManager and the last started child activity
 		LocalActivityManager manager = getLocalActivityManager();
-		int index = activityIdsList.size()-1;
+		int index = history.size()-1;
 
+		// If the child activity is the last one running
 		if (index < 1)
 		{
+			Log.d("Finish the 'parent' activity");
 			finish();
 			return;
 		}
 
-		manager.destroyActivity(activityIdsList.get(index), true);
-		activityIdsList.remove(index);
+		// Remove the child activity from the localActivityManager and from the list of child activities
+		manager.destroyActivity(history.get(index), true);
+		history.remove(index);
+
+		// Get the last started child activity and start it
 		index--;
-		String lastId = activityIdsList.get(index);
+		String lastId = history.get(index);
 		Intent lastIntent = manager.getActivity(lastId).getIntent();
 		Window newWindow = manager.startActivity(lastId, lastIntent);
-		targetLayout.removeViewAt(0);
-		targetLayout.addView(newWindow.getDecorView(), 0);
+
+		// Refrech the childActivityPlaceHodler
+		childActivityPlaceHolder.removeViewAt(0);
+		childActivityPlaceHolder.addView(newWindow.getDecorView(), 0);
 	}
 
-	public void startChildActivity(String Id, Intent intent)
+	/**
+	 * Start a new child Activity or resume a previously started child Activity into the childActivityPlaceHolder
+	 * @param id The id of the child Activity to start or resume
+	 * @param intent The intent to start or resume the child activity
+	 */
+	protected void startChildActivity(String id, Intent intent)
 	{
-		Window window = getLocalActivityManager().startActivity(Id,intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		Log.d("FolderActivityGroup.startChildActivity");
+		// Try to start the child Activity from intent
+		Window window = getLocalActivityManager().startActivity(id,intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		// If succeeded
 		if (window != null)
 		{
-			if(activityIdsList.contains(Id))
+			// If child activity has already been started (id is already in the history)
+			if(history.contains(id))
 			{
-				activityIdsList.remove(Id);
+				// Remove it from the history
+				history.remove(id);
 			}
-			activityIdsList.add(Id);
-			if (!(targetLayout.getChildAt(0) instanceof Panel))
+			// Add the child activity started at the end of the history
+			history.add(id);
+			// Remove the previous child activity view from the placeHolder
+			if (!(childActivityPlaceHolder.getChildAt(0) instanceof Panel))
 			{
-				targetLayout.removeViewAt(0);
+				childActivityPlaceHolder.removeViewAt(0);
 			}
-			targetLayout.addView(window.getDecorView(), 0);
+			// Add the started child activity view into the placeHolder
+			childActivityPlaceHolder.addView(window.getDecorView(), 0);
 		}
 	}
 	
-	protected void setTargetLayout(RelativeLayout target)
+	/**
+	 * 
+	 * @param childActivityPlaceHolder
+	 */
+	protected void setChildActivityPlaceHolder(ViewGroup childActivityPlaceHolder)
 	{
-		this.targetLayout = target;
+		Log.d("FolderActivityGroup.setTargetLayout");
+		this.childActivityPlaceHolder = childActivityPlaceHolder;
 	}
 
 	@Override
 	final public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
+		Log.d("FolderActivityGroup.onKeyDown");
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
 			return true;
@@ -87,6 +123,7 @@ public class FolderActivityGroup extends RoboActivityGroup
 	@Override
 	final public boolean onKeyUp(int keyCode, KeyEvent event)
 	{
+		Log.d("FolderActivityGroup.onKeyUp");
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
 			onBackPressed();
@@ -96,12 +133,15 @@ public class FolderActivityGroup extends RoboActivityGroup
 	}
 
 	@Override
-	final public void onBackPressed ()
+	final public void onBackPressed()
 	{
-		int length = activityIdsList.size();
+		Log.d("FolderActivityGroup.onBackPressed");
+		// If the Back button has been pressed, finish the current (last in history) child activity
+		int length = history.size();
 		if ( length > 1)
 		{
-			Activity current = getLocalActivityManager().getActivity(activityIdsList.get(length-1));
+			Activity current = getLocalActivityManager().getActivity(history.get(length-1));
+			// See FolderActivityGroup.finishFromChild
 			current.finish();
 		}
 		else

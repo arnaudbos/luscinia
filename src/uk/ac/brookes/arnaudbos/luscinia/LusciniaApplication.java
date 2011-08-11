@@ -12,8 +12,7 @@ import roboguice.application.RoboApplication;
 import com.google.inject.Module;
 
 /**
- * @author arnaud
- *
+ * @author arnaudbos
  */
 public class LusciniaApplication extends RoboApplication
 {
@@ -24,12 +23,18 @@ public class LusciniaApplication extends RoboApplication
     {
         modules.add(new LusciniaModule());
     }
-	
+
+	/**
+	 * @return the CouchDbConnector object used as session
+	 */	
 	public static CouchDbConnector getDB()
 	{
 		return _db;
 	}
-	
+
+	/**
+	 * @param db the CouchDbConnector to set as session
+	 */	
 	public static void setDB(CouchDbConnector db)
 	{
 		_db = db;

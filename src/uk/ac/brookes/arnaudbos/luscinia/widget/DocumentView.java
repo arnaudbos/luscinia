@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * View representing a Luscinia document, with an icon and a title
+ * @author arnaudbos
+ */
 public class DocumentView extends RelativeLayout
 {
     private LayoutInflater inflater;
@@ -15,6 +19,13 @@ public class DocumentView extends RelativeLayout
     private ImageView documentPicture;
     private TextView documentText;
 
+    /**
+     * Create a new DocumentView
+     * @param context The context to create the view
+     * @param icon The icon that will be displayed
+     * @param text The title of the document
+     * @param listener The listener that will be used when the DocumentView is clicked
+     */
 	public DocumentView(Context context, Drawable icon, String text, OnClickListener listener)
 	{
         super(context);
@@ -35,20 +46,4 @@ public class DocumentView extends RelativeLayout
         	documentView.setOnClickListener(listener);
         }
     }
-	
-	public void setIcon(Drawable icon)
-	{
-		documentPicture.setImageDrawable(icon);
-	}
-	
-	public String getText()
-	{
-		return documentText.getText().toString();
-	}
-	
-	@Override
-	public void setOnClickListener(OnClickListener l)
-	{
-		documentView.setOnClickListener(l);
-	}
 }

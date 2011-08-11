@@ -75,7 +75,7 @@ public class NursingFolderActivity extends FolderActivityGroup
 		Log.d("NursingFolderActivity.onCreate");
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.folder);
-		this.setTargetLayout(internalContentLayout);
+		this.setChildActivityPlaceHolder(internalContentLayout);
 
         // Initialize the actionBar
         initActionBar();        
@@ -158,7 +158,7 @@ public class NursingFolderActivity extends FolderActivityGroup
 
 		// Fill the patientRestInfosView with the unknown fields of the patient
 		String restInfos = "";
-		for (Map.Entry<String, Object> entry : patient.getProperties().entrySet())
+		for (Map.Entry<String, Object> entry : patient.getUnknownFields().entrySet())
 		{
 			restInfos += entry.getKey() + " " + entry.getValue() + "\n";
 		}
