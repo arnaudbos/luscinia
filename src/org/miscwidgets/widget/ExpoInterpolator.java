@@ -1,5 +1,3 @@
-package org.miscwidgets.widget;
-
 /*
  *
  * Open source under the BSD License. 
@@ -30,6 +28,8 @@ package org.miscwidgets.widget;
  * OF THE POSSIBILITY OF SUCH DAMAGE. 
  *
  */
+
+package org.miscwidgets.widget;
 
 import org.miscwidgets.widget.EasingType.Type;
 
