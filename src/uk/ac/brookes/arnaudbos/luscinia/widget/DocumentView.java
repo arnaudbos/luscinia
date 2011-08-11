@@ -41,11 +41,6 @@ public class DocumentView extends RelativeLayout
 		documentPicture.setImageDrawable(icon);
 	}
 	
-	public void setText(String text)
-	{
-		documentText.setText(text);
-	}
-	
 	public String getText()
 	{
 		return documentText.getText().toString();

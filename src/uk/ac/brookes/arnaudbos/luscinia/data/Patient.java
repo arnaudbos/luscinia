@@ -28,6 +28,7 @@ public class Patient extends CouchDbDocument
 	public Patient()
 	{
 		setDateOfCreation(new Date());
+		setDocType(PATIENT_TYPE);
 	}
 	
 	public Patient(String id, String revision, Date dateOfCreation)
@@ -35,6 +36,7 @@ public class Patient extends CouchDbDocument
 		setId(id);
 		setRevision(revision);
 		setDateOfCreation(dateOfCreation);
+		setDocType(PATIENT_TYPE);
 	}
 
 	@JsonProperty("docType")
@@ -44,7 +46,7 @@ public class Patient extends CouchDbDocument
 	}
 	
 	@JsonProperty("docType")
-	public void setDocType(String docType)
+	private void setDocType(String docType)
 	{
 		this.docType = docType;
 	}

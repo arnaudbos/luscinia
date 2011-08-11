@@ -5,13 +5,9 @@ import java.io.FileOutputStream;
 
 import org.ektorp.AttachmentInputStream;
 
-import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
-import uk.ac.brookes.arnaudbos.luscinia.views.NursingFolderActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.PatientActivity;
-import uk.ac.brookes.arnaudbos.luscinia.views.TransActivity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -21,12 +17,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
+/**
+ * Events listener dedicated to the PatientActivity
+ * @author arnaudbos
+ */
 public class PatientListener implements OnItemClickListener, OnClickListener, OnItemLongClickListener
 {
 	private PatientActivity context;
@@ -35,17 +32,26 @@ public class PatientListener implements OnItemClickListener, OnClickListener, On
 	@Override
 	public void onClick(DialogInterface dialog, int which)
 	{
+		Log.d("PatientListener.DialogInterface.onClick");
 		switch(which)
 		{
 			case PatientActivity.ADD_ADMIN_FOLDER:
+				Log.d("ADD_ADMIN_FOLDER pressed");
+				// TODO: Create a new administrative folder
 				break;
 			case PatientActivity.ADD_NURSING_FOLDER:
+				Log.d("ADD_NURSING_FOLDER pressed");
+				// Create a new nursing folder
 				context.createNursingFolder();
 				break;
 			case PatientActivity.ADD_MEDICAL_FOLDER:
+				Log.d("ADD_MEDICAL_FOLDER pressed");
+				// TODO: Create a new medical folder
 				break;
 
 			case DialogInterface.BUTTON_POSITIVE:
+				Log.d("Button BUTTON_POSITIVE pressed");
+				// Delete the selected folder
 				context.deleteFolder(selectedFolder);
 				break;
 		}
@@ -56,9 +62,12 @@ public class PatientListener implements OnItemClickListener, OnClickListener, On
 	{
 		if(parent instanceof GridView)
 		{
+			Log.d("PatientListener: AttachmentDocumentsGridView.onItemClick");
 			// Try to launch the proper application to open this attachment
 	    	AttachmentInputStream document = (AttachmentInputStream) parent.getAdapter().getItem(position);
 			//byte[] fileBytes = Base64.decode(document.getDataBase64());
+	    	
+	    	// Create a path where the document could be written
 			String filePath;
 			if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
 			{
@@ -68,6 +77,9 @@ public class PatientListener implements OnItemClickListener, OnClickListener, On
 			{
 					filePath = "/data/data/" + context.getPackageName() + "/temp_file."+document.getContentType().substring(document.getContentType().indexOf("/")+1);
 			}
+			Log.d("File path is "+filePath);
+			
+	    	// Try to write the document on disk
 			try
 			{
 				FileOutputStream outputStream = new FileOutputStream(filePath, true);
@@ -79,13 +91,12 @@ public class PatientListener implements OnItemClickListener, OnClickListener, On
 				}
 				outputStream.close();
 				document.close();
+				Log.d("File written successfully");
+
+				// Start a new ACTION_VIEW intent to find an application able to open this kind of document
 				Intent i = new Intent(Intent.ACTION_VIEW);
-				File f = new File(filePath);
-				Uri data = Uri.fromFile(f);
-				Log.i("filePath="+filePath);
-				Log.i("file exists="+f.exists());
-				Log.i("uri="+data.toString());
-				i.setDataAndType(data, document.getContentType());
+				i.setDataAndType(Uri.fromFile(new File(filePath)), document.getContentType());
+				Log.d("Start activity for MIME TYPE="+document.getContentType());
 				context.startActivity(i);
 			}
 			catch (Exception e)
@@ -95,6 +106,8 @@ public class PatientListener implements OnItemClickListener, OnClickListener, On
 		}
 		else if(parent instanceof ListView)
 		{
+			Log.d("PatientListener: FoldersListView.onItemClick");
+			// Start the appropriate folder activity for the selected folder
 			context.launchFolderActivity((Folder)parent.getAdapter().getItem(position));
 		}
 	}
@@ -104,17 +117,25 @@ public class PatientListener implements OnItemClickListener, OnClickListener, On
 	{
 		if(parent instanceof GridView)
 		{
+			Log.d("PatientListener: AttachmentDocumentsGridView.onItemLongClick");
+			// TODO: Show dialog asking confirmation to delete the document
 			return true;
 		}
 		else if(parent instanceof ListView)
 		{
+			Log.d("PatientListener: FoldersListView.onItemLongClick");
+			// Save the selected forlder and display dialog to confirm deletion
 			selectedFolder = (Folder)parent.getAdapter().getItem(position);
 			context.showDialog(PatientActivity.DIALOG_DELETE_FOLDER);
 			return true;
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Set the listener's context
+	 * @param context The context to set
+	 */
 	public void setContext(PatientActivity context)
 	{
 		this.context = context;

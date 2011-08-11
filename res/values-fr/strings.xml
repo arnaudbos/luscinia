@@ -92,16 +92,16 @@
         <item>@string/medical_folder</item>
     </string-array>
 
-    <string name="create_folder_error_title">Erreur de création</string>
+    <string name="create_error_title">Erreur de création</string>
     <string name="create_folder_error_message">Une erreur s\'est produite durant la création du nouveau dossier.</string>
     <string name="create_loading">Création en cours...</string>
 	<string name="folder_loading">Chargement du dossier...</string>
 	<string name="delete">Supprimer</string>
 	<string name="delete_folder_message">Voulez-vous vraiment supprimer ce dossier?</string>
 	<string name="deleting">Suppression...</string>
-	<string name="delete_folder_error_title">Erreur de suppression</string>
+	<string name="delete_error_title">Erreur de suppression</string>
 	<string name="delete_folder_error_message">Une erreur s\'est produite lors de la suppression ou le délai maximum pour supprimer ce dossier a été dépassé.</string>
 	<string name="delete_patient_message">Voulez-vous vraiment supprimer ce patient?</string>
-	<string name="delete_patient_error_title">Erreur de suppression</string>
 	<string name="delete_patient_error_message">Une erreur s\'est produite lors de la suppression ou le délai maximum pour supprimer ce patient a été dépassé.</string>
+    <string name="create_record_error_message">Une erreur s\'est produite durant la création du nouvel enregistrement.</string>
 </resources>

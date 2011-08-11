@@ -9,30 +9,28 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
 
-public class Document extends CouchDbDocument
+public class Record extends CouchDbDocument
 {
-	public static final String DOCUMENT_TYPE = "http://www.sneakernet.fr/luscinia/document";
-	public static final String VIEW_ALL_DOCUMENTS = "_all_documents";
+	public static final String RECORD_TYPE = "http://www.sneakernet.fr/luscinia/record";
+	public static final String VIEW_ALL_RECORDS = "_all_records";
 
 	private String docType;
-	private String folderId;
-	private String title;
-	private String type;
+	private String documentId;
 	private Date date;
 	private Map<String, Object> unknownFields = new HashMap<String, Object>();
 	
-	public Document()
+	public Record()
 	{
 		setDate(new Date());
-		setDocType(DOCUMENT_TYPE);
+		setDocType(RECORD_TYPE);
 	}
 	
-	public Document(String id, String revision, Date date)
+	public Record(String id, String revision, Date date)
 	{
 		setId(id);
 		setRevision(revision);
 		setDate(date);
-		setDocType(DOCUMENT_TYPE);
+		setDocType(RECORD_TYPE);
 	}
 
 	@JsonProperty("docType")
@@ -47,36 +45,16 @@ public class Document extends CouchDbDocument
 		this.docType = docType;
 	}
 
-	@JsonProperty("folder_id")
-	public String getFolderId()
+	@JsonProperty("document_id")
+	public String getDocumentId()
 	{
-		return folderId;
+		return documentId;
 	}
 	
-	@JsonProperty("folder_id")
-	public void setFolderId(String folderId)
+	@JsonProperty("document_id")
+	public void setDocumentId(String documentId)
 	{
-		this.folderId = folderId;
-	}
-
-	public String getTitle()
-	{
-		return title;
-	}
-
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-
-	public String getType()
-	{
-		return type;
-	}
-
-	public void setType(String type)
-	{
-		this.type = type;
+		this.documentId = documentId;
 	}
 
 	public Date getDate()

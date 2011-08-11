@@ -35,6 +35,10 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.markupartist.android.widget.ScrollingTextView;
 
+/**
+ * Activity updating a patient
+ * @author arnaudbos
+ */
 public class EditPatientActivity extends RoboActivity
 {
     final Handler uiThreadCallback = new Handler();
@@ -68,47 +72,39 @@ public class EditPatientActivity extends RoboActivity
 	@InjectResource(R.string.save_error_message) private String saveErrorMessage;
 	@InjectResource(R.string.patient_saved) private String patientSaved;
 
-	final Runnable threadCallBackSuceeded = new Runnable()
-	{
-		public void run()
-		{
-			mProgressDialog.dismiss();
-			Toast.makeText(EditPatientActivity.this, patientSaved, Toast.LENGTH_SHORT).show();
-			setResult(RESULT_OK, getIntent().putExtra("patient", patient));
-			finish();
-		}
-	};
-
-	final Runnable threadCallBackFailed = new Runnable()
-	{
-		public void run()
-		{
-			mProgressDialog.dismiss();
-			showDialog(CreatePatientActivity.DIALOG_SAVE_ERROR);
-		}
-	};
-
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		Log.d("EditPatientActivity.onCreate");
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.create_patient);
         listener.setContext(this);
 
-        prepareActionBar();
-        loadPatient();
+        // Initialize the actionBar
+        initActionBar();
+        // Load the patient into the view
+        renderPatient();
         addButton.setOnClickListener(listener);
 	}
 
-	private void prepareActionBar()
+	/**
+	 * Initialize the actionBar
+	 */
+	private void initActionBar()
 	{
+		Log.d("EditPatientActivity.initActionBar");
 		actionBar.setTitle(title);
-        actionBar.addAction(new StubShareAction());
-        actionBar.addAction(new StubSearchAction());
+//        actionBar.addAction(new StubShareAction());
+//        actionBar.addAction(new StubSearchAction());
 	}
 
-	private void loadPatient()
+	/**
+	 * Render the patient from intent extra into the views
+	 */
+	private void renderPatient()
 	{
+		Log.d("EditPatientActivity.renderPatient");
+		// Retrieve known fields from the patient
 		String firstname = patient.getFirstname();
 		String lastname = patient.getLastname();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,6 +114,7 @@ public class EditPatientActivity extends RoboActivity
 		String weight = Double.toString(patient.getWeight());
 		String size = Double.toString(patient.getSize());
 
+		// If not null, put them into the views
 		if(firstname!=null)
 		{
 			firstnameView.setText(firstname);
@@ -147,9 +144,12 @@ public class EditPatientActivity extends RoboActivity
 			sizeView.setText(size);
 		}
 
+		// For each unknown field add a new patient item and fill it
 		for (Map.Entry<String, Object> entry : patient.getProperties().entrySet())
 		{
+			// Inflate a new patient item
 			final LinearLayout newChild = (LinearLayout) LayoutInflater.from(EditPatientActivity.this).inflate(R.layout.create_patient_item, null);
+			// If the key exists in duplicate, keep only the trunc key and put in into the patient item's key view
 			String key = entry.getKey();
 			if(key.contains("#"))
 			{
@@ -159,18 +159,24 @@ public class EditPatientActivity extends RoboActivity
 			{
 				((ScrollingTextView)newChild.findViewById(R.id.key)).setText(key);
 			}
+			// Get the value and put it into the patient item's value view
 			((EditText)newChild.findViewById(R.id.value)).setText(""+entry.getValue());
+			// Set the kay as the patient item's tag
 			newChild.setTag(key);
 			
+			// Add a listener to the patient item's remove button
 			((ImageButton)newChild.findViewById(R.id.remove)).setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View v)
 				{
+					Log.d("Patient item's remove button onClick");
+					// Remove this patient item (the view and the unknown field from the Patient)
 					linearLayout.removeView(newChild);
 					patient.getProperties().remove(newChild.getTag());
 				}
 			});
+			// Add the new patient item into the activity's view
 			linearLayout.addView(newChild, linearLayout.getChildCount()-1);
 		}
 	}
@@ -178,10 +184,14 @@ public class EditPatientActivity extends RoboActivity
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
+		Log.d("EditPatientActivity.onCreateDialog");
 		switch(id)
 		{
 			case CreatePatientActivity.DIALOG_NEW_ITEM:
+				Log.d("Display DIALOG_NEW_ITEM Alert");
+				// Create an EditText that will get the user input
 				final EditText prompt = new EditText(this);
+				// Create and show the dialog
 				return new AlertDialog.Builder(this)
 					.setTitle(newValueTitle)
 					.setView(prompt)
@@ -190,26 +200,37 @@ public class EditPatientActivity extends RoboActivity
 						@Override
 						public void onClick(DialogInterface dialog, int which) 
 						{
+							Log.d("DIALOG_NEW_ITEM onClick");
+							// Inflate a new patient item
 							final LinearLayout newChild = (LinearLayout) LayoutInflater.from(EditPatientActivity.this).inflate(R.layout.create_patient_item, null);
+							// Retrieve the key from the user input
 							String key = prompt.getText().toString();
+							// Put the key input the patient item key view
 							((ScrollingTextView)newChild.findViewById(R.id.key)).setText(key);
+							// Also set the key in the patient item's tag
 							newChild.setTag(key);
 							
+							// Add a listener to the patient item's delete button
 							((ImageButton)newChild.findViewById(R.id.remove)).setOnClickListener(new View.OnClickListener()
 							{
 								@Override
 								public void onClick(View v)
 								{
+									Log.d("Patient item's remove button onClick");
+									// Remove this patient item (the view)
 									linearLayout.removeView(newChild);
 								}
 							});
+							// Add the new patient item into the activity's view
 							linearLayout.addView(newChild, linearLayout.getChildCount()-1);
+							// Reset the edit text
 							prompt.setText("");
 						}
 					})
 					.setNegativeButton(cancel, null)
 					.create();
 			case CreatePatientActivity.DIALOG_SAVE:
+				Log.d("Display DIALOG_SAVE Alert");
 				return new AlertDialog.Builder(this)
 					.setTitle(quit)
 					.setMessage(returnMessage)
@@ -218,6 +239,7 @@ public class EditPatientActivity extends RoboActivity
 					.setNegativeButton(cancel, null)
 					.create();
 			case CreatePatientActivity.DIALOG_SAVE_ERROR:
+				Log.d("Display DIALOG_SAVE_ERROR Alert");
 				return new AlertDialog.Builder(this)
 					.setTitle(saveErrorTitle)
 					.setMessage(saveErrorMessage)
@@ -230,6 +252,7 @@ public class EditPatientActivity extends RoboActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
+		Log.d("EditPatientActivity.onCreateOptionsMenu");
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.create_patient, menu);
 		return true;
@@ -238,10 +261,13 @@ public class EditPatientActivity extends RoboActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
+		Log.d("EditPatientActivity.onOptionsItemSelected");
 		switch(item.getItemId())
 		{
 			case R.id.save:
-				savePatient();
+				Log.d("Save menu pressed");
+				// Update the patient
+				updatePatient();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -251,7 +277,131 @@ public class EditPatientActivity extends RoboActivity
 	@Override
 	public void onBackPressed()
 	{
+		Log.d("EditPatientActivity.onBackPressed");
+		// Show the DIALOG_SAVE alert to confirm the update of discard of the patient
 		showDialog(CreatePatientActivity.DIALOG_SAVE);
+	}
+	
+	/**
+	 * Update the patient into the database
+	 */
+	public void updatePatient()
+	{
+		Log.d("EditPatientActivity.updatePatient");
+		// Launch an indeterminate ProgressBar in the UI while updating the patient in a new thread
+    	mProgressDialog = ProgressDialog.show(this, "", saveLoading, true);
+
+    	// Create a Runnable that will be executed if the update succeeds
+    	final Runnable threadCallBackSuceeded = new Runnable()
+    	{
+    		public void run()
+    		{
+    			Log.d("Patient updated successfully");
+    			// Hide the ProgressBar and return to DashboardActivity with the Patient as result
+    			mProgressDialog.dismiss();
+    			Toast.makeText(EditPatientActivity.this, patientSaved, Toast.LENGTH_SHORT).show();
+    			setResult(RESULT_OK, getIntent().putExtra("patient", patient));
+    			finish();
+    		}
+    	};
+
+    	// Create a Runnable that will be executed if the update fails
+    	final Runnable threadCallBackFailed = new Runnable()
+    	{
+    		public void run()
+    		{
+    			Log.d("Update patient failed");
+    			// Hide the ProgressBar and open an Alert with an error message
+    			mProgressDialog.dismiss();
+    			showDialog(CreatePatientActivity.DIALOG_SAVE_ERROR);
+    		}
+    	};
+
+    	// Create the separate thread that will update the patient and start it
+		new Thread()
+		{
+			@Override public void run()
+			{
+				try
+				{
+	    			Log.d("Update the patient");
+					Patient p = getPatient();
+					LusciniaApplication.getDB().update(p);
+					patient = p;
+					uiThreadCallback.post(threadCallBackSuceeded);
+				}
+				catch (Exception e)
+				{
+					Log.e("Create patient failed", e);
+					uiThreadCallback.post(threadCallBackFailed);
+				}
+			}
+		}.start();
+	}
+	
+	/**
+	 * Return a new Patient object created from the views
+	 * @return a Patient object
+	 * @throws ParseException if the date is not in the right format
+	 */
+	private Patient getPatient() throws ParseException
+	{
+		Log.d("CreatePatientActivity.getPatient");
+		// Create a new Patient from the existing one
+		Patient patient = new Patient(this.patient.getId(), this.patient.getRevision(), this.patient.getDateOfCreation());
+		
+		// Retrieve the fields from the views
+		String firstname = firstnameView.getText().toString();
+		String lastname = lastnameView.getText().toString();
+		String dob = dobView.getText().toString();
+		String insee = inseeView.getText().toString();
+		String telephone = telephoneView.getText().toString();
+		String weightString = weightView.getText().toString();
+		String sizeString = sizeView.getText().toString();
+
+		// For each field, add it to the Patient only if filled
+		if (firstname !=null && !firstname.equals(""))
+		{
+			patient.setFirstname(firstname);
+		}
+		if (lastname !=null && !lastname.equals(""))
+		{
+			patient.setLastname(lastname);
+		}
+		if (dob !=null && !dob.equals(""))
+		{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			patient.setDateOfBirth(dateFormat.parse(dob));
+		}
+		if (insee !=null && !insee.equals(""))
+		{
+			patient.setInsee(insee);
+		}
+		if (telephone !=null && !telephone.equals(""))
+		{
+			patient.setTelephone(telephone);
+		}
+		if (weightString !=null && !weightString.equals(""))
+		{
+			patient.setWeight(Double.valueOf(weightString));
+		}
+		if (sizeString !=null && !sizeString.equals(""))
+		{
+			patient.setSize(Double.valueOf(sizeString));
+		}
+
+		// Run through all unknown fields and add them to the Patient
+		int i=7;
+		while (i<linearLayout.getChildCount()-1)
+		{
+			LinearLayout child = (LinearLayout) linearLayout.getChildAt(i);
+//				String key = (String) child.findViewById(R.id.key).getTag();
+			String key = (String) child.getTag();
+			String value = ((EditText)child.findViewById(R.id.value)).getText().toString();
+			patient.add(key, value);
+			i++;
+		}
+		return patient;
 	}
 
 	/**
@@ -293,91 +443,8 @@ public class EditPatientActivity extends RoboActivity
 	/**
 	 * @return the linearLayout
 	 */
-	public LinearLayout getLinearLayout() {
+	public LinearLayout getLinearLayout()
+	{
 		return linearLayout;
 	};
-	
-	public void savePatient()
-	{
-    	mProgressDialog = ProgressDialog.show(this, "", saveLoading, true);
-		new Thread()
-		{
-			@Override public void run()
-			{
-				try
-				{
-					Patient p = getPatient();
-					LusciniaApplication.getDB().update(p);
-					patient = p;
-					uiThreadCallback.post(threadCallBackSuceeded);
-				}
-				catch (Exception e)
-				{
-					Log.e("Create patient failed", e);
-					uiThreadCallback.post(threadCallBackFailed);
-				}
-			}
-		}.start();
-	}
-	
-	public Patient getPatient() throws ParseException
-	{
-		Patient patient = new Patient(this.patient.getId(), this.patient.getRevision(), this.patient.getDateOfCreation());
-		patient.setDocType(Patient.PATIENT_TYPE);
-		String firstname = firstnameView.getText().toString();
-		String lastname = lastnameView.getText().toString();
-		String dob = dobView.getText().toString();
-		String insee = inseeView.getText().toString();
-		String telephone = telephoneView.getText().toString();
-		String weightString = weightView.getText().toString();
-		String sizeString = sizeView.getText().toString();
-
-		if (firstname !=null && !firstname.equals(""))
-		{
-			patient.setFirstname(firstname);
-		}
-
-		if (lastname !=null && !lastname.equals(""))
-		{
-			patient.setLastname(lastname);
-		}
-
-		if (dob !=null && !dob.equals(""))
-		{
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			patient.setDateOfBirth(dateFormat.parse(dob));
-		}
-
-		if (insee !=null && !insee.equals(""))
-		{
-			patient.setInsee(insee);
-		}
-
-		if (telephone !=null && !telephone.equals(""))
-		{
-			patient.setTelephone(telephone);
-		}
-
-		if (weightString !=null && !weightString.equals(""))
-		{
-			patient.setWeight(Double.valueOf(weightString));
-		}
-
-		if (sizeString !=null && !sizeString.equals(""))
-		{
-			patient.setSize(Double.valueOf(sizeString));
-		}
-		
-		int i=7;
-		while (i<linearLayout.getChildCount()-1)
-		{
-			LinearLayout child = (LinearLayout) linearLayout.getChildAt(i);
-//			String key = (String) child.findViewById(R.id.key).getTag();
-			String key = (String) child.getTag();
-			String value = ((EditText)child.findViewById(R.id.value)).getText().toString();
-			patient.add(key, value);
-			i++;
-		}
-		return patient;
-	}
 }

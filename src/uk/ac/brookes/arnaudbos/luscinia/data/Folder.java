@@ -27,6 +27,15 @@ public class Folder extends CouchDbDocument
 	public Folder()
 	{
 		setDate(new Date());
+		setDocType(FOLDER_TYPE);
+	}
+	
+	public Folder(String id, String revision, Date date)
+	{
+		setId(id);
+		setRevision(revision);
+		setDate(date);
+		setDocType(FOLDER_TYPE);
 	}
 
 	@JsonProperty("docType")
@@ -36,7 +45,7 @@ public class Folder extends CouchDbDocument
 	}
 	
 	@JsonProperty("docType")
-	public void setDocType(String docType)
+	private void setDocType(String docType)
 	{
 		this.docType = docType;
 	}
@@ -78,7 +87,7 @@ public class Folder extends CouchDbDocument
 		return date;
 	}
 
-	public void setDate(Date date)
+	private void setDate(Date date)
 	{
 		this.date = date;
 	}
