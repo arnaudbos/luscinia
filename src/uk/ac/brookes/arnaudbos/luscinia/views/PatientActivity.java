@@ -192,6 +192,7 @@ public class PatientActivity extends RoboActivity
 					// Get all its attachments
 					if(patient.getAttachments() != null)
 					{
+						attachments = new ArrayList<AttachmentInputStream>();
 						for (Iterator<String> it = patient.getAttachments().keySet().iterator() ; it.hasNext() ;)
 						{
 							String attachment_id = it.next();
@@ -203,6 +204,7 @@ public class PatientActivity extends RoboActivity
 
 	    			Log.d("Query "+Folder.VIEW_ALL_FOLDERS+" view with key="+patient.getId());
 					// Execute the view query and retrieve the folders
+	    			folders = new ArrayList<Folder>();
 					folders.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Folder.VIEW_ALL_FOLDERS).key(patient.getId()), Folder.class));
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}

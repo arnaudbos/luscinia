@@ -122,4 +122,5 @@
 	<string name="delete_patient_message">Are you sure?</string>
 	<string name="delete_patient_error_message">An error has occurred while deleting or the limit time to delete this patient has elapsed.</string>
     <string name="create_record_error_message">An error has occurred while creating the new record.</string>
+	<string name="records_loading">Records loading...</string>
 </resources>

@@ -20,7 +20,11 @@
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import org.ektorp.ViewQuery;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectExtra;
@@ -61,10 +65,12 @@ public class TransActivity extends RoboActivity
 	public static final int DIALOG_TIME_ELAPSED = 102;
 	public static final int DIALOG_CREATE_RECORD_ERROR = 103;
 	public static final int DIALOG_UPDATE_RECORD_ERROR = 104;
+	public static final int DIALOG_LOAD_ERROR = 105;
 
 	final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
     private TransRecord newRecord;
+    private List<TransRecord> records = new ArrayList<TransRecord>();
 
 	@Inject private TransListener listener;
 
@@ -91,6 +97,9 @@ public class TransActivity extends RoboActivity
 	@InjectResource(R.string.save_loading) private String saveLoading;
 	@InjectResource(R.string.save_error_title) private String saveErrorTitle;
 	@InjectResource(R.string.save_error_message) private String saveErrorMessage;
+	@InjectResource(R.string.records_loading) private String recordsLoading;
+	@InjectResource(R.string.load_error_title) private String loadErrorTitle;
+	@InjectResource(R.string.load_error_message) private String loadErrorMessage;
 
 	private TableRow selectedRow;
 	private TableLayout dialogTableView;
@@ -105,6 +114,71 @@ public class TransActivity extends RoboActivity
 		listener.setContext(this);
 
 		validateButton.setOnClickListener(listener);
+	}
+	
+	@Override
+	protected void onStart()
+	{
+    	Log.d("TransActivity.onStart");
+		super.onStart();
+		
+		// Load the records from the database
+		loadRecords();
+	}
+
+	/**
+	 * Retrieve the records of the document from the database
+	 */
+	private void loadRecords()
+	{
+		Log.d("TransActivity.loadRecords");
+		// Launch an indeterminate ProgressBar in the UI while retrieving the records list in a new thread
+    	mProgressDialog = ProgressDialog.show(this, "", recordsLoading, true);
+
+    	// Create a Runnable that will be executed if the query succeeds
+    	final Runnable threadCallBackSuceeded = new Runnable()
+    	{
+    		public void run()
+    		{
+    			Log.d("Query executed successfully");
+    			// Hide the ProgressBar and render the records table
+    			mProgressDialog.dismiss();
+    			renderTableView();
+    		}
+    	};
+
+    	// Create a Runnable that will be executed if the query fails
+    	final Runnable threadCallBackFailed = new Runnable()
+    	{
+    		public void run()
+    		{
+    			Log.d("View query failed");
+    			// Hide the ProgressBar and open an Alert with an error message
+    			mProgressDialog.dismiss();
+    			showDialog(DIALOG_LOAD_ERROR);
+    		}
+    	};
+
+    	// Create the separate thread that will retrieve the patients thanks to a view query and start it
+		new Thread()
+		{
+			@Override public void run()
+			{
+				try
+				{
+	    			Log.d("Query "+Record.VIEW_ALL_RECORDS+" view");
+					// Execute the view query and retrieve the records
+	    			records = new ArrayList<TransRecord>();
+					records.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Record.VIEW_ALL_RECORDS), TransRecord.class));
+					uiThreadCallback.post(threadCallBackSuceeded);
+				}
+				catch (Exception e)
+				{
+					Log.e("Execute view query "+Record.VIEW_ALL_RECORDS+" failed", e);
+					uiThreadCallback.post(threadCallBackFailed);
+				}
+			}
+		}.start();
 	}
 	
 	@Override
@@ -139,6 +213,13 @@ public class TransActivity extends RoboActivity
 				return new AlertDialog.Builder(this)
 					.setTitle(saveErrorTitle)
 					.setMessage(saveErrorMessage)
+					.setPositiveButton(ok, null)
+					.create();
+			case DIALOG_LOAD_ERROR:
+				Log.d("Display DIALOG_LOAD_ERROR Alert");
+				return new AlertDialog.Builder(this)
+					.setTitle(loadErrorTitle)
+					.setMessage(loadErrorMessage)
 					.setPositiveButton(ok, null)
 					.create();
 		}
@@ -203,7 +284,7 @@ public class TransActivity extends RoboActivity
     			Log.d("Record created successfully");
     			// Hide the ProgressBar and render the new record
     			mProgressDialog.dismiss();
-    			renderNewRecord();
+    			renderNewRecord(newRecord);
     		}
     	};
 
@@ -319,9 +400,21 @@ public class TransActivity extends RoboActivity
 	}
 
 	/**
-	 * Render the record into the a new row and add it to the table
+	 * Render the tavle view with the list of records of this document
 	 */
-	private void renderNewRecord()
+	private void renderTableView()
+	{
+		Log.d("TransActivity.renderTableView");
+		for(TransRecord currentRecord : records)
+		{
+			renderNewRecord(currentRecord);
+		}
+	}
+
+	/**
+	 * Render the given record into a new row and add it to the table
+	 */
+	private void renderNewRecord(TransRecord newRecord)
 	{
 		Log.d("TransActivity.renderNewRecord");
 		// Inflate a new tableRow
@@ -345,6 +438,11 @@ public class TransActivity extends RoboActivity
 		}
 	}
 	
+	/**
+	 * Render the given record into the given row
+	 * @param row The row in which the record will be rendered
+	 * @param record The record to render
+	 */
 	private void renderRecord(TableRow row, TransRecord record)
 	{
 		Log.d("TransActivity.renderRecord");

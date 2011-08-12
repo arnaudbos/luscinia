@@ -189,7 +189,8 @@ public class DashboardActivity extends RoboActivity
 				{
 	    			Log.d("Query "+Patient.VIEW_ALL_PATIENTS+" view");
 					// Execute the view query and retrieve the patients
-					patients = LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Patient.VIEW_ALL_PATIENTS), Patient.class);
+	    			patients = new ArrayList<Patient>();
+					patients.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Patient.VIEW_ALL_PATIENTS), Patient.class));
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)

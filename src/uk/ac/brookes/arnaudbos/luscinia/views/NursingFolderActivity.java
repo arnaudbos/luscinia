@@ -226,6 +226,7 @@ public class NursingFolderActivity extends FolderActivityGroup
 				{
 	    			Log.d("Query "+Document.VIEW_ALL_DOCUMENTS+" view with key="+folder.getId());
 					// Execute the view query and retrieve the documents
+	    			documents = new ArrayList<Document>();
 					documents = LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Document.VIEW_ALL_DOCUMENTS).key(folder.getId()), Document.class);
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
