@@ -33,7 +33,6 @@ import android.view.View.OnLongClickListener;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 /**
  * Events listener dedicated to the TransActivity
@@ -68,7 +67,7 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 		else
 		{
 			Log.d("Fields ready");
-			// Create a new records
+			// Create a new record
 			context.createRecord(focus, data, actions, results);
 		}
 	}
@@ -78,9 +77,10 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 	{
 		Log.d("TransListener.onLongClick");
 		TableRow selectedRow = (TableRow) view;
+		TransRecord record = (TransRecord)selectedRow.getTag();
 		Date now = new Date();
 		// Calculate the difference between now and the date of creation of the record and pass only if delay < 15 minutes
-		if(now.getTime() - ((TransRecord)selectedRow.getTag()).getDate().getTime() > 900000)
+		if(now.getTime() - record.getDate().getTime() > 900000)
 		{
 			// Display DIALOG_TIME_ELAPSED Alert
 			context.showDialog(TransActivity.DIALOG_TIME_ELAPSED);
@@ -90,7 +90,7 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 		{
 			// Pass the selected row to the context and display the DIALOG_UPDATE_ROW Alert
 			context.setSelectedRow(selectedRow);
-			context.showDialog(TransActivity.DIALOG_UPDATE_ROW);
+			context.showRowUpdateDialog();
 		}
 
 		return true;
@@ -104,16 +104,33 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 		{
 			case Dialog.BUTTON_POSITIVE:
 				Log.d("BUTTON_POSITIVE pressed");
-				//TODO: Update the Record
-				TransRecord selectedRecord = (TransRecord)context.getSelectedRow().getTag();
 
 				TableLayout dialogTableView = context.getDialogTableView();
-	        	((TextView)context.getSelectedRow().findViewById(R.id.focus_view)).setText(((EditText)dialogTableView.findViewById(R.id.focus_edit)).getText().toString());
-	        	((TextView)context.getSelectedRow().findViewById(R.id.data_view)).setText(((EditText)dialogTableView.findViewById(R.id.data_edit)).getText().toString());
-	        	((TextView)context.getSelectedRow().findViewById(R.id.actions_view)).setText(((EditText)dialogTableView.findViewById(R.id.actions_edit)).getText().toString());
-	        	((TextView)context.getSelectedRow().findViewById(R.id.results_view)).setText(((EditText)dialogTableView.findViewById(R.id.results_edit)).getText().toString());
-				break;
+	        	focus = ((EditText)dialogTableView.findViewById(R.id.focus_edit)).getText().toString();
+	        	data = ((EditText)dialogTableView.findViewById(R.id.data_edit)).getText().toString();
+	        	actions = ((EditText)dialogTableView.findViewById(R.id.actions_edit)).getText().toString();
+	        	results = ((EditText)dialogTableView.findViewById(R.id.results_edit)).getText().toString();
+	    		
+	    		// One field at least must be filled
+	    		if ((focus == null || focus.equals("")) &&
+	    			(data == null || data.equals("")) &&
+	    			(actions == null || actions.equals("")) &&
+	    			(results == null || results.equals(""))
+	    			)
+	    		{
+	    			Log.d("No field is filled");
+	    			// Show the DIALOG_EMPTY_FIELD Alert
+	    			context.showDialog(TransActivity.DIALOG_EMPTY_FIELD);
+	    		}
+	    		else
+	    		{
+	    			Log.d("Fields ready");
+	    			// Update the selected record
+	    			context.updateRecord(focus, data, actions, results);
+	    		}
+	        	break;
 			case Dialog.BUTTON_NEGATIVE:
+				context.setSelectedRow(null);
 				break;
 		}
 	}

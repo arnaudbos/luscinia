@@ -98,7 +98,7 @@
     <string name="discard">Discard</string>
     <string name="save_loading">Saving...</string>
     <string name="save_error_title">Error on save</string>
-    <string name="save_error_message">An error has occurred while saving the new patient.</string>
+    <string name="save_error_message">An error has occurred while saving.</string>
     <string name="patient_saved">Patient saved successfully.</string>
 
     <string name="administrative_folder">Administrative folder</string>

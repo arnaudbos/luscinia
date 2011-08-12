@@ -98,7 +98,7 @@
     <string name="discard">Quitter</string>
     <string name="save_loading">Sauvegarde en cours...</string>
     <string name="save_error_title">Erreur de sauvegarde</string>
-    <string name="save_error_message">Une erreur s\'est produite durant la sauvegarde du nouveau patient.</string>
+    <string name="save_error_message">Une erreur s\'est produite durant la sauvegarde.</string>
     <string name="patient_saved">Patient sauvegardé.</string>
 
     <string name="administrative_folder">Dossier administratif</string>

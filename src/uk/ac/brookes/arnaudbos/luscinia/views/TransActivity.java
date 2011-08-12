@@ -59,8 +59,8 @@ public class TransActivity extends RoboActivity
 {
 	public static final int DIALOG_EMPTY_FIELD = 101;
 	public static final int DIALOG_TIME_ELAPSED = 102;
-	public static final int DIALOG_UPDATE_ROW = 103;
-	public static final int DIALOG_CREATE_RECORD_ERROR = 104;
+	public static final int DIALOG_CREATE_RECORD_ERROR = 103;
+	public static final int DIALOG_UPDATE_RECORD_ERROR = 104;
 
 	final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
@@ -88,9 +88,13 @@ public class TransActivity extends RoboActivity
 	@InjectResource(R.string.create_loading) private String createLoading;
 	@InjectResource(R.string.create_error_title) private String createErrorTitle;
 	@InjectResource(R.string.create_folder_error_message) private String createRecordErrorMessage;
+	@InjectResource(R.string.save_loading) private String saveLoading;
+	@InjectResource(R.string.save_error_title) private String saveErrorTitle;
+	@InjectResource(R.string.save_error_message) private String saveErrorMessage;
 
 	private TableRow selectedRow;
 	private TableLayout dialogTableView;
+	private ScrollView dialogScrollView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -102,11 +106,11 @@ public class TransActivity extends RoboActivity
 
 		validateButton.setOnClickListener(listener);
 	}
-
+	
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
-		Log.d("PatientTransActivity.onCreateDialog");
+		Log.d("TransActivity.onCreateDialog id="+id);
 		switch (id)
 		{
 			case DIALOG_EMPTY_FIELD:
@@ -123,25 +127,6 @@ public class TransActivity extends RoboActivity
 				.setMessage(dialogTimeElapsedErrorMessage)
 				.setNegativeButton(ok, null)
 				.create();
-			case DIALOG_UPDATE_ROW:
-				Log.d("Display DIALOG_UPDATE_ROW Alert");
-				// Inflate a new trans item and fill it with the content from the selected row's record
-				TransRecord record = (TransRecord) selectedRow.getTag();
-	
-				ScrollView scroll = (ScrollView)LayoutInflater.from(this).inflate(R.layout.trans_update_item, null);
-				dialogTableView = (TableLayout)scroll.findViewById(R.id.table_view);
-				((EditText)dialogTableView.findViewById(R.id.focus_edit)).setText(record.getFocus());
-				((EditText)dialogTableView.findViewById(R.id.data_edit)).setText(record.getData());
-				((EditText)dialogTableView.findViewById(R.id.actions_edit)).setText(record.getActions());
-				((EditText)dialogTableView.findViewById(R.id.results_edit)).setText(record.getResults());
-	
-				// Display the dialog with the trans item view
-				return new AlertDialog.Builder(this)
-					.setTitle(update)
-					.setView(scroll)
-					.setPositiveButton(save, listener)
-					.setNegativeButton(cancel, listener)
-					.create();
 			case DIALOG_CREATE_RECORD_ERROR:
 				Log.d("Display DIALOG_CREATE_RECORD_ERROR Alert");
 				return new AlertDialog.Builder(this)
@@ -149,8 +134,37 @@ public class TransActivity extends RoboActivity
 					.setMessage(createRecordErrorMessage)
 					.setPositiveButton(ok, null)
 					.create();
+			case DIALOG_UPDATE_RECORD_ERROR:
+				Log.d("Display DIALOG_UPDATE_RECORD_ERROR Alert");
+				return new AlertDialog.Builder(this)
+					.setTitle(saveErrorTitle)
+					.setMessage(saveErrorMessage)
+					.setPositiveButton(ok, null)
+					.create();
 		}
 		return null;
+	}
+	
+	public void showRowUpdateDialog()
+	{
+		Log.d("TransActivity.showRowUpdateDialog");
+		// Inflate a new trans item and fill it with the content from the selected row's record
+		TransRecord record = (TransRecord) selectedRow.getTag();
+
+		dialogScrollView = (ScrollView)LayoutInflater.from(this).inflate(R.layout.trans_update_item, null);
+		dialogTableView = (TableLayout)dialogScrollView.findViewById(R.id.table_view);
+		((EditText)dialogTableView.findViewById(R.id.focus_edit)).setText(record.getFocus());
+		((EditText)dialogTableView.findViewById(R.id.data_edit)).setText(record.getData());
+		((EditText)dialogTableView.findViewById(R.id.actions_edit)).setText(record.getActions());
+		((EditText)dialogTableView.findViewById(R.id.results_edit)).setText(record.getResults());
+
+		// Display the dialog with the trans item view
+		new AlertDialog.Builder(this)
+			.setTitle(update)
+			.setView(dialogScrollView)
+			.setPositiveButton(save, listener)
+			.setNegativeButton(cancel, listener)
+			.create().show();
 	}
 
 	@Override
@@ -187,7 +201,7 @@ public class TransActivity extends RoboActivity
     		public void run()
     		{
     			Log.d("Record created successfully");
-    			// Hide the ProgressBar and notify dataset changed to the folders ListView adapter
+    			// Hide the ProgressBar and render the new record
     			mProgressDialog.dismiss();
     			renderNewRecord();
     		}
@@ -214,7 +228,9 @@ public class TransActivity extends RoboActivity
 				try
 				{
 	    			Log.d("Create the record");
-					LusciniaApplication.getDB().create(getRecord(focus, data, actions, results));
+	    			newRecord = new TransRecord();
+	    			newRecord.setId(UUID.randomUUID().toString());
+					LusciniaApplication.getDB().create(fillRecord(newRecord, focus, data, actions, results));
 
 					uiThreadCallback.post(recordCreationSucceeded);
 				}
@@ -228,22 +244,78 @@ public class TransActivity extends RoboActivity
 	}
 	
 	/**
-	 * Return a new Record object
+	 * Return a the record filled with document Id (from activity), focus, data, actions and results fields
 	 * @return a Record object
 	 */
-	private Record getRecord(String focus, String data, String actions, String results)
+	private Record fillRecord(TransRecord record, String focus, String data, String actions, String results)
 	{
-		Log.d("TransActivity.getRecord");
-		// Create a new Record
-		newRecord = new TransRecord(); 
-		newRecord.setId(UUID.randomUUID().toString());
-		newRecord.setDocumentId(document.getId());
-		newRecord.setFocus(focus);
-		newRecord.setData(data);
-		newRecord.setActions(actions);
-		newRecord.setResults(results);
+		Log.d("TransActivity.fillRecord");
+		record.setDocumentId(document.getId());
+		record.setFocus(focus);
+		record.setData(data);
+		record.setActions(actions);
+		record.setResults(results);
 		
-		return newRecord;
+		return record;
+	}
+
+	/**
+	 * Update the selected record
+	 */
+	public void updateRecord(final String focus, final String data, final String actions, final String results)
+	{
+		Log.d("TransActivity.updateRecord");
+		// Launch an indeterminate ProgressBar in the UI while updating the records in a new thread
+    	mProgressDialog = ProgressDialog.show(this, "", saveLoading, true);
+
+    	// Create a Runnable that will be executed if the update succeeds
+    	final Runnable recordCreationSucceeded = new Runnable()
+    	{
+    		public void run()
+    		{
+    			Log.d("Record updated successfully");
+    			// Hide the ProgressBar and re-render the selected row
+    			mProgressDialog.dismiss();
+    			renderRecord(selectedRow, (TransRecord) selectedRow.getTag());
+    			selectedRow = null;
+    		}
+    	};
+
+    	// Create a Runnable that will be executed if the update fails
+    	final Runnable recordCreationFailed = new Runnable()
+    	{
+    		public void run()
+    		{
+    			Log.d("Update record failed");
+    			// Hide the ProgressBar and open an Alert with an error message
+    			selectedRow = null;
+    			mProgressDialog.dismiss();
+    			showDialog(DIALOG_UPDATE_RECORD_ERROR);
+    		}
+    	};
+
+    	// Create the separate thread that will update the record and start it
+		new Thread()
+		{
+			@Override public void run()
+			{
+				try
+				{
+	    			Log.d("Update the record");
+	    			TransRecord oldRecord = (TransRecord) selectedRow.getTag();
+	    			TransRecord record = new TransRecord(oldRecord.getId(), oldRecord.getRevision(), oldRecord.getDate());
+					LusciniaApplication.getDB().update(fillRecord(record, focus, data, actions, results));
+					selectedRow.setTag(record);
+
+					uiThreadCallback.post(recordCreationSucceeded);
+				}
+				catch (Exception e)
+				{
+					Log.e("Create record failed", e);
+					uiThreadCallback.post(recordCreationFailed);
+				}
+			}
+		}.start();
 	}
 
 	/**
@@ -259,17 +331,7 @@ public class TransActivity extends RoboActivity
 		newRow.setOnLongClickListener(listener);
 
 		// Fill in the trans item row with the fields from the new record
-		TextView dateView = (TextView) newRow.findViewById(R.id.date_view);
-		SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy\nHH:mm:ss");
-		dateView.setText(s.format(newRecord.getDate()));
-		TextView focusView = (TextView) newRow.findViewById(R.id.focus_view);
-		focusView.setText(newRecord.getFocus());
-		TextView dataView = (TextView) newRow.findViewById(R.id.data_view);
-		dataView.setText(newRecord.getData());
-		TextView actionsView = (TextView) newRow.findViewById(R.id.actions_view);
-		actionsView.setText(newRecord.getActions());
-		TextView resultsView = (TextView) newRow.findViewById(R.id.results_view);
-		resultsView.setText(newRecord.getResults());
+		renderRecord(newRow, newRecord);
 		
 		// Insert the new TableRow as last TableLayout row before the EditTexts and validation Button
 		tableView.addView(newRow, tableView.getChildCount()-2);
@@ -282,12 +344,30 @@ public class TransActivity extends RoboActivity
 			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 		}
 	}
+	
+	private void renderRecord(TableRow row, TransRecord record)
+	{
+		Log.d("TransActivity.renderRecord");
+		// Fill in the trans item row with the fields from the new record
+		TextView dateView = (TextView) row.findViewById(R.id.date_view);
+		SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy\nHH:mm:ss");
+		dateView.setText(s.format(record.getDate()));
+		TextView focusView = (TextView) row.findViewById(R.id.focus_view);
+		focusView.setText(record.getFocus());
+		TextView dataView = (TextView) row.findViewById(R.id.data_view);
+		dataView.setText(record.getData());
+		TextView actionsView = (TextView) row.findViewById(R.id.actions_view);
+		actionsView.setText(record.getActions());
+		TextView resultsView = (TextView) row.findViewById(R.id.results_view);
+		resultsView.setText(record.getResults());
+	}
 
 	/**
 	 * @return the tableView
 	 */
 	public TableLayout getTableView()
 	{
+		Log.d("TransActivity.getTableView");
 		return tableView;
 	}
 
@@ -296,6 +376,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public String getFocus()
 	{
+		Log.d("TransActivity.getFocus");
 		return focusEdit.getText().toString();
 	}
 
@@ -304,6 +385,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public String getData()
 	{
+		Log.d("TransActivity.getData");
 		return dataEdit.getText().toString();
 	}
 
@@ -312,6 +394,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public String getActions()
 	{
+		Log.d("TransActivity.getActions");
 		return actionsEdit.getText().toString();
 	}
 
@@ -320,6 +403,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public String getResults()
 	{
+		Log.d("TransActivity.getResults");
 		return resultsEdit.getText().toString();
 	}
 
@@ -328,6 +412,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public void resetEditTexts()
 	{
+		Log.d("TransActivity.resetEditTexts");
 		focusEdit.setText("");
 		dataEdit.setText("");
 		actionsEdit.setText("");
@@ -339,6 +424,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public TableLayout getDialogTableView()
 	{
+		Log.d("TransActivity.getDialogTableView");
 		return dialogTableView;
 	}
 
@@ -347,6 +433,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public void setSelectedRow(TableRow selectedRow)
 	{
+		Log.d("TransActivity.setSelectedRow");
 		this.selectedRow = selectedRow;
 	}
 
@@ -355,6 +442,7 @@ public class TransActivity extends RoboActivity
 	 */
 	public TableRow getSelectedRow()
 	{
+		Log.d("TransActivity.getSelectedRow");
 		return selectedRow;
 	}
 }
