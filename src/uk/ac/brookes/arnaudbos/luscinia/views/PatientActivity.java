@@ -459,25 +459,25 @@ public class PatientActivity extends RoboActivity
 				{
 	    			Log.d("Create the folder");
 					Folder newFolder = new Folder();
-					newFolder.setId(UUID.randomUUID().toString());
+//					newFolder.setId(UUID.randomUUID().toString());
 					newFolder.setPatientId(patient.getId());
 					newFolder.setType(Folder.NURSING_FOLDER_TYPE);
 					newFolder.setTitle(nursingCaresFolder);
 					LusciniaApplication.getDB().create(newFolder);
 
-	    			Log.d("Create the default TRANS document associated");
-					Document trans = new Document();
-					trans.setType(TemplateActivityMapper.TRANS.toString());
-					trans.setTitle("Transmissions ciblées week X");
-					trans.setFolderId(newFolder.getId());
-					LusciniaApplication.getDB().create(trans);
-
-	    			Log.d("Create the default MACROCIBLE document associated");
-					Document macro = new Document();
-					macro.setType(TemplateActivityMapper.MACROCIBLE.toString());
-					macro.setTitle("Macrocible xyz");
-					macro.setFolderId(newFolder.getId());
-					LusciniaApplication.getDB().create(macro);
+//	    			Log.d("Create the default MACROCIBLE document associated");
+//					Document macro = new Document();
+//					macro.setType(TemplateActivityMapper.MACROCIBLE.toString());
+//					macro.setTitle("Macrocible xyz");
+//					macro.setFolderId(newFolder.getId());
+//					LusciniaApplication.getDB().create(macro);
+//
+//	    			Log.d("Create the default TRANS document associated");
+//					Document trans = new Document();
+//					trans.setType(TemplateActivityMapper.TRANS.toString());
+//					trans.setTitle("Transmissions ciblées week X");
+//					trans.setFolderId(newFolder.getId());
+//					LusciniaApplication.getDB().create(trans);
 
 					// Add the folder to the list of folders
 					folders.add(newFolder);

@@ -20,6 +20,7 @@
 <resources>
     <string name="hello">Hello World, Luscinia!</string>
     <string name="app_name">Luscinia</string>
+    <string name="week">semaine</string>
     <string name="dashboard_title">Tableau de bord: </string>
     <string name="patient_title">Patient: </string>
     <string name="ok">OK</string>
@@ -123,4 +124,12 @@
 	<string name="delete_patient_error_message">Une erreur s\'est produite lors de la suppression ou le délai maximum pour supprimer ce patient a été dépassé.</string>
     <string name="create_record_error_message">Une erreur s\'est produite durant la création du nouvel enregistrement.</string>
 	<string name="records_loading">Chargement des enregistrements...</string>
+
+    <string name="trans_document">Transmissions ciblées</string>
+    <string name="macrocible_document">Fiche macrocible</string>
+    <string-array name="folder_add_document_dialog">
+        <item>@string/trans_document</item>
+        <item>@string/macrocible_document</item>
+    </string-array>
+    <string name="create_document_error_message">Une erreur s\'est produite durant la création du nouveau document.</string>
 </resources>

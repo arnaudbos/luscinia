@@ -142,10 +142,15 @@ public class MacrocibleActivity extends RoboActivity
 		remoteEvaluationCheckBox.setEnabled(true);
 		liaisonCheckBox.setEnabled(true);
 		mEditText.setEnabled(true);
+		mEditText.setHint(R.string.mtved_m_hint);
 		tEditText.setEnabled(true);
+		tEditText.setHint(R.string.mtved_t_hint);
 		vEditText.setEnabled(true);
+		vEditText.setHint(R.string.mtved_v_hint);
 		eEditText.setEnabled(true);
+		eEditText.setHint(R.string.mtved_e_hint);
 		dEditText.setEnabled(true);
+		dEditText.setHint(R.string.mtved_d_hint);
 		// Inverse buttons visibilities
 		validateButton.setVisibility(View.VISIBLE);
 		updateButton.setVisibility(View.GONE);
@@ -162,10 +167,15 @@ public class MacrocibleActivity extends RoboActivity
 		remoteEvaluationCheckBox.setEnabled(false);
 		liaisonCheckBox.setEnabled(false);
 		mEditText.setEnabled(false);
+		mEditText.setHint("");
 		tEditText.setEnabled(false);
+		tEditText.setHint("");
 		vEditText.setEnabled(false);
+		vEditText.setHint("");
 		eEditText.setEnabled(false);
+		eEditText.setHint("");
 		dEditText.setEnabled(false);
+		dEditText.setHint("");
 		// Inverse buttons visibilities
 		validateButton.setVisibility(View.GONE);
 		updateButton.setVisibility(View.VISIBLE);

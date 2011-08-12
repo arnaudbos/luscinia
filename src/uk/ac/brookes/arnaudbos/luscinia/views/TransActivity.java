@@ -45,6 +45,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -258,19 +260,25 @@ public class TransActivity extends RoboActivity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		Log.d("TransActivity.onCreateOptionsMenu");
-		//   	MenuItem item = menu.add("Transmission Menu");
-		//	   	item.setOnMenuItemClickListener(new OnMenuItemClickListener()
-		//		{
-		//			@Override
-		//			public boolean onMenuItemClick(MenuItem item)
-		//			{
-		//				// Do something.
-		//				Toast.makeText(TransActivity.this, "Trans Menu 1", Toast.LENGTH_SHORT).show();
-		//				return true;
-		//			}
-		//		});
-
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.trans_document, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		Log.d("NursingFolderActivity.onOptionsItemSelected");
+		switch(item.getItemId())
+		{
+			case R.id.refresh:
+				Log.d("Refresh menu pressed");
+				onStart();
+				return true;
+			default:
+				Log.d("Unknown menu pressed");
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**
