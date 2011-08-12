@@ -135,6 +135,12 @@ public class TransActivity extends RoboActivity
 		// Launch an indeterminate ProgressBar in the UI while retrieving the records list in a new thread
     	mProgressDialog = ProgressDialog.show(this, "", recordsLoading, true);
 
+    	int count = tableView.getChildCount()-3;
+		for(int i = count ; i>0 ; i--)
+		{
+			tableView.removeViewAt(1);
+		}
+
     	// Create a Runnable that will be executed if the query succeeds
     	final Runnable threadCallBackSuceeded = new Runnable()
     	{
