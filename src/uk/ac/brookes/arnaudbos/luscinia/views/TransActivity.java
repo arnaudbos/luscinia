@@ -21,6 +21,7 @@ package uk.ac.brookes.arnaudbos.luscinia.views;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -64,10 +66,12 @@ import com.google.inject.Inject;
 public class TransActivity extends RoboActivity
 {
 	public static final int DIALOG_EMPTY_FIELD = 101;
-	public static final int DIALOG_TIME_ELAPSED = 102;
+	public static final int DIALOG_UPDATE_RECORD_TIME_ELAPSED = 102;
 	public static final int DIALOG_CREATE_RECORD_ERROR = 103;
 	public static final int DIALOG_UPDATE_RECORD_ERROR = 104;
 	public static final int DIALOG_LOAD_ERROR = 105;
+	public static final int DIALOG_DELETE_DOCUMENT_TIME_ELAPSED = 106;
+	public static final int DIALOG_DELETE_DOCUMENT_ERROR = 107;
 
 	final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
@@ -87,8 +91,8 @@ public class TransActivity extends RoboActivity
 
 	@InjectResource(R.string.dialog_empty_field_error_title) private String dialogEmptyFieldErrorTitle;
 	@InjectResource(R.string.dialog_empty_field_error_message) private String dialogEmptyFieldErrorMessage;
-	@InjectResource(R.string.dialog_time_elapsed_error_title) private String dialogTimeElapsedErrorTitle;
-	@InjectResource(R.string.dialog_time_elapsed_error_message) private String dialogTimeElapsedErrorMessage;
+	@InjectResource(R.string.dialog_update_record_time_elapsed_error_title) private String dialogUpdateRecordTimeElapsedErrorTitle;
+	@InjectResource(R.string.dialog_update_record_time_elapsed_error_message) private String dialogUpdateRecordTimeElapsedErrorMessage;
 	@InjectResource(R.string.ok) private String ok;
 	@InjectResource(R.string.save) private String save;
 	@InjectResource(R.string.update) private String update;
@@ -102,6 +106,13 @@ public class TransActivity extends RoboActivity
 	@InjectResource(R.string.records_loading) private String recordsLoading;
 	@InjectResource(R.string.load_error_title) private String loadErrorTitle;
 	@InjectResource(R.string.load_error_message) private String loadErrorMessage;
+	@InjectResource(R.string.dialog_delete_document_time_elapsed_error_title) private String dialogDeleteDocumentTimeElapsedErrorTitle;
+	@InjectResource(R.string.dialog_delete_document_time_elapsed_error_message) private String dialogDeleteDocumentTimeElapsedErrorMessage;
+	@InjectResource(R.string.delete) private String deleteTitle;
+	@InjectResource(R.string.delete_document_message) private String deleteDocumentMessage;
+	@InjectResource(R.string.deleting) private String deleting;
+	@InjectResource(R.string.delete_error_title) private String deleteErrorTitle;
+	@InjectResource(R.string.delete_document_error_message) private String deleteDocumentErrorMessage;
 
 	private TableRow selectedRow;
 	private TableLayout dialogTableView;
@@ -202,11 +213,18 @@ public class TransActivity extends RoboActivity
 				.setMessage(dialogEmptyFieldErrorMessage)
 				.setNegativeButton(ok, null)
 				.create();
-			case DIALOG_TIME_ELAPSED:
-				Log.d("Display DIALOG_TIME_ELAPSED Alert");
+			case DIALOG_UPDATE_RECORD_TIME_ELAPSED:
+				Log.d("Display DIALOG_UPDATE_RECORD_TIME_ELAPSED Alert");
 				return new AlertDialog.Builder(this)
-				.setTitle(dialogTimeElapsedErrorTitle)
-				.setMessage(dialogTimeElapsedErrorMessage)
+				.setTitle(dialogUpdateRecordTimeElapsedErrorTitle)
+				.setMessage(dialogUpdateRecordTimeElapsedErrorMessage)
+				.setNegativeButton(ok, null)
+				.create();
+			case DIALOG_DELETE_DOCUMENT_TIME_ELAPSED:
+				Log.d("Display DIALOG_DELETE_DOCUMENT_TIME_ELAPSED Alert");
+				return new AlertDialog.Builder(this)
+				.setTitle(dialogDeleteDocumentTimeElapsedErrorTitle)
+				.setMessage(dialogDeleteDocumentTimeElapsedErrorMessage)
 				.setNegativeButton(ok, null)
 				.create();
 			case DIALOG_CREATE_RECORD_ERROR:
@@ -228,6 +246,13 @@ public class TransActivity extends RoboActivity
 				return new AlertDialog.Builder(this)
 					.setTitle(loadErrorTitle)
 					.setMessage(loadErrorMessage)
+					.setPositiveButton(ok, null)
+					.create();
+			case DIALOG_DELETE_DOCUMENT_ERROR:
+				Log.d("Display DIALOG_DELETE_DOCUMENT_ERROR Alert");
+				return new AlertDialog.Builder(this)
+					.setTitle(deleteErrorTitle)
+					.setMessage(deleteDocumentErrorMessage)
 					.setPositiveButton(ok, null)
 					.create();
 		}
@@ -275,6 +300,74 @@ public class TransActivity extends RoboActivity
 				Log.d("Refresh menu pressed");
 				onStart();
 				return true;
+			case R.id.delete:
+				Log.d("Delete menu pressed");
+				Date now = new Date();
+				// Calculate the difference between now and the date of creation of the document and pass only if delay < 15 minutes
+				if(now.getTime() - document.getDate().getTime() > 900000)
+				{
+					// Display DIALOG_DELETE_DOCUMENT_TIME_ELAPSED Alert
+					showDialog(DIALOG_DELETE_DOCUMENT_TIME_ELAPSED);
+				}
+				// Else
+				else
+				{
+					Log.d("Display delete confirm alert");
+					new AlertDialog.Builder(this)
+						.setTitle(deleteTitle)
+						.setMessage(deleteDocumentMessage)
+						.setPositiveButton(ok, new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int which)
+							{
+								// Launch an indeterminate ProgressBar in the UI while deleting the document in a new thread
+						    	mProgressDialog = ProgressDialog.show(TransActivity.this, "", deleting, true);
+
+						    	// Create a Runnable that will be executed if the delete fails
+						    	final Runnable deleteDocumentFailed = new Runnable()
+						    	{
+						    		public void run()
+						    		{
+						    			Log.d("Delete document failed");
+						    			// Hide the ProgressBar and open an Alert with an error message
+						    			mProgressDialog.dismiss();
+						    			showDialog(DIALOG_DELETE_DOCUMENT_ERROR);
+						    		}
+						    	};
+
+						    	// Create the separate thread that will delete the document and start it
+								new Thread()
+								{
+									@Override public void run()
+									{
+										try
+										{
+							    			Log.d("Delete the document");
+							    			for(TransRecord record : records)
+							    			{
+												LusciniaApplication.getDB().delete(record);
+							    			}
+											LusciniaApplication.getDB().delete(document);
+
+											((NursingFolderActivity)getParent()).deleteDocumentFromTrack(document);
+											mProgressDialog.dismiss();
+											finish();
+										}
+										catch (Exception e)
+										{
+											Log.e("Delete document failed", e);
+											uiThreadCallback.post(deleteDocumentFailed);
+										}
+									}
+								}.start();
+							}
+						})
+						.setNegativeButton(cancel, null)
+						.create()
+						.show();
+				}
+				return true;
 			default:
 				Log.d("Unknown menu pressed");
 				return super.onOptionsItemSelected(item);
@@ -287,7 +380,7 @@ public class TransActivity extends RoboActivity
 	public void createRecord(final String focus, final String data, final String actions, final String results)
 	{
 		Log.d("TransActivity.createRecord");
-		// Launch an indeterminate ProgressBar in the UI while creating the records in a new thread
+		// Launch an indeterminate ProgressBar in the UI while creating the record in a new thread
     	mProgressDialog = ProgressDialog.show(this, "", createLoading, true);
 
     	// Create a Runnable that will be executed if the creation succeeds
@@ -339,7 +432,7 @@ public class TransActivity extends RoboActivity
 	}
 	
 	/**
-	 * Return a the record filled with document Id (from activity), focus, data, actions and results fields
+	 * Return the record filled with document Id (from activity), focus, data, actions and results fields
 	 * @return a Record object
 	 */
 	private Record fillRecord(TransRecord record, String focus, String data, String actions, String results)
@@ -360,7 +453,7 @@ public class TransActivity extends RoboActivity
 	public void updateRecord(final String focus, final String data, final String actions, final String results)
 	{
 		Log.d("TransActivity.updateRecord");
-		// Launch an indeterminate ProgressBar in the UI while updating the records in a new thread
+		// Launch an indeterminate ProgressBar in the UI while updating the record in a new thread
     	mProgressDialog = ProgressDialog.show(this, "", saveLoading, true);
 
     	// Create a Runnable that will be executed if the update succeeds

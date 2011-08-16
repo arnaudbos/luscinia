@@ -83,7 +83,7 @@ public class TransListener implements OnClickListener, OnLongClickListener, andr
 		if(now.getTime() - record.getDate().getTime() > 900000)
 		{
 			// Display DIALOG_TIME_ELAPSED Alert
-			context.showDialog(TransActivity.DIALOG_TIME_ELAPSED);
+			context.showDialog(TransActivity.DIALOG_UPDATE_RECORD_ERROR);
 		}
 		// Else
 		else

@@ -61,8 +61,8 @@
     <string name="save">Enregistrer</string>
 	<string name="dialog_empty_field_error_title">Erreur de validation des champs</string>
 	<string name="dialog_empty_field_error_message">Au moins un champs doit être rempli.</string>
-	<string name="dialog_time_elapsed_error_title">Erreur d\'édition</string>
-	<string name="dialog_time_elapsed_error_message">Le délai maximum pour modifier cet enregistrement a été dépassé.</string>
+	<string name="dialog_update_record_time_elapsed_error_title">Erreur d\'édition</string>
+	<string name="dialog_update_record_time_elapsed_error_message">Le délai maximum pour modifier cet enregistrement a été dépassé.</string>
     <string name="update">Modifier</string>
     <string-array name="trans_longclick">
         <item>@string/update</item>
@@ -132,4 +132,10 @@
         <item>@string/macrocible_document</item>
     </string-array>
     <string name="create_document_error_message">Une erreur s\'est produite durant la création du nouveau document.</string>
+	<string name="delete_document_message">Voulez-vous vraiment supprimer ce document?</string>
+	<string name="dialog_delete_document_time_elapsed_error_title">Erreur d\'e suppression</string>
+	<string name="dialog_delete_document_time_elapsed_error_message">Le délai maximum pour supprimer ce document a été dépassé.</string>
+	<string name="dialog_update_document_time_elapsed_error_title">Erreur d\'e mise à jour</string>
+	<string name="dialog_update_document_time_elapsed_error_message">Le délai maximum pour modifier ce document a été dépassé.</string>
+	<string name="delete_document_error_message">Une erreur s\'est produite lors de la suppression du document.</string>
 </resources>

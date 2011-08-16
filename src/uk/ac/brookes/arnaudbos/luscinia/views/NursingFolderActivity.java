@@ -22,6 +22,7 @@ package uk.ac.brookes.arnaudbos.luscinia.views;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,7 +49,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -104,11 +107,12 @@ public class NursingFolderActivity extends FolderActivityGroup
 	@InjectResource(R.string.load_error_title) private String loadErrorTitle;
 	@InjectResource(R.string.load_error_message) private String loadErrorMessage;
 	@InjectResource(R.string.trans_document) private String transDocumentTitle;
-	@InjectResource(R.string.macrocible_document) private String macrocibleDocumentTitle;
 	@InjectResource(R.string.week) private String week;
 	@InjectResource(R.string.create_loading) private String createLoading;
 	@InjectResource(R.string.create_error_title) private String createErrorTitle;
 	@InjectResource(R.string.create_document_error_message) private String createDocumentErrorMessage;
+	@InjectResource(R.string.add_document) private String addDocument;
+	@InjectResource(R.drawable.no_folder_picture) private Drawable noFolderPicture;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -259,11 +263,17 @@ public class NursingFolderActivity extends FolderActivityGroup
 	/**
 	 * Load the documents from database
 	 */
-	private void loadDocuments()
+	public void loadDocuments()
 	{
 		Log.d("NursingFolderActivity.loadDocuments");
 		// Launch an indeterminate ProgressBar in the UI while getting the documents in a new thread
     	mProgressDialog = ProgressDialog.show(this, "", folderLoading, true);
+
+    	int count = documentsTrack.getChildCount()-1;
+		for(int i = count ; i>0 ; i--)
+		{
+			documentsTrack.removeViewAt(0);
+		}
 
     	// Create a Runnable that will be executed if the getting succeeds
     	final Runnable threadCallBackSuceeded = new Runnable()
@@ -279,15 +289,6 @@ public class NursingFolderActivity extends FolderActivityGroup
     	    	{
     	    		Log.d("Adding document "+document.getTitle()+" to the track");
     	    		renderDocumentInTrack(document);
-    	    	}
-    	    	
-    	    	// Open the first document of the list by default, this bahavior may change to open one particular default document depending on users for example
-    	    	if(documents!=null && !documents.isEmpty())
-    	    	{
-    		        actionBar.setTitle(folder.getTitle()+" - "+documents.get(0).getTitle());
-    	    		Intent intent = new Intent(NursingFolderActivity.this, TransActivity.class);
-    		        intent.putExtra("document", documents.get(0));
-    		        startChildActivity(documents.get(0).getId(), intent);
     	    	}
     		}
     	};
@@ -329,22 +330,24 @@ public class NursingFolderActivity extends FolderActivityGroup
 	/**
 	 * Render the given document into the documentsTrack view
 	 */
-    private void renderDocumentInTrack(final Document document)
+    private void renderDocumentInTrack(Document document)
     {
 		Log.d("NursingFolderActivity.renderDocumentInTrack");
 		// Create a new documentView from current document
-    	DocumentView doc = new DocumentView(this, getResources().getDrawable(R.drawable.no_folder_picture), document.getTitle(), null);
-    	OnClickListener listener;
+    	DocumentView doc = new DocumentView(this, noFolderPicture, document.getTitle());
+    	doc.setTag(document);
 		switch (TemplateActivityMapper.toActivity(document.getType()))
 		{
 			case TRANS:
 				Log.d("Document is type TRANS");
 				// Create a new listener that will start a TransActivity when clicked
-				listener = new OnClickListener()
+				doc.setOnClickListener(new OnClickListener()
 				{
 					@Override
 					public void onClick(View v)
 					{
+						Document document = (Document)v.getTag();
+						Log.d("NursingFolderActivity document \""+document.getTitle()+"\" onClick");
 				        actionBar.setTitle(folder.getTitle()+" - "+document.getTitle());
 				        Intent intent = new Intent(NursingFolderActivity.this, TransActivity.class);
 				        intent.putExtra("document", document);
@@ -352,37 +355,38 @@ public class NursingFolderActivity extends FolderActivityGroup
 				        // Retract the documentsTrack
 				        bottomPanel.getHandle().performClick();
 					}
-				};
-				// Associate it to the document view
-				doc.setOnClickListener(listener);
+				});
 				break;
 			case MACROCIBLE:
 				Log.d("Document is type MACROCIBLE");
 				// Create a new listener that will start a MacrocibleActivity when clicked
-				listener = new OnClickListener()
+				doc.setOnClickListener(new OnClickListener()
 				{
 					@Override
 					public void onClick(View v)
 					{
+						Document document = (Document)v.getTag();
+						Log.d("NursingFolderActivity document \""+document.getTitle()+"\" onClick");
 				        actionBar.setTitle(folder.getTitle()+" - "+document.getTitle());
 				        Intent intent = new Intent(NursingFolderActivity.this, MacrocibleActivity.class);
 				        intent.putExtra("document", document);
+				        intent.putExtra("folder", folder);
 				        startChildActivity(document.getId(), intent);
 				        // Retract the documentsTrack
 				        bottomPanel.getHandle().performClick();
 					}
-				};
-				// Associate it to the document view
-				doc.setOnClickListener(listener);
+				});
 				break;
 			case NURSING_DIAGRAM:
 				Log.d("Document is type NURSING_DIAGRAM");
 				// Create a new listener that will start a NursingDiagramActivity when clicked
-				listener = new OnClickListener()
+				doc.setOnClickListener(new OnClickListener()
 				{
 					@Override
 					public void onClick(View v)
 					{
+						Document document = (Document)v.getTag();
+						Log.d("NursingFolderActivity document \""+document.getTitle()+"\" onClick");
 				        actionBar.setTitle(folder.getTitle()+" - "+document.getTitle());
 				        Intent intent = new Intent(NursingFolderActivity.this, NursingDiagramActivity.class);
 				        intent.putExtra("document", document);
@@ -390,32 +394,30 @@ public class NursingFolderActivity extends FolderActivityGroup
 				        // Retract the documentsTrack
 				        bottomPanel.getHandle().performClick();
 					}
-				};
-				// Associate it to the document view
-				doc.setOnClickListener(listener);
+				});
 				break;
 			case GENERIC:
 			default:
 				break;
 		}
 		// Add the documentView to the track
+		Log.d("Add document \""+document.getTitle()+"\"");
 		documentsTrack.addView(doc, documentsTrack.getChildCount()-1);
 	}
 
-	// Create a Runnable that will be executed if the creation succeeds
-	final Runnable folderCreationSucceeded = new Runnable()
+	// Create a Runnable that will be executed if the document creation succeeds
+	final Runnable documentCreationSucceeded = new Runnable()
 	{
 		public void run()
 		{
 			Log.d("Document created successfully");
-			// Hide the ProgressBar and add the document to the track
-			mProgressDialog.dismiss();
+			// Add the document to the track
 			renderDocumentInTrack(documents.get(documents.size()-1));
 		}
 	};
 
-	// Create a Runnable that will be executed if the creation fails
-	final Runnable folderCreationFailed = new Runnable()
+	// Create a Runnable that will be executed if the document creation fails
+	final Runnable documentCreationFailed = new Runnable()
 	{
 		public void run()
 		{
@@ -426,6 +428,9 @@ public class NursingFolderActivity extends FolderActivityGroup
 		}
 	};
 
+	/**
+	 * Create a new Trans document into the database and add it to the documents track
+	 */
 	public void addNewTransDocument()
 	{
 		Log.d("NursingFolderActivity.addNewTransDocument");
@@ -450,24 +455,51 @@ public class NursingFolderActivity extends FolderActivityGroup
 					LusciniaApplication.getDB().create(trans);
 
 					// Add the new document to the list of documents
-					documents.add(trans);
-					uiThreadCallback.post(folderCreationSucceeded);
+					addDocument(trans);
+					mProgressDialog.dismiss();
+					uiThreadCallback.post(documentCreationSucceeded);
 				}
 				catch (Exception e)
 				{
 					Log.e("Create document failed", e);
-					uiThreadCallback.post(folderCreationFailed);
+					uiThreadCallback.post(documentCreationFailed);
 				}
 			}
 		}.start();
 	}
 
+	/**
+	 * Start a new Macrocible document activity into the child activities placeHolder
+	 */
 	public void addNewMacrocibleDocument()
 	{
 		Log.d("NursingFolderActivity.addNewMacrocibleDocument");
-		// TODO Auto-generated method stub
-		Toast.makeText(this, "Not implemented yet.", Toast.LENGTH_SHORT).show();
+        actionBar.setTitle(folder.getTitle()+" - "+addDocument);
+        Intent intent = new Intent(this, MacrocibleActivity.class);
+        intent.putExtra("folder", folder);
+        startChildActivity(addDocument, intent);
 	};
+	
+	public void addDocument(Document document)
+	{
+		if(documents!=null)
+		{
+			documents.add(document);
+		}
+	}
+	
+	public void deleteDocumentFromTrack(Document document)
+	{
+		documentsTrack.removeView(documentsTrack.findViewWithTag(document));
+	}
+
+	/**
+	 * @return the documentsTrack
+	 */
+	public LinearLayout getDocumentsTrack()
+	{
+		return documentsTrack;
+	}
 
 	/**
 	 * Action implemented to return to DahsboardActivity when associated ActionBar item is pressed

@@ -20,6 +20,7 @@
 package uk.ac.brookes.arnaudbos.luscinia.widget;
 
 import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -45,7 +46,7 @@ public class DocumentView extends RelativeLayout
      * @param text The title of the document
      * @param listener The listener that will be used when the DocumentView is clicked
      */
-	public DocumentView(Context context, Drawable icon, String text, OnClickListener listener)
+	public DocumentView(Context context, Drawable icon, String text)
 	{
         super(context);
 
@@ -59,10 +60,23 @@ public class DocumentView extends RelativeLayout
 
         documentText = (TextView) documentView.findViewById(R.id.document_name);
         documentText.setText(text);
-        
-        if(listener!=null)
-        {
-        	documentView.setOnClickListener(listener);
-        }
     }
+	
+	@Override
+	public void setOnClickListener(OnClickListener listener)
+	{
+		documentView.setOnClickListener(listener);
+	}
+	
+	@Override
+	public void setTag(Object tag)
+	{
+		documentView.setTag(tag);
+	}
+	
+	@Override
+	public Object getTag()
+	{
+		return documentView.getTag();
+	}
 }

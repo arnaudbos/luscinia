@@ -32,7 +32,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.RelativeLayout;
 
 /**
  * Implementation of an ActivityGroup representing a folder that will contain documents as child activities.
@@ -92,7 +91,7 @@ public class FolderActivityGroup extends RoboActivityGroup
 	 * @param id The id of the child Activity to start or resume
 	 * @param intent The intent to start or resume the child activity
 	 */
-	protected void startChildActivity(String id, Intent intent)
+	public void startChildActivity(String id, Intent intent)
 	{
 		Log.d("FolderActivityGroup.startChildActivity");
 		// Try to start the child Activity from intent

@@ -19,6 +19,10 @@
 
 package uk.ac.brookes.arnaudbos.luscinia.listeners;
 
+import java.util.Date;
+
+import uk.ac.brookes.arnaudbos.luscinia.R;
+import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.views.MacrocibleActivity;
 import uk.ac.brookes.arnaudbos.luscinia.views.TransActivity;
@@ -59,8 +63,37 @@ public class MacrocibleListener implements OnClickListener
 		else
 		{
 			Log.d("Fields ready");
-			// TODO: Save the document
-			context.setFieldsDisabled();
+			Document document = context.getDocument();
+			switch (view.getId())
+			{
+				case R.id.button_validate:
+					if(document == null)
+					{
+						Log.d("Save button pressed");
+						// Save document a new document
+						context.createDocument();
+					}
+					else
+					{
+						// Update document the document
+						context.updateDocument();
+					}
+					break;
+				case R.id.button_update:
+					Log.d("Update button pressed");
+					Date now = new Date();
+					// Calculate the difference between now and the date of creation of the document and pass only if delay < 15 minutes
+					if(now.getTime() - document.getDate().getTime() > 900000)
+					{
+						// Display DIALOG_TIME_ELAPSED Alert
+						context.showDialog(MacrocibleActivity.DIALOG_DELETE_DOCUMENT_TIME_ELAPSED);
+					}
+					else
+					{
+						context.setFieldsEnabled();
+					}
+					break;
+			}
 		}
 	}
 
@@ -70,6 +103,7 @@ public class MacrocibleListener implements OnClickListener
 	 */
 	public void setContext(MacrocibleActivity context)
 	{
+		Log.d("MacrocibleListener.setContext");
 		this.context = context;
 	}
 }

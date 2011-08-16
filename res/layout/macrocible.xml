@@ -28,9 +28,9 @@
 		android:orientation="vertical"
 		>
 		<TextView
+			android:visibility="gone"
 			android:id="@+id/date_text_view"
 			android:gravity="center"
-			android:visibility="gone"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			style="@style/brown_textview"
@@ -48,7 +48,6 @@
 				android:layout_weight="1"
 				android:textColor="@color/brown"
 				android:textSize="16dip"
-				android:enabled="false"
 				>
 			</CheckBox>
 			<CheckBox
@@ -59,7 +58,6 @@
 				android:layout_weight="1"
 				android:textColor="@color/brown"
 				android:textSize="16dip"
-				android:enabled="false"
 				>
 			</CheckBox>
 			<CheckBox
@@ -70,7 +68,6 @@
 				android:layout_weight="1"
 				android:textColor="@color/brown"
 				android:textSize="16dip"
-				android:enabled="false"
 				>
 			</CheckBox>
 		</LinearLayout>
@@ -99,7 +96,6 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
-				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -128,7 +124,6 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
-				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -157,7 +152,6 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
-				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -186,7 +180,6 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
-				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
@@ -215,18 +208,17 @@
 				android:gravity="top"
     			style="@style/login_edittext"
         		android:background="@drawable/edittext_blue"
-				android:enabled="false"
 				>
 			</EditText>
 		</RelativeLayout>
 		<Button
-			android:visibility="gone"
 			android:text="@string/save"
 			android:id="@+id/button_validate"
 			android:layout_height="40dip"
 			android:layout_width="fill_parent"
 			android:background="@drawable/imagebutton"/>
 		<Button
+			android:visibility="gone"
 			android:text="@string/update"
 			android:id="@+id/button_update"
 			android:layout_height="40dip"
