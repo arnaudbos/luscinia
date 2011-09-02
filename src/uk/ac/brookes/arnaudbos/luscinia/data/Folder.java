@@ -36,7 +36,7 @@ public class Folder extends CouchDbDocument
 {
 	private static final long serialVersionUID = 3939755790234817352L;
 
-	public static final String FOLDER_TYPE = "http://www.sneakernet.fr/luscinia/folder";
+	public static final String FOLDER_TYPE = "luscinia/folder";
 	public static final String VIEW_ALL_FOLDERS = "_all_folders";
 	public static final int ADMINISTRATIVE_FOLDER_TYPE = 0;
 	public static final int NURSING_FOLDER_TYPE = 1;

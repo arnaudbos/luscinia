@@ -80,22 +80,6 @@ public class FolderTest
     }
 	
 	@Test
-	public void pressingDocumentInTrackShouldStartChildActivity() throws Exception
-	{
-		// No real way to test that because a performClick() on documentView child
-		// of documentsTrack will cause FolderActivityGroup.startChildActivity to
-		// throw a NullPointerException...
-		int i=0;
-		do
-		{
-			String title = ((DocumentView)documentsTrack.getChildAt(i)).getText();
-			
-			assertThat(title, not(equalTo(((DocumentView)documentsTrack.getChildAt(i+1)).getText())));
-			i++;
-		} while (i<documentsTrack.getChildCount()-1);
-    }
-	
-	@Test
 	public void pressingActionBarHomeShouldStartDashboardActivity() throws Exception
 	{
 		actionBar.getHomeButton().performClick();

@@ -19,24 +19,40 @@
 
 package uk.ac.brookes.arnaudbos.luscinia.views;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.LusciniaListener;
-import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDBUtils;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
+import com.couchbase.libcouch.CouchbaseMobile;
+import com.couchbase.libcouch.ICouchClient;
 import com.google.inject.Inject;
+import com.markupartist.android.widget.ScrollingTextView;
 
 /**
  * Main Activity purpose is to identify users
@@ -47,18 +63,23 @@ public class LusciniaActivity extends RoboActivity
 	public static final int DIALOG_USERNAME_ERROR = 101;
 	public static final int DIALOG_PASSWORD_ERROR = 102;
 	public static final int DIALOG_LOGIN_ERROR = 103;
+	
+	private ServiceConnection couchServiceConnection;
+	private ProgressDialog installProgress;
 
     final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
 	
-	@Inject private ICouchDBUtils couchDBUtils;
+	@Inject private ICouchDbUtils couchDbUtils;
 	@Inject private LusciniaListener listener;
+	@Inject private SharedPreferences sharedPreferences;
 
 	@InjectView(R.id.edit_login) private EditText editLogin;
 	@InjectView(R.id.edit_password) private EditText editPassword;
 	@InjectView(R.id.button_validate) private Button buttonValidate;
 
 	@InjectResource(R.string.ok) private String ok;
+	@InjectResource(R.string.cancel) private String cancel;
 	@InjectResource(R.string.dialog_username_error_title) private String dialogUsernameErrorTitle;
 	@InjectResource(R.string.dialog_username_error_message) private String dialogUsernameErrorMessage;
 	@InjectResource(R.string.dialog_password_error_title) private String dialogPasswordErrorTitle;
@@ -76,8 +97,137 @@ public class LusciniaActivity extends RoboActivity
         listener.setContext(this);
         
         buttonValidate.setOnClickListener(listener);
+        startCouch();
     }
     
+    @Override
+	public void onRestart() 
+    {
+		super.onRestart();
+		startCouch();
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		try
+		{
+			unbindService(couchServiceConnection);
+		}
+		catch (IllegalArgumentException e)
+		{}
+	}
+
+	private final ICouchClient mCallback = new ICouchClient.Stub()
+	{
+		@Override
+		public void couchStarted(String host, int port) 
+		{
+			if (installProgress != null)
+			{
+				installProgress.dismiss();
+			}
+
+			couchDbUtils.setHost (host, port);
+		}
+
+		@Override
+		public void installing(int completed, int total)
+		{
+			ensureProgressDialog();
+			installProgress.setTitle("Installing");
+			installProgress.setProgress(completed);
+			installProgress.setMax(total);
+		}
+
+		@Override
+		public void exit(String error)
+		{
+			Log.d("CouchDB install error: " + error);
+			couchError();
+		}
+	};
+
+	private void startCouch() 
+	{
+		CouchbaseMobile couch = new CouchbaseMobile(getBaseContext(), mCallback);
+
+		try
+		{
+			couch.copyIniFile("luscinia.ini");
+		}
+		catch (IOException e)
+		{
+			Log.e("Error while copying luscinia.ini", e);
+			e.printStackTrace();
+		}
+
+		couchServiceConnection = couch.startCouchbase();
+	}
+
+	private void ensureProgressDialog()
+	{
+		if (installProgress == null)
+		{
+			installProgress = new ProgressDialog(LusciniaActivity.this);
+			installProgress.setTitle(" ");
+			installProgress.setCancelable(false);
+			installProgress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			installProgress.show();
+		}
+	}
+
+	private void couchError()
+	{
+		new AlertDialog.Builder(this)
+			.setMessage("Unknown Error")
+			.setPositiveButton("Try Again?",
+				new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int id)
+					{
+						startCouch();
+					}
+				})
+			.setNegativeButton(cancel,
+				new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int id)
+					{
+						LusciniaActivity.this.finish();
+					}
+				})
+			.create()
+			.show();
+	}
+
+	public String getLocalIpAddress()
+	{
+		try
+		{
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();)
+			{
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+				{
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress())
+					{
+						return inetAddress.getHostAddress().toString();
+					}
+				}
+			}
+		}
+		catch (SocketException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
     @Override
     protected Dialog onCreateDialog(int id)
     {
@@ -108,7 +258,7 @@ public class LusciniaActivity extends RoboActivity
         }
         return null;
     }
-
+    
     /**
      * Try to etablish a connection with the database instance.
      */
@@ -170,7 +320,7 @@ public class LusciniaActivity extends RoboActivity
 					{
 		    			Log.d("Try to establish connection");
 						// Establish the connection and retrieve the dabatase object that will be used as a session
-						LusciniaApplication.setDB(getCouchDBUtils().getDB(editLogin.getText().toString(), editPassword.getText().toString()));
+						couchDbUtils.connect(editLogin.getText().toString(), editPassword.getText().toString());
 						uiThreadCallback.post(threadCallBackSuceeded);
 					}
 					catch (Exception e)
@@ -183,16 +333,10 @@ public class LusciniaActivity extends RoboActivity
 		}
 	}
 
-	public ICouchDBUtils getCouchDBUtils()
-	{
-		return couchDBUtils;
-	}
-	
 	private void launchDashboardActivity()
 	{
     	Log.d("LusciniaActivity.launchDashboardActivity");
 		Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
-        finish();
 	}
 }

@@ -33,6 +33,7 @@ import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.MacrocibleListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.utils.TemplateActivityMapper;
 import android.app.AlertDialog;
@@ -67,6 +68,7 @@ public class MacrocibleActivity extends RoboActivity
 	final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
 
+	@Inject private ICouchDbUtils couchDbUtils;
 	@Inject private MacrocibleListener listener;
 
 	@InjectExtra(value="document", optional=true) private Document document = null;
@@ -227,7 +229,7 @@ public class MacrocibleActivity extends RoboActivity
 											try
 											{
 								    			Log.d("Delete the document");
-												LusciniaApplication.getDB().delete(document);
+												couchDbUtils.delete(document);
 
 												((NursingFolderActivity)getParent()).deleteDocumentFromTrack(document);
 												mProgressDialog.dismiss();
@@ -291,7 +293,7 @@ public class MacrocibleActivity extends RoboActivity
 	    			document.setType(TemplateActivityMapper.MACROCIBLE.toString());
 	    			SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	    			document.setTitle(macrocibleDocumentTitle+" "+s.format(document.getDate()));
-					LusciniaApplication.getDB().create(fillDocument());
+					couchDbUtils.create(fillDocument());
 
 					((NursingFolderActivity)getParent()).addDocument(document);
 					mProgressDialog.dismiss();
@@ -339,7 +341,7 @@ public class MacrocibleActivity extends RoboActivity
 	    			document.setType(TemplateActivityMapper.MACROCIBLE.toString());
 	    			SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	    			document.setTitle(macrocibleDocumentTitle+" "+s.format(document.getDate()));
-					LusciniaApplication.getDB().update(fillDocument());
+					couchDbUtils.update(fillDocument());
 
 					uiThreadCallback.post(documentUpdateSucceeded);
 				}

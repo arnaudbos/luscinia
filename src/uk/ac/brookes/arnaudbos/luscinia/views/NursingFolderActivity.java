@@ -41,6 +41,7 @@ import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
 import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.NursingFolderListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import uk.ac.brookes.arnaudbos.luscinia.utils.TemplateActivityMapper;
 import uk.ac.brookes.arnaudbos.luscinia.widget.DocumentView;
@@ -87,6 +88,7 @@ public class NursingFolderActivity extends FolderActivityGroup
     private ProgressDialog mProgressDialog;
     private List<Document> documents = new ArrayList<Document>();
 
+	@Inject private ICouchDbUtils couchDbUtils;
     @Inject private NursingFolderListener listener;
 
     @InjectExtra("patient") private Patient patient;
@@ -315,7 +317,7 @@ public class NursingFolderActivity extends FolderActivityGroup
 	    			Log.d("Query "+Document.VIEW_ALL_DOCUMENTS+" view with key="+folder.getId());
 					// Execute the view query and retrieve the documents
 	    			documents = new ArrayList<Document>();
-					documents.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Document.VIEW_ALL_DOCUMENTS).key(folder.getId()), Document.class));
+					documents.addAll(couchDbUtils.queryView(Document.VIEW_ALL_DOCUMENTS, Document.class, folder.getId()));
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)
@@ -452,7 +454,7 @@ public class NursingFolderActivity extends FolderActivityGroup
 					cal.setTime(trans.getDate());
 					trans.setTitle(transDocumentTitle+" "+week+" "+cal.get(Calendar.WEEK_OF_YEAR));
 					trans.setFolderId(folder.getId());
-					LusciniaApplication.getDB().create(trans);
+					couchDbUtils.create(trans);
 
 					// Add the new document to the list of documents
 					addDocument(trans);

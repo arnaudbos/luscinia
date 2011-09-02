@@ -20,8 +20,10 @@
 package uk.ac.brookes.arnaudbos.luscinia;
 
 import roboguice.config.AbstractAndroidModule;
-import uk.ac.brookes.arnaudbos.luscinia.utils.CouchDBUtils;
-import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDBUtils;
+import roboguice.inject.SharedPreferencesName;
+import uk.ac.brookes.arnaudbos.luscinia.data.CouchDbUtils;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
+import uk.ac.brookes.arnaudbos.luscinia.utils.PreferencesNameProvider;
 
 /**
  * @author arnaud
@@ -33,9 +35,9 @@ public class LusciniaModule extends AbstractAndroidModule
     protected void configure()
     {
         // core stuff
-        bind(ICouchDBUtils.class).to(CouchDBUtils.class);
+        bind(ICouchDbUtils.class).to(CouchDbUtils.class);
  
         // @Inject SharedPreferences
-        //bindConstant().annotatedWith(SharedPreferencesName.class).to("org.uk.brookes.arnaudbos");
+        bind(String.class).annotatedWith(SharedPreferencesName.class).toProvider(PreferencesNameProvider.class);
     }
 }

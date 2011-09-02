@@ -36,7 +36,7 @@ public class Patient extends CouchDbDocument
 {
 	private static final long serialVersionUID = -6066162266461288656L;
 
-	public static final String PATIENT_TYPE = "http://www.sneakernet.fr/luscinia/patient";
+	public static final String PATIENT_TYPE = "luscinia/patient";
 	public static final String VIEW_ALL_PATIENTS = "_all_patients";
 
 	private String docType;

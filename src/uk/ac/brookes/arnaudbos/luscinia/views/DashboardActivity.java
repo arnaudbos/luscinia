@@ -30,13 +30,12 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
-import uk.ac.brookes.arnaudbos.luscinia.adapters.DashboardNotificationAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.adapters.DashboardPatientAdapter;
 import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
-import uk.ac.brookes.arnaudbos.luscinia.data.Notification;
 import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.DashboardListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -49,7 +48,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -71,6 +69,7 @@ public class DashboardActivity extends RoboActivity
     private ProgressDialog mProgressDialog;
     private List<Patient> patients = new ArrayList<Patient>();
 
+	@Inject private ICouchDbUtils couchDbUtils;
     @Inject private DashboardListener listener;
 	
 	@InjectResource(R.string.dashboard_title) private String dashboardTitle;
@@ -87,7 +86,7 @@ public class DashboardActivity extends RoboActivity
 
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
 	@InjectView(R.id.gridView1) private GridView gridview;
-	@InjectView(R.id.expandableListView1) private ExpandableListView expandablelistview;
+//	@InjectView(R.id.expandableListView1) private ExpandableListView expandablelistview;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -120,7 +119,7 @@ public class DashboardActivity extends RoboActivity
     	Log.d("DashboardActivity.loadPatients");
     	
     	// Initialize the Notifications ExpandableListView
-        initExpandableListView();
+//        initExpandableListView();
     	// Initialize the Patients GridView
         initGridView();
 	}
@@ -128,24 +127,24 @@ public class DashboardActivity extends RoboActivity
 	/**
 	 * Initialize the Notifications ExpandableListView
 	 */
-	private void initExpandableListView()
-	{
-		List<String> groups = new ArrayList<String>();
-		groups.add("Notifications");
-		List<Notification> notifs = new ArrayList<Notification>();
-		//		TODO: Get Notifications from database
-		//		notifs.add(new Notification("Accord patient", "Message"));
-		List<List<Notification>> list = new ArrayList<List<Notification>> ();
-		list.add(notifs);
-		
-		// Set ExpandableListView adapter
-		DashboardNotificationAdapter adapter = new DashboardNotificationAdapter(this, groups, list);
-		this.expandablelistview.setAdapter(adapter);
-        
-		// Add listeners to the ExpandableListView
-		this.expandablelistview.setOnGroupClickListener(listener);
-		this.expandablelistview.setOnChildClickListener(listener);
-	}
+//	private void initExpandableListView()
+//	{
+//		List<String> groups = new ArrayList<String>();
+//		groups.add("Notifications");
+//		List<Notification> notifs = new ArrayList<Notification>();
+//		//		TODO: Get Notifications from database
+//		//		notifs.add(new Notification("Accord patient", "Message"));
+//		List<List<Notification>> list = new ArrayList<List<Notification>> ();
+//		list.add(notifs);
+//		
+//		// Set ExpandableListView adapter
+//		DashboardNotificationAdapter adapter = new DashboardNotificationAdapter(this, groups, list);
+//		this.expandablelistview.setAdapter(adapter);
+//        
+//		// Add listeners to the ExpandableListView
+//		this.expandablelistview.setOnGroupClickListener(listener);
+//		this.expandablelistview.setOnChildClickListener(listener);
+//	}
 
 	/**
 	 * Initialize the Patients GridView
@@ -190,7 +189,7 @@ public class DashboardActivity extends RoboActivity
 	    			Log.d("Query "+Patient.VIEW_ALL_PATIENTS+" view");
 					// Execute the view query and retrieve the patients
 	    			patients = new ArrayList<Patient>();
-					patients.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Patient.VIEW_ALL_PATIENTS), Patient.class));
+					patients.addAll(couchDbUtils.queryView(Patient.VIEW_ALL_PATIENTS, Patient.class));
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)
@@ -378,19 +377,19 @@ public class DashboardActivity extends RoboActivity
 					}
 
 					// For each folder associated with the patient, delete this folder
-					for(Folder folder : LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Folder.VIEW_ALL_FOLDERS).key(patient.getId()), Folder.class))
+					for(Folder folder : couchDbUtils.queryView(Folder.VIEW_ALL_FOLDERS, Folder.class, patient.getId()))
 					{
 						// For each document associated with the current folder, delete this document
-						for(Document document : LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Document.VIEW_ALL_DOCUMENTS).key(folder.getId()), Document.class))
+						for(Document document : couchDbUtils.queryView(Document.VIEW_ALL_DOCUMENTS, Document.class, folder.getId()))
 						{
 			    			Log.d("Delete the document: "+document.getId());
-							LusciniaApplication.getDB().delete(document);
+			    			couchDbUtils.delete(document);
 						}
 		    			Log.d("Delete the folder: "+folder.getId());
-						LusciniaApplication.getDB().delete(folder);
+		    			couchDbUtils.delete(folder);
 					}
 	    			Log.d("Delete the patient: "+patient.getId());
-					LusciniaApplication.getDB().delete(patient);
+	    			couchDbUtils.delete(patient);
 
 					// Remove patient from the list of patients
 					patients.remove(patient);

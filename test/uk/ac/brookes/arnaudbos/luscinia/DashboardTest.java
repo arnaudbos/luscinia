@@ -28,7 +28,6 @@ public class DashboardTest
 	@Inject private DashboardActivity dashboard;
 	@InjectView(R.id.actionbar) ActionBar actionBar;
 	@InjectView(R.id.gridView1) private GridView gridview;
-	@InjectView(R.id.expandableListView1) private ExpandableListView expandablelistview;
 	
 	@Before
 	public void setUp() throws Exception
@@ -42,7 +41,6 @@ public class DashboardTest
 	public void shouldHaveViews() throws Exception
 	{
         assertThat(actionBar, notNullValue());
-        assertThat(expandablelistview, notNullValue());
         assertThat(gridview, notNullValue());
     }
 	

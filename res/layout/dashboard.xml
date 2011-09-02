@@ -40,59 +40,14 @@
         	android:orientation="vertical"
         	android:gravity="center_horizontal"
         	android:layout_height="fill_parent">
-            <RelativeLayout
-            	android:id="@+id/relativeLayout1"
-            	android:layout_width="fill_parent"
-            	android:layout_height="wrap_content"
-            	>
-                <TextView
-                	android:id="@+id/textView1"
-                	android:layout_width="wrap_content"
-                	android:layout_alignParentLeft="true"
-                	android:layout_height="wrap_content"
-                	android:text="@string/working_since"
-                	style="@style/brown_textview"
-                	>
-                </TextView>
-                <TextView
-                	android:id="@+id/textView2"
-                	android:layout_toRightOf="@+id/textView1"
-                	android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:text="3:45"
-                	android:layout_alignTop="@+id/textView1"
-                	android:layout_alignBottom="@+id/textView1"
-                	style="@style/brown_textview"
-                	>
-                </TextView>
-                <TextView
-                	android:id="@+id/textView3"
-                	android:layout_width="wrap_content"
-                	android:layout_alignParentRight="true"
-                	android:layout_height="wrap_content"
-                	style="@style/brown_textview"
-                	android:text="17:28">
-                </TextView>
-                <TextView
-                	android:id="@+id/textView4"
-                	android:layout_width="wrap_content"
-                	android:layout_toLeftOf="@+id/textView3"
-                	android:layout_height="wrap_content"
-                	android:layout_alignTop="@+id/textView3"
-                	android:layout_alignBottom="@+id/textView3"
-                	android:text="@string/time"
-                	style="@style/brown_textview"
-                	>
-                </TextView>
-            </RelativeLayout>
-        	<ExpandableListView
-        		android:id="@+id/expandableListView1"
-        		android:layout_width="fill_parent"
-        		android:layout_height="64dip"
-        		android:divider="@color/brown"
-        		android:dividerHeight="1dip"
-        		android:listSelector="@drawable/list_selector">
-        	</ExpandableListView>
+<!--         	<ExpandableListView -->
+<!--         		android:id="@+id/expandableListView1" -->
+<!--         		android:layout_width="fill_parent" -->
+<!--         		android:layout_height="64dip" -->
+<!--         		android:divider="@color/brown" -->
+<!--         		android:dividerHeight="1dip" -->
+<!--         		android:listSelector="@drawable/list_selector"> -->
+<!--         	</ExpandableListView> -->
         	<TextView
         		android:layout_width="wrap_content"
         		android:id="@+id/textView5"

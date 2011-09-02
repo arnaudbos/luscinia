@@ -36,7 +36,7 @@ public class Record extends CouchDbDocument
 {
 	private static final long serialVersionUID = 2444171397300135852L;
 
-	public static final String RECORD_TYPE = "http://www.sneakernet.fr/luscinia/record";
+	public static final String RECORD_TYPE = "luscinia/record";
 	public static final String VIEW_ALL_RECORDS = "_all_records";
 
 	private String docType;

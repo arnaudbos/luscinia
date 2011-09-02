@@ -36,7 +36,7 @@ public class Document extends CouchDbDocument
 {
 	private static final long serialVersionUID = 3185003212567128889L;
 
-	public static final String DOCUMENT_TYPE = "http://www.sneakernet.fr/luscinia/document";
+	public static final String DOCUMENT_TYPE = "luscinia/document";
 	public static final String VIEW_ALL_DOCUMENTS = "_all_documents";
 
 	private String docType;

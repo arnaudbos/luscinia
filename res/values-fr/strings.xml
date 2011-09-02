@@ -39,8 +39,6 @@
     
     <string name="actionbar_activity_not_found">Echec du lancement...</string>
     
-    <string name="working_since">En service depuis: </string>
-    <string name="time">Heure: </string>
     <string name="patients_title">Patients: </string>
     <string name="notifications">Notifications</string>
 	<string name="patients_loading">Chargement de la liste des patients...</string>
@@ -86,13 +84,13 @@
     <string name="add_patient">Ajouter un patient</string>
     <string name="edit_patient">Modifier patient</string>
     <string name="new_patient">Nouveau patient</string>
-    <string name="firstname">Prénom</string>
-    <string name="lastname">Nom</string>
-    <string name="dob">Date de naissance</string>
-    <string name="insee">N° INSEE</string>
-    <string name="telephone">Téléphone</string>
-    <string name="weight">Poids</string>
-    <string name="size">Taille</string>
+    <string name="firstname">Prénom :</string>
+    <string name="lastname">Nom :</string>
+    <string name="dob">Date de naissance :</string>
+    <string name="insee">N° INSEE :</string>
+    <string name="telephone">Téléphone :</string>
+    <string name="weight">Poids :</string>
+    <string name="size">Taille :</string>
     <string name="new_value">Nouvelle valeur</string>
     <string name="quit">Quitter</string>
     <string name="return_message">Sauvegarder avant de quitter ?</string>

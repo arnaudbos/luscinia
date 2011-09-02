@@ -29,6 +29,7 @@ import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.CreatePatientListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -65,6 +66,7 @@ public class CreatePatientActivity extends RoboActivity
     final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
 
+	@Inject private ICouchDbUtils couchDbUtils;
 	@Inject private CreatePatientListener listener;
 
 	@InjectView(R.id.actionbar) private ActionBar actionBar;
@@ -258,7 +260,7 @@ public class CreatePatientActivity extends RoboActivity
 				try
 				{
 	    			Log.d("Create the patient");
-					LusciniaApplication.getDB().create(getPatient());
+					couchDbUtils.create(getPatient());
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)

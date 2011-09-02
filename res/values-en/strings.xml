@@ -39,8 +39,6 @@
     
     <string name="actionbar_activity_not_found">Failed to open intent...</string>
     
-    <string name="working_since">In service since: </string>
-    <string name="time">Time: </string>
     <string name="patients_title">Patients: </string>
     <string name="notifications">Notifications</string>
 	<string name="patients_loading">Loading patients list...</string>
@@ -86,13 +84,13 @@
     <string name="add_patient">Add patient</string>
     <string name="edit_patient">Edit patient</string>
     <string name="new_patient">New patient</string>
-    <string name="firstname">Firstname</string>
-    <string name="lastname">Lastname</string>
-    <string name="dob">Date of birth</string>
-    <string name="insee">INSEE Number</string>
-    <string name="telephone">Telephone</string>
-    <string name="weight">Weight</string>
-    <string name="size">Size</string>
+    <string name="firstname">Firstname :</string>
+    <string name="lastname">Lastname :</string>
+    <string name="dob">Date of birth :</string>
+    <string name="insee">INSEE Number :</string>
+    <string name="telephone">Telephone :</string>
+    <string name="weight">Weight :</string>
+    <string name="size">Size :</string>
     <string name="new_value">New value</string>
     <string name="quit">Quit</string>
     <string name="return_message">Save before quitting?</string>

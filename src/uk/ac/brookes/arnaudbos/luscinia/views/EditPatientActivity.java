@@ -27,10 +27,10 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.CreatePatientListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -63,6 +63,7 @@ public class EditPatientActivity extends RoboActivity
     final Handler uiThreadCallback = new Handler();
     private ProgressDialog mProgressDialog;
 
+	@Inject private ICouchDbUtils couchDbUtils;
 	@Inject private CreatePatientListener listener;
 
 	@InjectExtra("patient") private Patient patient;
@@ -345,7 +346,7 @@ public class EditPatientActivity extends RoboActivity
 				{
 	    			Log.d("Update the patient");
 					Patient p = getPatient();
-					LusciniaApplication.getDB().update(p);
+					couchDbUtils.update(p);
 					patient = p;
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}

@@ -25,18 +25,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.ektorp.ViewQuery;
-
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import uk.ac.brookes.arnaudbos.luscinia.LusciniaApplication;
 import uk.ac.brookes.arnaudbos.luscinia.R;
 import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import uk.ac.brookes.arnaudbos.luscinia.data.Record;
 import uk.ac.brookes.arnaudbos.luscinia.data.TransRecord;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.TransListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -78,6 +76,7 @@ public class TransActivity extends RoboActivity
     private TransRecord newRecord;
     private List<TransRecord> records = new ArrayList<TransRecord>();
 
+	@Inject private ICouchDbUtils couchDbUtils;
 	@Inject private TransListener listener;
 
 	@InjectExtra("document") private Document document;
@@ -188,7 +187,7 @@ public class TransActivity extends RoboActivity
 	    			Log.d("Query "+Record.VIEW_ALL_RECORDS+" view");
 					// Execute the view query and retrieve the records
 	    			records = new ArrayList<TransRecord>();
-					records.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Record.VIEW_ALL_RECORDS), TransRecord.class));
+					records.addAll(couchDbUtils.queryView(Record.VIEW_ALL_RECORDS, TransRecord.class));
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)
@@ -346,9 +345,9 @@ public class TransActivity extends RoboActivity
 							    			Log.d("Delete the document");
 							    			for(TransRecord record : records)
 							    			{
-												LusciniaApplication.getDB().delete(record);
+												couchDbUtils.delete(record);
 							    			}
-											LusciniaApplication.getDB().delete(document);
+											couchDbUtils.delete(document);
 
 											((NursingFolderActivity)getParent()).deleteDocumentFromTrack(document);
 											mProgressDialog.dismiss();
@@ -418,7 +417,7 @@ public class TransActivity extends RoboActivity
 	    			Log.d("Create the record");
 	    			newRecord = new TransRecord();
 	    			newRecord.setId(UUID.randomUUID().toString());
-					LusciniaApplication.getDB().create(fillRecord(newRecord, focus, data, actions, results));
+					couchDbUtils.create(fillRecord(newRecord, focus, data, actions, results));
 
 					uiThreadCallback.post(recordCreationSucceeded);
 				}
@@ -492,7 +491,7 @@ public class TransActivity extends RoboActivity
 	    			Log.d("Update the record");
 	    			TransRecord oldRecord = (TransRecord) selectedRow.getTag();
 	    			TransRecord record = new TransRecord(oldRecord.getId(), oldRecord.getRevision(), oldRecord.getDate());
-					LusciniaApplication.getDB().update(fillRecord(record, focus, data, actions, results));
+					couchDbUtils.update(fillRecord(record, focus, data, actions, results));
 					selectedRow.setTag(record);
 
 					uiThreadCallback.post(recordCreationSucceeded);

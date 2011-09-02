@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.ViewQuery;
@@ -42,8 +41,8 @@ import uk.ac.brookes.arnaudbos.luscinia.data.Document;
 import uk.ac.brookes.arnaudbos.luscinia.data.Folder;
 import uk.ac.brookes.arnaudbos.luscinia.data.Patient;
 import uk.ac.brookes.arnaudbos.luscinia.listeners.PatientListener;
+import uk.ac.brookes.arnaudbos.luscinia.utils.ICouchDbUtils;
 import uk.ac.brookes.arnaudbos.luscinia.utils.Log;
-import uk.ac.brookes.arnaudbos.luscinia.utils.TemplateActivityMapper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -86,6 +85,7 @@ public class PatientActivity extends RoboActivity
     private List<AttachmentInputStream> attachments = new ArrayList<AttachmentInputStream>();
     private List<Folder> folders = new ArrayList<Folder>();
 
+	@Inject private ICouchDbUtils couchDbUtils;
     @Inject private PatientListener listener;
 	
 	@InjectExtra("patient") private Patient patient;
@@ -116,6 +116,11 @@ public class PatientActivity extends RoboActivity
 	@InjectResource(R.string.administrative_folder) private String administrativeFolder;
 	@InjectResource(R.string.nursing_cares_folder) private String nursingCaresFolder;
 	@InjectResource(R.string.medical_folder) private String medicalFolder;
+	@InjectResource(R.string.dob) private String dob;
+	@InjectResource(R.string.insee) private String insee;
+	@InjectResource(R.string.telephone) private String telephone;
+	@InjectResource(R.string.weight) private String weight;
+	@InjectResource(R.string.size) private String size;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -187,7 +192,7 @@ public class PatientActivity extends RoboActivity
 				{
 	    			Log.d("Load the patient id="+patient.getId());
 	    			// Get the patient
-					patient = LusciniaApplication.getDB().get(Patient.class, patient.getId(), patient.getRevision());
+					patient = couchDbUtils.get(Patient.class, patient.getId(), patient.getRevision());
 
 					// Get all its attachments
 					if(patient.getAttachments() != null)
@@ -197,7 +202,7 @@ public class PatientActivity extends RoboActivity
 						{
 							String attachment_id = it.next();
 			    			Log.d("Load the attachment id="+attachment_id);
-							AttachmentInputStream attachment = LusciniaApplication.getDB().getAttachment(patient.getId(), attachment_id);
+							AttachmentInputStream attachment = couchDbUtils.getAttachment(patient.getId(), attachment_id);
 							attachments.add(attachment);
 						}
 					}
@@ -205,7 +210,7 @@ public class PatientActivity extends RoboActivity
 	    			Log.d("Query "+Folder.VIEW_ALL_FOLDERS+" view with key="+patient.getId());
 					// Execute the view query and retrieve the folders
 	    			folders = new ArrayList<Folder>();
-					folders.addAll(LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Folder.VIEW_ALL_FOLDERS).key(patient.getId()), Folder.class));
+					folders.addAll(couchDbUtils.queryView(Folder.VIEW_ALL_FOLDERS, Folder.class, patient.getId()));
 					uiThreadCallback.post(threadCallBackSuceeded);
 				}
 				catch (Exception e)
@@ -245,23 +250,23 @@ public class PatientActivity extends RoboActivity
 		String firstInfos = "";
 		if(patient.getDateOfBirth()!=null)
 		{
-			firstInfos += "\n" + dateFormat.format(patient.getDateOfBirth());
+			firstInfos += "\n" + dob + ": " + dateFormat.format(patient.getDateOfBirth());
 		}
 		if(patient.getInsee()!=null)
 		{
-			firstInfos += "\n" + patient.getInsee();
+			firstInfos += "\n" + insee + ": " + patient.getInsee();
 		}
 		if(patient.getTelephone()!=null)
 		{
-			firstInfos += "\n" + patient.getTelephone();
+			firstInfos += "\n" + telephone + ": " + patient.getTelephone();
 		}
 		if(patient.getWeight()!=null)
 		{
-			firstInfos += "\n" + Double.toString(patient.getWeight());
+			firstInfos += "\n" + weight + ": " + Double.toString(patient.getWeight());
 		}
 		if(patient.getSize()!=null)
 		{
-			firstInfos += "\n" + Double.toString(patient.getSize());
+			firstInfos += "\n" + size + ": " + Double.toString(patient.getSize());
 		}
 		patientFirstInfosView.setText(firstInfos);
 
@@ -269,7 +274,12 @@ public class PatientActivity extends RoboActivity
 		String restInfos = "";
 		for (Map.Entry<String, Object> entry : patient.getUnknownFields().entrySet())
 		{
-			restInfos += entry.getKey() + " " + entry.getValue() + "\n";
+			String key = entry.getKey();
+			if(key.contains("#"))
+			{
+				key = key.substring(0, key.lastIndexOf("#"));
+			}
+			restInfos += key + " : " + entry.getValue() + "\n";
 		}
 		patientRestInfosView.setText(restInfos);
 	}
@@ -463,7 +473,7 @@ public class PatientActivity extends RoboActivity
 					newFolder.setPatientId(patient.getId());
 					newFolder.setType(Folder.NURSING_FOLDER_TYPE);
 					newFolder.setTitle(nursingCaresFolder);
-					LusciniaApplication.getDB().create(newFolder);
+					couchDbUtils.create(newFolder);
 
 //	    			Log.d("Create the default MACROCIBLE document associated");
 //					Document macro = new Document();
@@ -541,13 +551,13 @@ public class PatientActivity extends RoboActivity
 					}
 
 					// For each document associated with the current folder, delete this document
-					for(Document document : LusciniaApplication.getDB().queryView(new ViewQuery().designDocId("_design/views").viewName(Document.VIEW_ALL_DOCUMENTS).key(folder.getId()), Document.class))
+					for(Document document : couchDbUtils.queryView(Document.VIEW_ALL_DOCUMENTS, Document.class, folder.getId()))
 					{
 		    			Log.d("Delete the document: "+document.getId());
-						LusciniaApplication.getDB().delete(document);
+						couchDbUtils.delete(document);
 					}
 	    			Log.d("Delete the folder: "+folder.getId());
-					LusciniaApplication.getDB().delete(folder);
+					couchDbUtils.delete(folder);
 
 					// Remove folder from the list of folders
 					folders.remove(folder);
